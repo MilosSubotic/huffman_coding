@@ -32,13 +32,13 @@ default: run3
 ###############################################################################
 
 run1: huffman_coding_rosettacode_c${EXE}
-	./$< > $<.log
+	./$< | tee $<.log
 	
 run2: huffman_coding_rosettacode_c_2${EXE}
-	./$< > $<.log
+	./$< | tee $<.log
 	
 run3: huffman_coding_rosettacode_cpp${EXE}
-	./$< > $<.log
+	./$< | tee $<.log
 	
 ###############################################################################
 
