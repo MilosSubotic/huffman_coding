@@ -9,13 +9,13 @@
          <ClosedNodesVersion>2</ClosedNodesVersion>
       </ClosedNodes>
       <SelectedItems>
-         <SelectedItem>huffman_encoder - arch_huffman_encoder_v1 (C:/Users/subotic/home/ELEKTRONIKA/A_PROGRAM_CODE/Embedded/ort-lprs_siit/Vezbe/huffman_coding/huffman_coding/src/rtl/huffman_encoder.vhd)</SelectedItem>
+         <SelectedItem>sort - arch_sort_v1 (C:/Users/subotic/home/ELEKTRONIKA/A_PROGRAM_CODE/Embedded/ort-lprs_siit/Vezbe/huffman_coding/huffman_coding/src/rtl/sort.vhd)</SelectedItem>
       </SelectedItems>
       <ScrollbarPosition orientation="vertical" >0</ScrollbarPosition>
       <ScrollbarPosition orientation="horizontal" >0</ScrollbarPosition>
       <ViewHeaderState orientation="horizontal" >000000ff00000000000000010000000100000000000000000000000000000000020200000001000000010000006400000209000000020000000000000000000000000200000064ffffffff000000810000000300000002000002090000000100000003000000000000000100000003</ViewHeaderState>
       <UserChangedColumnWidths orientation="horizontal" >true</UserChangedColumnWidths>
-      <CurrentItem>huffman_encoder - arch_huffman_encoder_v1 (C:/Users/subotic/home/ELEKTRONIKA/A_PROGRAM_CODE/Embedded/ort-lprs_siit/Vezbe/huffman_coding/huffman_coding/src/rtl/huffman_encoder.vhd)</CurrentItem>
+      <CurrentItem>sort - arch_sort_v1 (C:/Users/subotic/home/ELEKTRONIKA/A_PROGRAM_CODE/Embedded/ort-lprs_siit/Vezbe/huffman_coding/huffman_coding/src/rtl/sort.vhd)</CurrentItem>
    </ItemView>
    <ItemView engineview="SynthesisOnly" sourcetype="" guiview="Process" >
       <ClosedNodes>
@@ -23,13 +23,13 @@
          <ClosedNode>Design Utilities</ClosedNode>
       </ClosedNodes>
       <SelectedItems>
-         <SelectedItem/>
+         <SelectedItem></SelectedItem>
       </SelectedItems>
       <ScrollbarPosition orientation="vertical" >0</ScrollbarPosition>
       <ScrollbarPosition orientation="horizontal" >0</ScrollbarPosition>
       <ViewHeaderState orientation="horizontal" >000000ff0000000000000001000000010000000000000000000000000000000000000000000000022f000000010000000100000000000000000000000064ffffffff0000008100000000000000010000022f0000000100000000</ViewHeaderState>
       <UserChangedColumnWidths orientation="horizontal" >false</UserChangedColumnWidths>
-      <CurrentItem/>
+      <CurrentItem></CurrentItem>
    </ItemView>
    <ItemView guiview="File" >
       <ClosedNodes>
@@ -75,18 +75,17 @@
    <ItemView engineview="BehavioralSim" guiview="Source" compilemode="AutoCompile" >
       <ClosedNodes>
          <ClosedNodesVersion>2</ClosedNodesVersion>
-         <ClosedNode>/huffman_encoder_tb - arch_huffman_encoder_tb C:|Users|subotic|home|ELEKTRONIKA|A_PROGRAM_CODE|Embedded|ort-lprs_siit|Vezbe|huffman_coding|huffman_coding|src|sim|huffman_encoder_tb.vhd</ClosedNode>
          <ClosedNode>/huffman_encoder_tb - arch_huffman_encoder_tb_v1 C:|Users|subotic|home|ELEKTRONIKA|A_PROGRAM_CODE|Embedded|ort-lprs_siit|Vezbe|huffman_coding|huffman_coding|src|sim|huffman_encoder_tb.vhd</ClosedNode>
          <ClosedNode>/huffman_encoder_tb - huffman_encoder_tb C:|Users|subotic|home|ELEKTRONIKA|A_PROGRAM_CODE|Embedded|ort-lprs_siit|Vezbe|huffman_coding|huffman_coding|src|sim|huffman_encoder_tb.vhd</ClosedNode>
       </ClosedNodes>
       <SelectedItems>
-         <SelectedItem>huffman_encoder_tb - arch_huffman_encoder_tb (C:/Users/subotic/home/ELEKTRONIKA/A_PROGRAM_CODE/Embedded/ort-lprs_siit/Vezbe/huffman_coding/huffman_coding/src/sim/huffman_encoder_tb.vhd)</SelectedItem>
+         <SelectedItem>uut - huffman_encoder - arch_huffman_encoder_v1 (C:/Users/subotic/home/ELEKTRONIKA/A_PROGRAM_CODE/Embedded/ort-lprs_siit/Vezbe/huffman_coding/huffman_coding/src/rtl/huffman_encoder.vhd)</SelectedItem>
       </SelectedItems>
       <ScrollbarPosition orientation="vertical" >0</ScrollbarPosition>
       <ScrollbarPosition orientation="horizontal" >0</ScrollbarPosition>
-      <ViewHeaderState orientation="horizontal" >000000ff00000000000000010000000100000000000000000000000000000000020200000001000000010000006400000232000000020000000000000000000000000200000064ffffffff000000810000000300000002000002320000000100000003000000000000000100000003</ViewHeaderState>
+      <ViewHeaderState orientation="horizontal" >000000ff00000000000000010000000100000000000000000000000000000000020200000001000000010000006400000240000000020000000000000000000000000200000064ffffffff000000810000000300000002000002400000000100000003000000000000000100000003</ViewHeaderState>
       <UserChangedColumnWidths orientation="horizontal" >false</UserChangedColumnWidths>
-      <CurrentItem>huffman_encoder_tb - arch_huffman_encoder_tb (C:/Users/subotic/home/ELEKTRONIKA/A_PROGRAM_CODE/Embedded/ort-lprs_siit/Vezbe/huffman_coding/huffman_coding/src/sim/huffman_encoder_tb.vhd)</CurrentItem>
+      <CurrentItem>uut - huffman_encoder - arch_huffman_encoder_v1 (C:/Users/subotic/home/ELEKTRONIKA/A_PROGRAM_CODE/Embedded/ort-lprs_siit/Vezbe/huffman_coding/huffman_coding/src/rtl/huffman_encoder.vhd)</CurrentItem>
    </ItemView>
    <ItemView engineview="BehavioralSim" sourcetype="" guiview="Process" >
       <ClosedNodes>
@@ -116,5 +115,32 @@
       <CurrentItem>ISim Simulator</CurrentItem>
    </ItemView>
    <SourceProcessView>000000ff0000000000000002000001390000011b01000000050100000002</SourceProcessView>
-   <CurrentView>Behavioral Simulation</CurrentView>
+   <CurrentView>Implementation</CurrentView>
+   <ItemView engineview="SynthesisOnly" sourcetype="DESUT_VHDL_PACKAGE_DECL" guiview="Process" >
+      <ClosedNodes>
+         <ClosedNodesVersion>1</ClosedNodesVersion>
+      </ClosedNodes>
+      <SelectedItems>
+         <SelectedItem></SelectedItem>
+      </SelectedItems>
+      <ScrollbarPosition orientation="vertical" >0</ScrollbarPosition>
+      <ScrollbarPosition orientation="horizontal" >0</ScrollbarPosition>
+      <ViewHeaderState orientation="horizontal" >000000ff0000000000000001000000010000000000000000000000000000000000000000000000022f000000010000000100000000000000000000000064ffffffff0000008100000000000000010000022f0000000100000000</ViewHeaderState>
+      <UserChangedColumnWidths orientation="horizontal" >false</UserChangedColumnWidths>
+      <CurrentItem></CurrentItem>
+   </ItemView>
+   <ItemView engineview="SynthesisOnly" sourcetype="DESUT_UCF" guiview="Process" >
+      <ClosedNodes>
+         <ClosedNodesVersion>1</ClosedNodesVersion>
+         <ClosedNode>User Constraints</ClosedNode>
+      </ClosedNodes>
+      <SelectedItems>
+         <SelectedItem></SelectedItem>
+      </SelectedItems>
+      <ScrollbarPosition orientation="vertical" >0</ScrollbarPosition>
+      <ScrollbarPosition orientation="horizontal" >0</ScrollbarPosition>
+      <ViewHeaderState orientation="horizontal" >000000ff0000000000000001000000010000000000000000000000000000000000000000000000022f000000010000000100000000000000000000000064ffffffff0000008100000000000000010000022f0000000100000000</ViewHeaderState>
+      <UserChangedColumnWidths orientation="horizontal" >false</UserChangedColumnWidths>
+      <CurrentItem></CurrentItem>
+   </ItemView>
 </Project>
