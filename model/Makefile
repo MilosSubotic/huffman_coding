@@ -22,7 +22,7 @@ else
 	EXE=.elf
 endif
 
-CXXFLAGS=-O3
+CXXFLAGS=-O3 -std=c++0x
 ifeq (${BUILD_OS},WINNT)
 	CC=gcc
 	CPPFLAGS+=-mno-ms-bitfields
