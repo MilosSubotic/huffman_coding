@@ -105,31 +105,25 @@ int main() {
 		cnt_t cnt;
 	};
 	
-	vector<sym_and_cnt> sort_vec(16);
+	vector<sym_and_cnt> sort_cnt(16);
 	for(int sym = 0; sym < 16; sym++){
-		sort_vec[sym].sym = sym;
-		sort_vec[sym].cnt = histogram[sym];
+		sort_cnt[sym].sym = sym;
+		sort_cnt[sym].cnt = histogram[sym];
 	}
-#if 1
+
 	sort(
-		sort_vec.begin(),
-		sort_vec.end(),
-		[](sym_and_cnt x, sym_and_cnt y){ return x.cnt < y.cnt; }
-	);
-#else
-	// Bubble sort.
-	// TODO
-	for(int i = 0; i < 16; i++){
-		if(i%2){ // Odd pairs.
-		}else{ // Even pairs.
+		sort_cnt.begin(),
+		sort_cnt.end(),
+		[](const sym_and_cnt& x, const sym_and_cnt& y){ 
+			return x.cnt < y.cnt;
 		}
-	}
-#endif
+	);
+
 	
-	cout << "sort_vec:" << endl;
+	cout << "sort_cnt:" << endl;
 	for(int i = 0; i < 16; i++){
-		cout << setw(2) << sort_vec[i].sym << ": " 
-			<< setw(2) << sort_vec[i].cnt << endl;
+		cout << setw(2) << sort_cnt[i].sym << ": " 
+			<< setw(2) << sort_cnt[i].cnt << endl;
 	}
 	cout << endl << endl;
 	
@@ -165,7 +159,7 @@ int main() {
 	// Copy sorted symbols to leaf nodes.
 	// Symbols now becomes IDs leaves.
 	for(int i = 0; i < 16; i++){
-		leaves[i] = sort_vec[i];
+		leaves[i] = sort_cnt[i];
 	}
 	
 	for(int i = 0; i < 16; i++){
@@ -332,8 +326,8 @@ int main() {
 	// Count same depths.
 	cout << "Count same depths" << endl;
 	
-	// Could have more than 16 depth of same count.
-	// Practically even less. 
+	// Couldn't have more than 16 depth of same count.
+	// Practically even less.
 	// TODO Calculate how much.
 	typedef uint16_t dep_cnt_t; // 4-bit.
 	vector<dep_cnt_t> depths_count(5, 0); // Init to zeros.
