@@ -36,10 +36,10 @@ void shift(deque<T>& d) {
 	d.push_back(T());
 }
 
-string bits_to_string(uint64_t bits, unsigned len) {
+string bits_to_string(uint64_t bits, unsigned start, unsigned end = 0) {
 	ostringstream oss;
 	bitset<64> bf(bits);
-	for(int i = len-1; i >= 0; i--){
+	for(int i = start-1; i >= int(end); i--){
 		oss << bf[i];
 	}
 	return oss.str();
@@ -48,6 +48,7 @@ string bits_to_string(uint64_t bits, unsigned len) {
 int main() {
 
 	// Setting text for decoding.
+	cout << "Setting text for decoding." << endl;
 	
 	cout << "TEXT: " << TEXT << endl;
 
@@ -73,7 +74,8 @@ int main() {
 	
 	
 	// Histogram.
-	
+	cout << "Histogram." << endl;
+
 	// Because we decode max 16 symbols in block,
 	// then count could be max 16.
 	typedef uint16_t cnt_t; // 5-bits.
@@ -86,7 +88,7 @@ int main() {
 		histogram[in_data[d]]++;
 	}
 	
-	cout << "Histogram:" << endl;
+	cout << "histogram:" << endl;
 	for(int sym = 0; sym < 16; sym++){
 		cout << setw(2) << sym << ": " << setw(2) << histogram[sym] << endl;
 	}
@@ -95,6 +97,8 @@ int main() {
 	
 	
 	// Sorting.
+	cout << "Sorting." << endl;
+
 	class sym_and_cnt {
 	public:
 		sym_t sym;
@@ -122,7 +126,7 @@ int main() {
 	}
 #endif
 	
-	cout << "Sorted:" << endl;
+	cout << "sort_vec:" << endl;
 	for(int i = 0; i < 16; i++){
 		cout << setw(2) << sort_vec[i].sym << ": " 
 			<< setw(2) << sort_vec[i].cnt << endl;
@@ -131,6 +135,7 @@ int main() {
 	
 
 	// Remove empty leaves.
+	cout << "Remove empty leaves." << endl;
 	
 	// System have max 16 leaves and max 15 parent nodes,
 	// so node 31 will never exists and it is null-object.
@@ -169,7 +174,7 @@ int main() {
 		}
 	}
 
-	cout << "Leafs:" << endl;
+	cout << "leaves:" << endl;
 	for(int i = 0; i < 16; i++){
 		cout << setw(2) << leaves[i].node << ": " 
 			<< setw(2) << leaves[i].cnt << endl;
@@ -178,7 +183,7 @@ int main() {
 	
 
 	// Quasi-tree.
-	cout << "Quasi-tree:" << endl;
+	cout << "Quasi-tree." << endl;
 
 	deque<node_and_cnt> parents(16);
 	int parents_end = 0;
@@ -325,6 +330,7 @@ int main() {
 	
 	
 	// Count same depths.
+	cout << "Count same depths" << endl;
 	
 	// Could have more than 16 depth of same count.
 	// Practically even less. 
@@ -343,42 +349,42 @@ int main() {
 	cout << endl << endl;
 	
 	// Calculate start codes for depths.
+	cout << "Calculate start codes for depths." << endl;
 	
 	// Because max depths is 5, max bits in symbols is also 5.
 	typedef int16_t code_t; // 5-bits.
 	vector<code_t> start_codes(5);
 	
-	code_t code = -1; // All 1s.
-	// Last non-zero depth when code was decremented.
-	dep_t last_nz_dep = 0;
+	code_t code = 0;
 	for(int dep = 1; dep < 5; dep++){
 		if(depths_count[dep] != 0){
 			start_codes[dep] = code;
-			code -= depths_count[dep] << last_nz_dep;
-			last_nz_dep = dep;
+			code += depths_count[dep] << (5 - dep);
 		}
 	}
 	
 	cout << "start_codes:" << endl;
 	for(int dep = 0; dep < 5; dep++){
 		cout << setw(2) << dep << ": " 
-			<< setw(5) << bits_to_string(start_codes[dep], dep) << endl;
+			<< bits_to_string(start_codes[dep], 5, 5-dep) << endl;
 	}
 	cout << endl << endl;
 	
-return 0;
+
+
 
 	// Creating canonical code table.
+	cout << "Creating canonical code table." << endl;
 	
 	vector<dep_t> code_lens = symbols_depth;
 	vector<code_t> dep_codes = start_codes;
 	vector<code_t> code_table(16);
-	for(int sym = 0; sym < 6; sym++){
+	for(int sym = 0; sym < 16; sym++){
 		dep_t dep = symbols_depth[sym];
 		// Assign current code for symbol's depth.
 		code_table[sym] = dep_codes[dep]; 
 		// Decrement to next code.
-		dep_codes[dep] -= 1;
+		dep_codes[dep] += 1 << (5 - dep);
 	}
 	
 	cout << "code_lens:" << endl;
@@ -388,15 +394,40 @@ return 0;
 	cout << "code_table:" << endl;
 	for(int sym = 0; sym < 16; sym++){
 		cout << setw(2) << sym << ": " 
-			<< setw(5) << bits_to_string(code_table[sym], code_lens[sym]) 
+			<< bits_to_string(code_table[sym], 5, 5-code_lens[sym]) 
 			<< endl;
 	}
 	cout << endl << endl;
-	
-return 0;	
 
-	
+
+
+
+	// Mirror codes for little endian encoding.
+	cout << "Mirror codes for little endian encoding." << endl;
+
+	for(int sym = 0; sym < 16; sym++){
+		bitset<5> src(code_table[sym]);
+		bitset<5> dst(src);
+		dst[4] = src[0];
+		dst[3] = src[1];
+		dst[1] = src[3];
+		dst[0] = src[4];
+		code_table[sym] = dst.to_ulong();
+	}
+
+	cout << "code_table:" << endl;
+	for(int sym = 0; sym < 16; sym++){
+		cout << setw(2) << sym << ": " 
+			<< setw(5) << bits_to_string(code_table[sym], code_lens[sym], 0) 
+			<< endl;
+	}
+	cout << endl << endl;
+
+
+
+
 	// Encode data.
+	cout << "Encode data." << endl;
 	
 	// In worst case, if all data symbols are different, 
 	// all symbols will be coded with 4-bit codes,
@@ -423,9 +454,10 @@ return 0;
 
 		cout << "iter " << d << ":" << endl;
 		cout << "sym: " << setw(2) << sym << endl;
-		cout << "code: " << setw(5) << bits_to_string(code, code_len) << endl;
-		cout << "enc_data: " << setw(64) 
-			<< bits_to_string(enc_data, enc_len) << endl;
+		cout << "code: " 
+			<< setw(5) << bits_to_string(code, code_len, 0) << endl;
+		cout << "enc_data: " 
+			<< setw(64) << bits_to_string(enc_data, enc_len, 0) << endl;
 		cout << "enc_len: " << enc_len << endl;
 		cout << endl;
 
@@ -437,19 +469,19 @@ return 0;
 	
 
 
-
 	// TODO Encode canonical table.
 	
 
 
+	// TODO Decode canonical table.
+
 
 	// Decode data.
-	
-	// TODO Decode canonical table.
+	cout << "Decode data." << endl;
 	
 	vector<sym_t> out_data(16);
 	
-	for(int d = 0; d < 12; d++){
+	for(int d = 0; d < 16; d++){
 		DEBUG(bitset<64>(enc_data));
 		dep_t best_len = 7;
 		code_t best_code;
@@ -459,7 +491,7 @@ return 0;
 			if(code_len != 0 && code_len < best_len){
 				code_t mask = (1 << code_len) - 1;
 				code_t enc_code = enc_data & mask;
-				if(enc_code == (code_table[sym] & mask)){
+				if(enc_code == code_table[sym]){
 					best_len = code_len;
 					best_code = code_table[sym];
 					best_sym = sym;
@@ -476,30 +508,39 @@ return 0;
 		
 		cout << "iter " << d << ":" << endl;
 		cout << "best_len: " << setw(2) << best_len << endl;
-		cout << "best_code: " << setw(5) 
-			<< bits_to_string(best_code, best_len) << endl;
+		cout << "best_code: "
+			<< setw(5) << bits_to_string(code, best_len, 0) << endl;
 		cout << "best_sym: " << setw(2) << best_sym << endl;
-		cout << "enc_data: " << setw(64) 
-			<< bits_to_string(enc_data, enc_len) << endl;
+		cout << "enc_data: " 
+			<< setw(64) << bits_to_string(enc_data, enc_len, 0) << endl;
 		cout << "enc_len: " << enc_len << endl;
 		cout << endl;
 	}
-	//assert(enc_len != 0);
+	assert(enc_len == 0);
 	
 	cout << "out_data:" << endl;
 	for(int d = 0; d < 16; d++){
-		cout << setw(5) << out_data[d] << endl;
+		cout << setw(2) << out_data[d] << endl;
 	}
 	cout << endl << endl;
+
+
+
+
+	// Comparing input and output.
+	cout << "Comparing input and output." << endl;
 	
-#if 0
-	for(int i = 0; i < len; i++){
-		if(d_in[i] != d_out[i]){
-			cerr << "Mismatch after encoding and decoding at byte index " << i << endl;
+	for(int i = 0; i < 16; i++){
+		if(in_data[i] != out_data[i]){
+			cerr << "Mismatch symbol " << i << endl;
 			return 1;
 		}
 	}
-#endif
+	cout << endl << endl;
+
+
+
+	cout << "End." << endl;
 
 	return 0;
 }
