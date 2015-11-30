@@ -20,8 +20,9 @@ using namespace std;
 
 //////////////////////////////////////////////////////////////////////////////
 
-#define DEBUG_LOGS
-#define TEXT "deadbeef"
+#define TEXT "babadeda"
+//#define TEXT "deadbeef"
+//#define TEXT "babadedadeadbeef"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -60,7 +61,7 @@ typedef uint16_t len_t; // 3-bit.
 // Couldn't have more than 16 bit-lengths of same count.
 // Practically even less. 
 // TODO Calculate how much.
-typedef uint16_t len_cnt_t; // 4-bit.
+typedef uint16_t len_cnt_t; // 4-bit. FIXME Maybe 5-bit.
 typedef int16_t code_t; // 5-bits.
 
 
@@ -68,6 +69,8 @@ void huffman_encode(
 	const string& in_text,
 	vector<uint8_t>& enc_data
 ) {
+
+	cout << "Encoding..." << endl << endl;
 
 	uint16_t acc = 0;
 	int acc_len = 0;
@@ -545,8 +548,11 @@ void huffman_encode(
 
 	}
 
-	// Push unfinished byte.
-	enc_data.push_back(acc);
+	cout << "last byte acc_len: " << acc_len << endl; 
+	// Push unfinished byte, if one exists.
+	if(acc_len != 0){
+		enc_data.push_back(acc);
+	}
 
 }
 
@@ -554,6 +560,8 @@ void huffman_decode(
 	const vector<uint8_t>& enc_data,
 	string& out_text
 ) {
+
+	cout << "Decoding..." << endl << endl;
 
 	uint16_t acc = 0;
 	unsigned acc_len = 0;
@@ -570,8 +578,9 @@ void huffman_decode(
 		acc_len -= len;
 		return ret;
 	};
+	
 
-	while(ed != enc_data.end()){
+	while(ed < enc_data.end()){
 
 		cout << "Unpacking bit-lengths count..." << endl;
 
@@ -623,6 +632,7 @@ void huffman_decode(
 
 
 
+
 		cout << "Mirroring codes for little endian decoding..." << endl;
 
 		for(int sym = 0; sym < 16; sym++){
@@ -642,6 +652,7 @@ void huffman_decode(
 				<< endl;
 		}
 		cout << endl << endl;
+
 
 
 
@@ -693,6 +704,8 @@ void huffman_decode(
 		cout << endl << endl;
 
 
+
+
 		cout << "Converting data to text..." << endl;
 		for(int t = 0; t < 8; t++){
 			uint8_t c = (out_data[t*2+1] << 4) | out_data[t*2];
@@ -716,6 +729,12 @@ int main() {
 
 
 
+	
+	cout << "compression ratio: " 
+		<< enc_data.size()/float(in_text.size()) << endl << endl;
+
+
+
 	string out_text;
 
 	huffman_decode(
@@ -725,8 +744,9 @@ int main() {
 
 
 
-	// Comparing input and output.
-	cout << "Comparing input and output." << endl;
+
+
+	cout << "Comparing input and output..." << endl;
 	if(in_text != out_text){
 		cout << "Mismatch!" << endl;
 		for(int i = 0; i < in_text.size(); i++){
@@ -739,6 +759,8 @@ int main() {
 		cout << "Match!" << endl;
 	}
 	cout << endl << endl;
+
+
 
 
 	cout << "End." << endl;
