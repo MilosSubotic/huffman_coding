@@ -71,11 +71,9 @@ void huffman_encode(
 
 	for(int block = 0; block < in_text.size()/8; block++){
 
-		// Setting text for decoding.
-		cout << "Setting text for decoding." << endl;
+		cout << "Setting up data for decoding..." << endl;
 	
 		cout << "block: " << block << endl;
-		cout << "blteock: " << block << endl;
 
 		// 8 chars, 8 bytes, 16 nibbles, 16 symbols.
 	
@@ -92,7 +90,7 @@ void huffman_encode(
 				c = in_text[index];
 			}
 
-			if(d%2){
+			if(d%2 == 0){
 				in_data[d] = c & 0x0f;
 			}else{
 				in_data[d] = c >> 4;
@@ -104,8 +102,10 @@ void huffman_encode(
 			cout << setw(2) << in_data[d] << endl;
 		}
 		cout << endl << endl;
-	
-	
+
+
+
+
 		// Histogram.
 		cout << "Histogram." << endl;
 	
@@ -380,9 +380,8 @@ void huffman_encode(
 
 
 
-
-		// Sorting symbols by depths.
-		cout << "Sorting symbols by depths." << endl;
+		// Prepare for sorting symbols by depths.
+		cout << "Prepare for sorting symbols by depths." << endl;
 	
 		class sym_and_dep{
 		public:
@@ -403,6 +402,19 @@ void huffman_encode(
 			}
 		}
 
+		cout << "sort_dep:" << endl;
+		for(int i = 0; i < 16; i++){
+			cout << setw(2) << sort_dep[i].sym << ": " 
+				<< setw(2) << sort_dep[i].dep << endl;
+		}
+		cout << endl << endl;
+
+
+
+
+		// Sorting symbols by depths.
+		cout << "Sorting symbols by depths." << endl;
+
 		sort(
 			sort_dep.begin(),
 			sort_dep.end(),
@@ -417,6 +429,8 @@ void huffman_encode(
 				<< setw(2) << sort_dep[i].dep << endl;
 		}
 		cout << endl << endl;
+
+
 
 
 		// Creating canonical code table.
@@ -436,7 +450,8 @@ void huffman_encode(
 	
 		cout << "code_lens:" << endl;
 		for(int sym = 0; sym < 16; sym++){
-			cout << setw(2) << sym << ": " << setw(1) << code_lens[sym] << endl;
+			cout << setw(2) << sym << ": " 
+				<< setw(1) << code_lens[sym] << endl;
 		}
 		cout << "code_table:" << endl;
 		for(int sym = 0; sym < 16; sym++){
@@ -559,7 +574,6 @@ void huffman_encode(
 
 
 
-
 		// Store encoded data.
 		cout << "Store encoded data." << endl;
 
@@ -597,6 +611,161 @@ void huffman_encode(
 
 }
 
+void huffman_decode(
+	const vector<uint8_t>& enc_data,
+	string& out_text
+) {
+
+	uint16_t acc = 0;
+	unsigned acc_len = 0;
+	auto ed = enc_data.begin();
+	auto unpack = [&](unsigned len) {
+		assert(len <= 8);
+		uint8_t ret;
+		if(acc_len < len){
+			acc |= (*ed++) << acc_len;
+			acc_len += 8;
+		}
+		ret = acc & ((1 << len) - 1);
+		acc >>= len;
+		acc_len -= len;
+		return ret;
+	};
+
+	while(ed != enc_data.end()){
+
+		cout << "Unpacking bit-lengths count..." << endl;
+
+		vector<dep_cnt_t> depths_count(5);
+
+		for(int dep = 1; dep < 5; dep++){
+			depths_count[dep] = unpack(4); // dep_cnt_t is 4-bit.
+		}
+
+		cout << "depths_count:" << endl;
+		for(int dep = 0; dep < 5; dep++){
+			cout << setw(2) << dep << ": " 
+				<< setw(2) << depths_count[dep] << endl;
+		}
+		cout << endl << endl;
+
+
+
+
+		cout << "Unpacking symbols and creating canonical code table..."
+			<< endl;
+		
+		vector<dep_t> code_lens(16, 0);
+		vector<code_t> code_table(16);
+
+		code_t code = 0;
+		for(dep_t dep = 1; dep < 5; dep++){
+			for(int cnt = depths_count[dep]; cnt > 0; cnt--){
+				sym_t sym = unpack(4); // sym_t is 4-bit.
+				code_table[sym] = code;
+				code_lens[sym] = dep;
+				// Increment to next code.
+				code += 1 << (5 - dep);
+			}
+		}
+	
+		cout << "code_lens:" << endl;
+		for(int sym = 0; sym < 16; sym++){
+			cout << setw(2) << sym << ": " 
+				<< setw(1) << code_lens[sym] << endl;
+		}
+		cout << "code_table:" << endl;
+		for(int sym = 0; sym < 16; sym++){
+			cout << setw(2) << sym << ": " 
+				<< bits_to_string(code_table[sym], 5, 5-code_lens[sym]) 
+				<< endl;
+		}
+		cout << endl << endl;
+
+
+
+		cout << "Mirroring codes for little endian decoding..." << endl;
+
+		for(int sym = 0; sym < 16; sym++){
+			bitset<5> src(code_table[sym]);
+			bitset<5> dst(src);
+			dst[4] = src[0];
+			dst[3] = src[1];
+			dst[1] = src[3];
+			dst[0] = src[4];
+			code_table[sym] = dst.to_ulong();
+		}
+
+		cout << "code_table:" << endl;
+		for(int sym = 0; sym < 16; sym++){
+			cout << setw(2) << sym << ": " << setw(5) 
+				<< bits_to_string(code_table[sym], code_lens[sym], 0) 
+				<< endl;
+		}
+		cout << endl << endl;
+
+
+
+		cout << "Decoding data..." << endl;
+
+		vector<sym_t> out_data(16);
+
+		// TODO
+		for(int d = 0; d < 16; d++){
+			if(acc_len < 5){
+				acc |= (*ed++) << acc_len;
+				acc_len += 8;
+			}
+
+			dep_t best_len = 7;
+			code_t best_code;
+			sym_t best_sym;
+			for(int sym = 0; sym < 16; sym++){
+				dep_t code_len = code_lens[sym];
+				if(code_len != 0 && code_len < best_len){
+					code_t mask = (1 << code_len) - 1;
+					code_t enc_code = acc & mask;
+					if(enc_code == code_table[sym]){
+						best_len = code_len;
+						best_code = code_table[sym];
+						best_sym = sym;
+					}
+				}
+			}
+			assert(0 < best_len && best_len <= 5);
+		
+			// Remove decoded symbol.
+			acc >>=  best_len;
+			acc_len -=  best_len;
+		
+			out_data[d] = best_sym;
+		
+			cout << "iter " << d << ":" << endl;
+			cout << "best_len: " << setw(2) << best_len << endl;
+			cout << "best_code: "
+				<< setw(5) << bits_to_string(code, best_len, 0) << endl;
+			cout << "best_sym: " << setw(2) << best_sym << endl;
+			cout << endl;
+		}
+	
+		cout << "out_data:" << endl;
+		for(int d = 0; d < 16; d++){
+			cout << setw(2) << out_data[d] << endl;
+		}
+		cout << endl << endl;
+
+
+		cout << "Converting data to text..." << endl;
+		for(int t = 0; t < 8; t++){
+			uint8_t c = (out_data[t*2+1] << 4) | out_data[t*2];
+			out_text += c;
+		}
+		cout << endl << endl;
+
+	}
+
+}
+
 int main() {
 
 	string in_text(TEXT);
@@ -607,80 +776,28 @@ int main() {
 		enc_data
 	);
 
+	string out_text;
 
-/*
-	
-
-
-	
-	
-
-
-	// TODO Decode canonical table.
-
-
-	// Decode data.
-	cout << "Decode data." << endl;
-	
-	vector<sym_t> out_data(16);
-	
-	for(int d = 0; d < 16; d++){
-		DEBUG(bitset<64>(enc_block));
-		dep_t best_len = 7;
-		code_t best_code;
-		sym_t best_sym;
-		for(int sym = 0; sym < 7; sym++){
-			dep_t code_len = code_lens[sym];
-			if(code_len != 0 && code_len < best_len){
-				code_t mask = (1 << code_len) - 1;
-				code_t enc_code = enc_block & mask;
-				if(enc_code == code_table[sym]){
-					best_len = code_len;
-					best_code = code_table[sym];
-					best_sym = sym;
-				}
-			}
-		}
-		assert(0 < best_len && best_len <= 5);
-		
-		// Remove decoded symbol.
-		enc_block >>= best_len;
-		enc_len -= best_len;
-		
-		out_data[d] = best_sym;
-		
-		cout << "iter " << d << ":" << endl;
-		cout << "best_len: " << setw(2) << best_len << endl;
-		cout << "best_code: "
-			<< setw(5) << bits_to_string(code, best_len, 0) << endl;
-		cout << "best_sym: " << setw(2) << best_sym << endl;
-		cout << "enc_block: " 
-			<< setw(64) << bits_to_string(enc_block, enc_len, 0) << endl;
-		cout << "enc_len: " << enc_len << endl;
-		cout << endl;
-	}
-	assert(enc_len == 0);
-	
-	cout << "out_data:" << endl;
-	for(int d = 0; d < 16; d++){
-		cout << setw(2) << out_data[d] << endl;
-	}
-	cout << endl << endl;
-
-
+	huffman_decode(
+		enc_data,
+		out_text
+	);
 
 
 	// Comparing input and output.
 	cout << "Comparing input and output." << endl;
-	
-	for(int i = 0; i < 16; i++){
-		if(in_data[i] != out_data[i]){
-			cerr << "Mismatch symbol " << i << endl;
-			return 1;
+	if(in_text != out_text){
+		cout << "Mismatch!" << endl;
+		for(int i = 0; i < in_text.size(); i++){
+			if(in_text[i] != out_text[i]){
+				cout << "Mismatch at pos " << i << endl;
+				break;
+			}
 		}
+	}else{
+		cout << "Match!" << endl;
 	}
 	cout << endl << endl;
-*/
 
 
 	cout << "End." << endl;
