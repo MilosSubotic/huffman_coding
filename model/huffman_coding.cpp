@@ -21,7 +21,7 @@ using namespace std;
 //////////////////////////////////////////////////////////////////////////////
 
 #define DEBUG_LOGS
-#define TEXT "babadeda"
+#define TEXT "deadbeef"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -38,6 +38,7 @@ void shift(deque<T>& d) {
 	d.push_back(T());
 }
 
+
 string bits_to_string(uint64_t bits, unsigned start, unsigned end = 0) {
 	ostringstream oss;
 	bitset<64> bf(bits);
@@ -46,6 +47,7 @@ string bits_to_string(uint64_t bits, unsigned start, unsigned end = 0) {
 	}
 	return oss.str();
 }
+
 
 typedef uint16_t sym_t; // 4-bits.
 // Because we decode max 16 symbols in block,
@@ -60,6 +62,7 @@ typedef uint16_t len_t; // 3-bit.
 // TODO Calculate how much.
 typedef uint16_t len_cnt_t; // 4-bit.
 typedef int16_t code_t; // 5-bits.
+
 
 void huffman_encode(
 	const string& in_text,
@@ -351,7 +354,7 @@ void huffman_encode(
 	
 	
 
-		cout << "Extracting bit-lengths of codes for symbols." << endl;
+		cout << "Extracting bit-lengths of codes for symbols..." << endl;
 	
 		vector<len_t> codes_len(16);
 		for(int sym = 0; sym < 16; sym++){
@@ -368,7 +371,7 @@ void huffman_encode(
 
 
 	
-		cout << "Counting same lengths..." << endl;
+		cout << "Counting same bit-lengths..." << endl;
 
 		vector<len_cnt_t> lens_cnt(5, 0); // Init to zeros.
 
@@ -386,7 +389,7 @@ void huffman_encode(
 
 
 
-		cout << "Preparing for sorting symbols by lengths..." << endl;
+		cout << "Preparing for sorting symbols by bit-lengths..." << endl;
 	
 		class sym_and_len{
 		public:

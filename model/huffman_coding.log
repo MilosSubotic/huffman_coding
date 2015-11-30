@@ -1,33 +1,33 @@
 Setting up data for decoding...
 block: 0
 in_data:
- 2
- 6
- 1
- 6
- 2
- 6
- 1
- 6
  4
  6
  5
  6
+ 1
+ 6
  4
  6
- 1
+ 2
+ 6
+ 5
+ 6
+ 5
+ 6
+ 6
  6
 
 
 Creating histogram...
 histogram:
  0:  0
- 1:  3
- 2:  2
+ 1:  1
+ 2:  1
  3:  0
  4:  2
- 5:  1
- 6:  8
+ 5:  3
+ 6:  9
  7:  0
  8:  0
  9:  0
@@ -42,12 +42,12 @@ histogram:
 Preparing for sorting symbols by count...
 sort_cnt:
  0: 31
- 1:  3
- 2:  2
+ 1:  1
+ 2:  1
  3: 31
  4:  2
- 5:  1
- 6:  8
+ 5:  3
+ 6:  9
  7: 31
  8: 31
  9: 31
@@ -61,11 +61,11 @@ sort_cnt:
 
 Sorting symbols by count...
 sort_cnt:
- 5:  1
- 2:  2
+ 1:  1
+ 2:  1
  4:  2
- 1:  3
- 6:  8
+ 5:  3
+ 6:  9
  0: 31
  3: 31
  7: 31
@@ -81,11 +81,11 @@ sort_cnt:
 
 Creating leaves...
 leaves:
- 5:  1
- 2:  2
+ 1:  1
+ 2:  1
  4:  2
- 1:  3
- 6:  8
+ 5:  3
+ 6:  9
  0: 31
  3: 31
  7: 31
@@ -103,8 +103,8 @@ Tracking depth of leaves on quasi-tree...
 iter 0:
 leaves:
  4:  2
- 1:  3
- 6:  8
+ 5:  3
+ 6:  9
  0: 31
  3: 31
  7: 31
@@ -119,7 +119,7 @@ leaves:
 31: 31
 31: 31
 parents:
-16:  3
+16:  2
 31: 31
 31: 31
 31: 31
@@ -138,11 +138,11 @@ parents:
 parents_end: 1
 depth_tracker:
  0:  0
- 1:  0
+16:  1
 16:  1
  3:  0
  4:  0
-16:  1
+ 5:  0
  6:  0
  7:  0
  8:  0
@@ -156,8 +156,8 @@ depth_tracker:
 
 iter 1:
 leaves:
- 1:  3
- 6:  8
+ 5:  3
+ 6:  9
  0: 31
  3: 31
  7: 31
@@ -173,7 +173,7 @@ leaves:
 31: 31
 31: 31
 parents:
-17:  5
+17:  4
 31: 31
 31: 31
 31: 31
@@ -192,11 +192,11 @@ parents:
 parents_end: 1
 depth_tracker:
  0:  0
- 1:  0
+17:  2
 17:  2
  3:  0
 17:  1
-17:  2
+ 5:  0
  6:  0
  7:  0
  8:  0
@@ -210,7 +210,7 @@ depth_tracker:
 
 iter 2:
 leaves:
- 6:  8
+ 6:  9
  0: 31
  3: 31
  7: 31
@@ -227,7 +227,7 @@ leaves:
 31: 31
 31: 31
 parents:
-18:  8
+18:  7
 31: 31
 31: 31
 31: 31
@@ -246,11 +246,11 @@ parents:
 parents_end: 1
 depth_tracker:
  0:  0
-18:  1
+18:  3
 18:  3
  3:  0
 18:  2
-18:  3
+18:  1
  6:  0
  7:  0
  8:  0
@@ -300,11 +300,11 @@ parents:
 parents_end: 1
 depth_tracker:
  0:  0
-19:  2
+19:  4
 19:  4
  3:  0
 19:  3
-19:  4
+19:  2
 19:  1
  7:  0
  8:  0
@@ -318,14 +318,14 @@ depth_tracker:
 
 
 
-Extracting bit-lengths of codes for symbols.
+Extracting bit-lengths of codes for symbols...
 codes_len:
  0:  0
- 1:  2
+ 1:  4
  2:  4
  3:  0
  4:  3
- 5:  4
+ 5:  2
  6:  1
  7:  0
  8:  0
@@ -338,7 +338,7 @@ codes_len:
 15:  0
 
 
-Counting same lengths...
+Counting same bit-lengths...
 lens_cnt:
  0: 11
  1:  1
@@ -347,14 +347,14 @@ lens_cnt:
  4:  2
 
 
-Preparing for sorting symbols by lengths...
+Preparing for sorting symbols by bit-lengths...
 sort_len:
  0:  7
- 1:  2
+ 1:  4
  2:  4
  3:  7
  4:  3
- 5:  4
+ 5:  2
  6:  1
  7:  7
  8:  7
@@ -370,10 +370,10 @@ sort_len:
 Sorting symbols by lengths...
 sort_len:
  6:  1
- 1:  2
+ 5:  2
  4:  3
+ 1:  4
  2:  4
- 5:  4
  0:  7
  3:  7
  7:  7
@@ -390,11 +390,11 @@ sort_len:
 Creating canonical code table...
 codes_len:
  0: 0
- 1: 2
+ 1: 4
  2: 4
  3: 0
  4: 3
- 5: 4
+ 5: 2
  6: 1
  7: 0
  8: 0
@@ -407,11 +407,11 @@ codes_len:
 15: 0
 code_table:
  0: 
- 1: 10
- 2: 1110
+ 1: 1110
+ 2: 1111
  3: 
  4: 110
- 5: 1111
+ 5: 10
  6: 0
  7: 
  8: 
@@ -427,11 +427,11 @@ code_table:
 Mirror codes for little endian encoding.
 code_table:
  0:      
- 1:    01
- 2:  0111
+ 1:  0111
+ 2:  1111
  3:      
  4:   011
- 5:  1111
+ 5:    01
  6:     0
  7:      
  8:      
@@ -451,15 +451,15 @@ stored_len: 36
 Encoding and packing data...
 Encoding:
 iter 0:
-sym:  2
-code:  0111
+sym:  4
+code:   011
 
 iter 1:
 sym:  6
 code:     0
 
 iter 2:
-sym:  1
+sym:  5
 code:    01
 
 iter 3:
@@ -467,7 +467,7 @@ sym:  6
 code:     0
 
 iter 4:
-sym:  2
+sym:  1
 code:  0111
 
 iter 5:
@@ -475,16 +475,16 @@ sym:  6
 code:     0
 
 iter 6:
-sym:  1
-code:    01
+sym:  4
+code:   011
 
 iter 7:
 sym:  6
 code:     0
 
 iter 8:
-sym:  4
-code:   011
+sym:  2
+code:  1111
 
 iter 9:
 sym:  6
@@ -492,29 +492,29 @@ code:     0
 
 iter 10:
 sym:  5
-code:  1111
+code:    01
 
 iter 11:
 sym:  6
 code:     0
 
 iter 12:
-sym:  4
-code:   011
+sym:  5
+code:    01
 
 iter 13:
 sym:  6
 code:     0
 
 iter 14:
-sym:  1
-code:    01
+sym:  6
+code:     0
 
 iter 15:
 sym:  6
 code:     0
 
-stored_len: 68
+stored_len: 65
 
 
 Unpacking bit-lengths count...
@@ -529,11 +529,11 @@ lens_cnt:
 Unpacking symbols and creating canonical code table...
 codes_len:
  0: 0
- 1: 2
+ 1: 4
  2: 4
  3: 0
  4: 3
- 5: 4
+ 5: 2
  6: 1
  7: 0
  8: 0
@@ -546,11 +546,11 @@ codes_len:
 15: 0
 code_table:
  0: 
- 1: 10
- 2: 1110
+ 1: 1110
+ 2: 1111
  3: 
  4: 110
- 5: 1111
+ 5: 10
  6: 0
  7: 
  8: 
@@ -566,11 +566,11 @@ code_table:
 Mirroring codes for little endian decoding...
 code_table:
  0:      
- 1:    01
- 2:  0111
+ 1:  0111
+ 2:  1111
  3:      
  4:   011
- 5:  1111
+ 5:    01
  6:     0
  7:      
  8:      
@@ -585,9 +585,9 @@ code_table:
 
 Decoding data...
 iter 0:
-best_len:  4
-best_code:  0000
-best_sym:  2
+best_len:  3
+best_code:   000
+best_sym:  4
 
 iter 1:
 best_len:  1
@@ -597,7 +597,7 @@ best_sym:  6
 iter 2:
 best_len:  2
 best_code:    00
-best_sym:  1
+best_sym:  5
 
 iter 3:
 best_len:  1
@@ -607,7 +607,7 @@ best_sym:  6
 iter 4:
 best_len:  4
 best_code:  0000
-best_sym:  2
+best_sym:  1
 
 iter 5:
 best_len:  1
@@ -615,9 +615,9 @@ best_code:     0
 best_sym:  6
 
 iter 6:
-best_len:  2
-best_code:    00
-best_sym:  1
+best_len:  3
+best_code:   000
+best_sym:  4
 
 iter 7:
 best_len:  1
@@ -625,9 +625,9 @@ best_code:     0
 best_sym:  6
 
 iter 8:
-best_len:  3
-best_code:   000
-best_sym:  4
+best_len:  4
+best_code:  0000
+best_sym:  2
 
 iter 9:
 best_len:  1
@@ -635,8 +635,8 @@ best_code:     0
 best_sym:  6
 
 iter 10:
-best_len:  4
-best_code:  0000
+best_len:  2
+best_code:    00
 best_sym:  5
 
 iter 11:
@@ -645,9 +645,9 @@ best_code:     0
 best_sym:  6
 
 iter 12:
-best_len:  3
-best_code:   000
-best_sym:  4
+best_len:  2
+best_code:    00
+best_sym:  5
 
 iter 13:
 best_len:  1
@@ -655,9 +655,9 @@ best_code:     0
 best_sym:  6
 
 iter 14:
-best_len:  2
-best_code:    00
-best_sym:  1
+best_len:  1
+best_code:     0
+best_sym:  6
 
 iter 15:
 best_len:  1
@@ -665,21 +665,21 @@ best_code:     0
 best_sym:  6
 
 out_data:
- 2
- 6
- 1
- 6
- 2
- 6
- 1
- 6
  4
  6
  5
  6
+ 1
+ 6
  4
  6
- 1
+ 2
+ 6
+ 5
+ 6
+ 5
+ 6
+ 6
  6
 
 
