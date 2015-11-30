@@ -48,16 +48,17 @@ string bits_to_string(uint64_t bits, unsigned start, unsigned end = 0) {
 }
 
 typedef uint16_t sym_t; // 4-bits.
-// Maximum depth of leaf in Huffman tree is 5.
 // Because we decode max 16 symbols in block,
 // then count could be max 16.
 typedef uint16_t cnt_t; // 5-bits.
+// Max depth of leaf in Huffman tree is 5.
+// This is also max bit-length of code.
 typedef uint16_t dep_t; // 3-bit.
-// Couldn't have more than 16 depth of same count.
+typedef uint16_t len_t; // 3-bit.
+// Couldn't have more than 16 bit-lengths of same count.
 // Practically even less. 
 // TODO Calculate how much.
-typedef uint16_t dep_cnt_t; // 4-bit.
-// Because max depths is 5, max bits in symbols is also 5.
+typedef uint16_t len_cnt_t; // 4-bit.
 typedef int16_t code_t; // 5-bits.
 
 void huffman_encode(
@@ -70,6 +71,7 @@ void huffman_encode(
 	bool last_block;
 
 	for(int block = 0; block < in_text.size()/8; block++){
+
 
 		cout << "Setting up data for decoding..." << endl;
 	
@@ -106,8 +108,7 @@ void huffman_encode(
 
 
 
-		// Histogram.
-		cout << "Histogram." << endl;
+		cout << "Creating histogram..." << endl;
 	
 		vector<cnt_t> histogram(16);
 	
@@ -123,8 +124,7 @@ void huffman_encode(
 	
 
 	
-		// Prepare for sorting.
-		cout << "Prepare for sorting." << endl;
+		cout << "Preparing for sorting symbols by count..." << endl;
 
 		class sym_and_cnt {
 		public:
@@ -154,9 +154,7 @@ void huffman_encode(
 
 
 	
-		// Sorting.
-		cout << "Sorting." << endl;
-
+		cout << "Sorting symbols by count..." << endl;
 
 		sort(
 			sort_cnt.begin(),
@@ -174,8 +172,9 @@ void huffman_encode(
 		cout << endl << endl;
 	
 
-		// Create leaves.
-		cout << "Create leaves." << endl;
+
+
+		cout << "Creating leaves..." << endl;
 	
 		// System have max 16 leaves and max 15 parent nodes,
 		// so node 31 will never exists and it is null-object.
@@ -218,8 +217,7 @@ void huffman_encode(
 
 
 
-		// Quasi-tree.
-		cout << "Quasi-tree." << endl;
+		cout << "Tracking depth of leaves on quasi-tree..." << endl;
 
 		deque<node_and_cnt> parents(16);
 		int parents_end = 0;
@@ -344,123 +342,117 @@ void huffman_encode(
 	
 	
 	
-		// Extract depth of symbols.
-		cout << "Extract depth of symbols." << endl;
+
+		cout << "Extracting bit-lengths of codes for symbols." << endl;
 	
-		vector<dep_t> symbols_depth(16);
+		vector<len_t> codes_len(16);
 		for(int sym = 0; sym < 16; sym++){
-			symbols_depth[sym] = depth_tracker[sym].dep;
-			assert(symbols_depth[sym] <= 5);
+			codes_len[sym] = depth_tracker[sym].dep;
+			assert(codes_len[sym] <= 5);
 		}
 	
-		cout << "symbols_depth:" << endl;
+		cout << "codes_len:" << endl;
 		for(int sym = 0; sym < 16; sym++){
 			cout << setw(2) << sym << ": " 
-				<< setw(2) << symbols_depth[sym] << endl;
+				<< setw(2) << codes_len[sym] << endl;
 		}
 		cout << endl << endl;
 
 
 	
-		// Count same depths.
-		cout << "Count same depths" << endl;
+		cout << "Counting same lengths..." << endl;
 
-		vector<dep_cnt_t> depths_count(5, 0); // Init to zeros.
+		vector<len_cnt_t> lens_cnt(5, 0); // Init to zeros.
 
 		for(int sym = 0; sym < 16; sym++){
-			depths_count[symbols_depth[sym]]++;
+			lens_cnt[codes_len[sym]]++;
 		}
 	
-		cout << "depths_count:" << endl;
-		for(int dep = 0; dep < 5; dep++){
-			cout << setw(2) << dep << ": " 
-				<< setw(2) << depths_count[dep] << endl;
+		cout << "lens_cnt:" << endl;
+		for(int len = 0; len < 5; len++){
+			cout << setw(2) << len << ": " 
+				<< setw(2) << lens_cnt[len] << endl;
 		}
 		cout << endl << endl;
 
 
 
-		// Prepare for sorting symbols by depths.
-		cout << "Prepare for sorting symbols by depths." << endl;
+
+		cout << "Preparing for sorting symbols by lengths..." << endl;
 	
-		class sym_and_dep{
+		class sym_and_len{
 		public:
 			sym_t sym;
-			dep_t dep;
+			len_t len;
 		};
 
-		vector<sym_and_dep> sort_dep(16);
+		vector<sym_and_len> sort_len(16);
 		for(int sym = 0; sym < 16; sym++){
-			sort_dep[sym].sym = sym;
-			// If depth is 0 put it to invalid value 7,
+			sort_len[sym].sym = sym;
+			// If length is 0 put it to invalid value 7,
 			// which is also greater than 5,
 			// to be sorted at the end of array.
 			if(histogram[sym] == 0){
-				sort_dep[sym].dep = 7;
+				sort_len[sym].len = 7;
 			}else{
-				sort_dep[sym].dep = symbols_depth[sym];
+				sort_len[sym].len = codes_len[sym];
 			}
 		}
 
-		cout << "sort_dep:" << endl;
+		cout << "sort_len:" << endl;
 		for(int i = 0; i < 16; i++){
-			cout << setw(2) << sort_dep[i].sym << ": " 
-				<< setw(2) << sort_dep[i].dep << endl;
+			cout << setw(2) << sort_len[i].sym << ": " 
+				<< setw(2) << sort_len[i].len << endl;
 		}
 		cout << endl << endl;
 
 
 
-
-		// Sorting symbols by depths.
-		cout << "Sorting symbols by depths." << endl;
+		cout << "Sorting symbols by lengths..." << endl;
 
 		sort(
-			sort_dep.begin(),
-			sort_dep.end(),
-			[](const sym_and_dep& x, const sym_and_dep& y){
-				return x.dep < y.dep;
+			sort_len.begin(),
+			sort_len.end(),
+			[](const sym_and_len& x, const sym_and_len& y){
+				return x.len < y.len;
 			}
 		);
 	
-		cout << "sort_dep:" << endl;
+		cout << "sort_len:" << endl;
 		for(int i = 0; i < 16; i++){
-			cout << setw(2) << sort_dep[i].sym << ": " 
-				<< setw(2) << sort_dep[i].dep << endl;
+			cout << setw(2) << sort_len[i].sym << ": " 
+				<< setw(2) << sort_len[i].len << endl;
 		}
 		cout << endl << endl;
 
 
 
 
-		// Creating canonical code table.
-		cout << "Creating canonical code table." << endl;
+		cout << "Creating canonical code table..." << endl;
 	
-		vector<dep_t> code_lens = symbols_depth;
 		vector<code_t> code_table(16);
 		code_t code = 0;
 		for(int i = 0; i < 16; i++){
-			sym_t sym = sort_dep[i].sym;
-			dep_t dep = sort_dep[i].dep;
-			// Assign current code for symbol's depth.
+			sym_t sym = sort_len[i].sym;
+			len_t len = sort_len[i].len;
+			// Assign current code for symbol's length.
 			code_table[sym] = code;
 			// Increment to next code.
-			code += 1 << (5 - dep);
+			code += 1 << (5 - len);
 		}
 	
-		cout << "code_lens:" << endl;
+		cout << "codes_len:" << endl;
 		for(int sym = 0; sym < 16; sym++){
 			cout << setw(2) << sym << ": " 
-				<< setw(1) << code_lens[sym] << endl;
+				<< setw(1) << codes_len[sym] << endl;
 		}
 		cout << "code_table:" << endl;
 		for(int sym = 0; sym < 16; sym++){
 			cout << setw(2) << sym << ": " 
-				<< bits_to_string(code_table[sym], 5, 5-code_lens[sym]) 
+				<< bits_to_string(code_table[sym], 5, 5-codes_len[sym]) 
 				<< endl;
 		}
 		cout << endl << endl;
-
 
 
 
@@ -479,17 +471,55 @@ void huffman_encode(
 
 		cout << "code_table:" << endl;
 		for(int sym = 0; sym < 16; sym++){
-			cout << setw(2) << sym << ": " 
-				<< setw(5) << bits_to_string(code_table[sym], code_lens[sym], 0) 
+			cout << setw(2) << sym << ": " << setw(5) 
+				<< bits_to_string(code_table[sym], codes_len[sym], 0) 
 				<< endl;
 		}
 		cout << endl << endl;
 
 
 
+		cout << "Storing canonical table..." << endl;
 
-		// Encode data.
-		cout << "Encode data." << endl;
+		uint32_t store_len = 0;
+
+		// Store 4 bit-lengths count.
+		for(int len = 1; len < 5; len++){
+			uint8_t b = lens_cnt[len];
+			acc |= b << acc_len;
+			acc_len += 4; // len_cnt_t is 4-bit.
+			if(acc_len >= 8){
+				enc_data.push_back(acc);
+				acc_len -= 8;
+				acc = b >> 4 - acc_len;
+			}
+			store_len += 4;
+		}
+		cout << "acc_len: " << acc_len << endl;
+
+		// Store symbols.
+		for(int i = 0; i < 16; i++){
+			len_t len = sort_len[i].len;
+			// Don't save symbols with invalid length ie. symbols with count 0.
+			if(len != 7){
+				uint8_t b = sort_len[i].sym;
+				acc |= b << acc_len;
+				acc_len += 4; // sym_t is 4-bit.
+				if(acc_len >= 8){
+					enc_data.push_back(acc);
+					acc_len -= 8;
+					acc = b >> 4 - acc_len;
+				}
+				store_len += 4;
+			}
+		}
+
+		cout << "stored_len: " << store_len << endl;
+		cout << endl << endl;
+
+
+
+		cout << "Encoding data..." << endl;
 	
 		// In worst case, if all data symbols are different, 
 		// all symbols will be coded with 4-bit codes,
@@ -504,7 +534,7 @@ void huffman_encode(
 		for(int d = 0; d < 16; d++){
 			sym_t sym = in_data[d];
 			code_t code = code_table[sym];
-			dep_t code_len = code_lens[sym];
+			len_t code_len = codes_len[sym];
 
 			// Strap 1s above code length.
 			code &= (1 << code_len) - 1;
@@ -532,50 +562,9 @@ void huffman_encode(
 
 
 
-		// Store canonical table.
-		cout << "Store canonical table." << endl;
-
-		uint32_t store_len = 0;
-
-		// Store 4 depths count.
-		for(int dep = 1; dep < 5; dep++){
-			uint8_t b = depths_count[dep];
-			acc |= b << acc_len;
-			acc_len += 4; // dep_cnt_t is 4-bit.
-			if(acc_len >= 8){
-				enc_data.push_back(acc);
-				acc_len -= 8;
-				acc = b >> 4 - acc_len;
-			}
-			store_len += 4;
-		}
-		cout << "acc_len: " << acc_len << endl;
-
-		// Store symbols.
-		for(int i = 0; i < 16; i++){
-			dep_t dep = sort_dep[i].dep;
-			// Don't save symbols with invalid depth ie. symbols with count 0.
-			if(dep != 7){
-				uint8_t b = sort_dep[i].sym;
-				acc |= b << acc_len;
-				acc_len += 4; // sym_t is 4-bit.
-				if(acc_len >= 8){
-					enc_data.push_back(acc);
-					acc_len -= 8;
-					acc = b >> 4 - acc_len;
-				}
-				store_len += 4;
-			}
-		}
-
-		cout << "stored_len: " << store_len << endl;
-		cout << endl << endl;
 
 
-
-
-		// Store encoded data.
-		cout << "Store encoded data." << endl;
+		cout << "Storing encoded data..." << endl;
 
 		while(enc_len > 0){
 			uint8_t b = enc_block;
@@ -636,16 +625,16 @@ void huffman_decode(
 
 		cout << "Unpacking bit-lengths count..." << endl;
 
-		vector<dep_cnt_t> depths_count(5);
+		vector<len_cnt_t> lens_cnt(5);
 
-		for(int dep = 1; dep < 5; dep++){
-			depths_count[dep] = unpack(4); // dep_cnt_t is 4-bit.
+		for(int len = 1; len < 5; len++){
+			lens_cnt[len] = unpack(4); // len_cnt_t is 4-bit.
 		}
 
-		cout << "depths_count:" << endl;
-		for(int dep = 0; dep < 5; dep++){
-			cout << setw(2) << dep << ": " 
-				<< setw(2) << depths_count[dep] << endl;
+		cout << "lens_cnt:" << endl;
+		for(int len = 0; len < 5; len++){
+			cout << setw(2) << len << ": " 
+				<< setw(2) << lens_cnt[len] << endl;
 		}
 		cout << endl << endl;
 
@@ -655,29 +644,29 @@ void huffman_decode(
 		cout << "Unpacking symbols and creating canonical code table..."
 			<< endl;
 		
-		vector<dep_t> code_lens(16, 0);
+		vector<len_t> codes_len(16, 0);
 		vector<code_t> code_table(16);
 
 		code_t code = 0;
-		for(dep_t dep = 1; dep < 5; dep++){
-			for(int cnt = depths_count[dep]; cnt > 0; cnt--){
+		for(len_t len = 1; len < 5; len++){
+			for(int cnt = lens_cnt[len]; cnt > 0; cnt--){
 				sym_t sym = unpack(4); // sym_t is 4-bit.
 				code_table[sym] = code;
-				code_lens[sym] = dep;
+				codes_len[sym] = len;
 				// Increment to next code.
-				code += 1 << (5 - dep);
+				code += 1 << (5 - len);
 			}
 		}
 	
-		cout << "code_lens:" << endl;
+		cout << "codes_len:" << endl;
 		for(int sym = 0; sym < 16; sym++){
 			cout << setw(2) << sym << ": " 
-				<< setw(1) << code_lens[sym] << endl;
+				<< setw(1) << codes_len[sym] << endl;
 		}
 		cout << "code_table:" << endl;
 		for(int sym = 0; sym < 16; sym++){
 			cout << setw(2) << sym << ": " 
-				<< bits_to_string(code_table[sym], 5, 5-code_lens[sym]) 
+				<< bits_to_string(code_table[sym], 5, 5-codes_len[sym]) 
 				<< endl;
 		}
 		cout << endl << endl;
@@ -699,7 +688,7 @@ void huffman_decode(
 		cout << "code_table:" << endl;
 		for(int sym = 0; sym < 16; sym++){
 			cout << setw(2) << sym << ": " << setw(5) 
-				<< bits_to_string(code_table[sym], code_lens[sym], 0) 
+				<< bits_to_string(code_table[sym], codes_len[sym], 0) 
 				<< endl;
 		}
 		cout << endl << endl;
@@ -717,11 +706,11 @@ void huffman_decode(
 				acc_len += 8;
 			}
 
-			dep_t best_len = 7;
+			len_t best_len = 7;
 			code_t best_code;
 			sym_t best_sym;
 			for(int sym = 0; sym < 16; sym++){
-				dep_t code_len = code_lens[sym];
+				len_t code_len = codes_len[sym];
 				if(code_len != 0 && code_len < best_len){
 					code_t mask = (1 << code_len) - 1;
 					code_t enc_code = acc & mask;

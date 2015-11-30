@@ -1,7 +1,6 @@
-Setting text for decoding.
-TEXT: babadeda
+Setting up data for decoding...
+block: 0
 in_data:
- 6
  2
  6
  1
@@ -17,9 +16,10 @@ in_data:
  4
  6
  1
+ 6
 
 
-Histogram.
+Creating histogram...
 histogram:
  0:  0
  1:  3
@@ -39,63 +39,83 @@ histogram:
 15:  0
 
 
-Sorting.
+Preparing for sorting symbols by count...
 sort_cnt:
- 0:  0
- 3:  0
- 7:  0
- 8:  0
- 9:  0
-10:  0
-11:  0
-12:  0
-13:  0
-14:  0
-15:  0
+ 0: 31
+ 1:  3
+ 2:  2
+ 3: 31
+ 4:  2
+ 5:  1
+ 6:  8
+ 7: 31
+ 8: 31
+ 9: 31
+10: 31
+11: 31
+12: 31
+13: 31
+14: 31
+15: 31
+
+
+Sorting symbols by count...
+sort_cnt:
  5:  1
  2:  2
  4:  2
  1:  3
  6:  8
+ 0: 31
+ 3: 31
+ 7: 31
+ 8: 31
+ 9: 31
+10: 31
+11: 31
+12: 31
+13: 31
+14: 31
+15: 31
 
 
-Remove empty leaves.
+Creating leaves...
 leaves:
  5:  1
  2:  2
  4:  2
  1:  3
  6:  8
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
+ 0: 31
+ 3: 31
+ 7: 31
+ 8: 31
+ 9: 31
+10: 31
+11: 31
+12: 31
+13: 31
+14: 31
+15: 31
 
 
-Quasi-tree.
+Tracking depth of leaves on quasi-tree...
 iter 0:
 leaves:
  4:  2
  1:  3
  6:  8
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
+ 0: 31
+ 3: 31
+ 7: 31
+ 8: 31
+ 9: 31
+10: 31
+11: 31
+12: 31
+13: 31
+14: 31
+15: 31
 31: 31
 31: 31
 parents:
@@ -138,17 +158,17 @@ iter 1:
 leaves:
  1:  3
  6:  8
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
+ 0: 31
+ 3: 31
+ 7: 31
+ 8: 31
+ 9: 31
+10: 31
+11: 31
+12: 31
+13: 31
+14: 31
+15: 31
 31: 31
 31: 31
 31: 31
@@ -191,17 +211,17 @@ depth_tracker:
 iter 2:
 leaves:
  6:  8
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
+ 0: 31
+ 3: 31
+ 7: 31
+ 8: 31
+ 9: 31
+10: 31
+11: 31
+12: 31
+13: 31
+14: 31
+15: 31
 31: 31
 31: 31
 31: 31
@@ -244,17 +264,17 @@ depth_tracker:
 
 iter 3:
 leaves:
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
-31: 31
+ 0: 31
+ 3: 31
+ 7: 31
+ 8: 31
+ 9: 31
+10: 31
+11: 31
+12: 31
+13: 31
+14: 31
+15: 31
 31: 31
 31: 31
 31: 31
@@ -298,7 +318,8 @@ depth_tracker:
 
 
 
-symbols_depth:
+Extracting bit-lengths of codes for symbols.
+codes_len:
  0:  0
  1:  2
  2:  4
@@ -317,8 +338,8 @@ symbols_depth:
 15:  0
 
 
-Count same depths
-depths_count:
+Counting same lengths...
+lens_cnt:
  0: 11
  1:  1
  2:  1
@@ -326,17 +347,48 @@ depths_count:
  4:  2
 
 
-Calculate start codes for depths.
-start_codes:
- 0: 
- 1: 0
- 2: 10
- 3: 110
- 4: 1110
+Preparing for sorting symbols by lengths...
+sort_len:
+ 0:  7
+ 1:  2
+ 2:  4
+ 3:  7
+ 4:  3
+ 5:  4
+ 6:  1
+ 7:  7
+ 8:  7
+ 9:  7
+10:  7
+11:  7
+12:  7
+13:  7
+14:  7
+15:  7
 
 
-Creating canonical code table.
-code_lens:
+Sorting symbols by lengths...
+sort_len:
+ 6:  1
+ 1:  2
+ 4:  3
+ 2:  4
+ 5:  4
+ 0:  7
+ 3:  7
+ 7:  7
+ 8:  7
+ 9:  7
+10:  7
+11:  7
+12:  7
+13:  7
+14:  7
+15:  7
+
+
+Creating canonical code table...
+codes_len:
  0: 0
  1: 2
  2: 4
@@ -392,239 +444,265 @@ code_table:
 15:      
 
 
-Encode data.
+Storing canonical table...
+acc_len: 0
+stored_len: 36
+
+
+Encoding data...
 Encoding:
 iter 0:
-sym:  6
-code:     0
-enc_data:                                                                0
-enc_len: 1
-
-iter 1:
 sym:  2
 code:  0111
-enc_data:                                                            01110
+enc_block:                                                             0111
+enc_len: 4
+
+iter 1:
+sym:  6
+code:     0
+enc_block:                                                            00111
 enc_len: 5
 
 iter 2:
-sym:  6
-code:     0
-enc_data:                                                           001110
-enc_len: 6
-
-iter 3:
 sym:  1
 code:    01
-enc_data:                                                         01001110
+enc_block:                                                          0100111
+enc_len: 7
+
+iter 3:
+sym:  6
+code:     0
+enc_block:                                                         00100111
 enc_len: 8
 
 iter 4:
-sym:  6
-code:     0
-enc_data:                                                        001001110
-enc_len: 9
-
-iter 5:
 sym:  2
 code:  0111
-enc_data:                                                    0111001001110
+enc_block:                                                     011100100111
+enc_len: 12
+
+iter 5:
+sym:  6
+code:     0
+enc_block:                                                    0011100100111
 enc_len: 13
 
 iter 6:
-sym:  6
-code:     0
-enc_data:                                                   00111001001110
-enc_len: 14
-
-iter 7:
 sym:  1
 code:    01
-enc_data:                                                 0100111001001110
+enc_block:                                                  010011100100111
+enc_len: 15
+
+iter 7:
+sym:  6
+code:     0
+enc_block:                                                 0010011100100111
 enc_len: 16
 
 iter 8:
-sym:  6
-code:     0
-enc_data:                                                00100111001001110
-enc_len: 17
-
-iter 9:
 sym:  4
 code:   011
-enc_data:                                             01100100111001001110
+enc_block:                                              0110010011100100111
+enc_len: 19
+
+iter 9:
+sym:  6
+code:     0
+enc_block:                                             00110010011100100111
 enc_len: 20
 
 iter 10:
-sym:  6
-code:     0
-enc_data:                                            001100100111001001110
-enc_len: 21
-
-iter 11:
 sym:  5
 code:  1111
-enc_data:                                        1111001100100111001001110
+enc_block:                                         111100110010011100100111
+enc_len: 24
+
+iter 11:
+sym:  6
+code:     0
+enc_block:                                        0111100110010011100100111
 enc_len: 25
 
 iter 12:
-sym:  6
-code:     0
-enc_data:                                       01111001100100111001001110
-enc_len: 26
-
-iter 13:
 sym:  4
 code:   011
-enc_data:                                    01101111001100100111001001110
+enc_block:                                     0110111100110010011100100111
+enc_len: 28
+
+iter 13:
+sym:  6
+code:     0
+enc_block:                                    00110111100110010011100100111
 enc_len: 29
 
 iter 14:
-sym:  6
-code:     0
-enc_data:                                   001101111001100100111001001110
-enc_len: 30
-
-iter 15:
 sym:  1
 code:    01
-enc_data:                                 01001101111001100100111001001110
-enc_len: 32
-
-enc_data:                                 01001101111001100100111001001110
-enc_len: 32
-
-
-Decode data.
-bitset<64>(enc_data) = 0000000000000000000000000000000001001101111001100100111001001110
-iter 0:
-best_len:  1
-best_code:     0
-best_sym:  6
-enc_data:                                  0100110111100110010011100100111
+enc_block:                                  0100110111100110010011100100111
 enc_len: 31
 
-bitset<64>(enc_data) = 0000000000000000000000000000000000100110111100110010011100100111
+iter 15:
+sym:  6
+code:     0
+enc_block:                                 00100110111100110010011100100111
+enc_len: 32
+
+enc_block:                                 00100110111100110010011100100111
+enc_len: 32
+
+
+Storing encoded data...
+stored_len: 64
+
+
+Unpacking bit-lengths count...
+lens_cnt:
+ 0:  0
+ 1:  1
+ 2:  1
+ 3:  1
+ 4:  2
+
+
+Unpacking symbols and creating canonical code table...
+codes_len:
+ 0: 0
+ 1: 2
+ 2: 4
+ 3: 0
+ 4: 3
+ 5: 4
+ 6: 1
+ 7: 0
+ 8: 0
+ 9: 0
+10: 0
+11: 0
+12: 0
+13: 0
+14: 0
+15: 0
+code_table:
+ 0: 
+ 1: 10
+ 2: 1110
+ 3: 
+ 4: 110
+ 5: 1111
+ 6: 0
+ 7: 
+ 8: 
+ 9: 
+10: 
+11: 
+12: 
+13: 
+14: 
+15: 
+
+
+Mirroring codes for little endian decoding...
+code_table:
+ 0:      
+ 1:    01
+ 2:  0111
+ 3:      
+ 4:   011
+ 5:  1111
+ 6:     0
+ 7:      
+ 8:      
+ 9:      
+10:      
+11:      
+12:      
+13:      
+14:      
+15:      
+
+
+Decoding data...
+iter 0:
+best_len:  4
+best_code:  0000
+best_sym:  2
+
 iter 1:
-best_len:  4
-best_code:  0000
-best_sym:  2
-enc_data:                                      010011011110011001001110010
-enc_len: 27
+best_len:  1
+best_code:     0
+best_sym:  6
 
-bitset<64>(enc_data) = 0000000000000000000000000000000000000010011011110011001001110010
 iter 2:
-best_len:  1
-best_code:     0
-best_sym:  6
-enc_data:                                       01001101111001100100111001
-enc_len: 26
-
-bitset<64>(enc_data) = 0000000000000000000000000000000000000001001101111001100100111001
-iter 3:
 best_len:  2
 best_code:    00
 best_sym:  1
-enc_data:                                         010011011110011001001110
-enc_len: 24
 
-bitset<64>(enc_data) = 0000000000000000000000000000000000000000010011011110011001001110
-iter 4:
+iter 3:
 best_len:  1
 best_code:     0
 best_sym:  6
-enc_data:                                          01001101111001100100111
-enc_len: 23
 
-bitset<64>(enc_data) = 0000000000000000000000000000000000000000001001101111001100100111
-iter 5:
+iter 4:
 best_len:  4
 best_code:  0000
 best_sym:  2
-enc_data:                                              0100110111100110010
-enc_len: 19
 
-bitset<64>(enc_data) = 0000000000000000000000000000000000000000000000100110111100110010
-iter 6:
+iter 5:
 best_len:  1
 best_code:     0
 best_sym:  6
-enc_data:                                               010011011110011001
-enc_len: 18
 
-bitset<64>(enc_data) = 0000000000000000000000000000000000000000000000010011011110011001
-iter 7:
+iter 6:
 best_len:  2
 best_code:    00
 best_sym:  1
-enc_data:                                                 0100110111100110
-enc_len: 16
 
-bitset<64>(enc_data) = 0000000000000000000000000000000000000000000000000100110111100110
-iter 8:
+iter 7:
 best_len:  1
 best_code:     0
 best_sym:  6
-enc_data:                                                  010011011110011
-enc_len: 15
 
-bitset<64>(enc_data) = 0000000000000000000000000000000000000000000000000010011011110011
-iter 9:
+iter 8:
 best_len:  3
 best_code:   000
 best_sym:  4
-enc_data:                                                     010011011110
-enc_len: 12
 
-bitset<64>(enc_data) = 0000000000000000000000000000000000000000000000000000010011011110
-iter 10:
+iter 9:
 best_len:  1
 best_code:     0
 best_sym:  6
-enc_data:                                                      01001101111
-enc_len: 11
 
-bitset<64>(enc_data) = 0000000000000000000000000000000000000000000000000000001001101111
-iter 11:
+iter 10:
 best_len:  4
 best_code:  0000
 best_sym:  5
-enc_data:                                                          0100110
-enc_len: 7
 
-bitset<64>(enc_data) = 0000000000000000000000000000000000000000000000000000000000100110
-iter 12:
+iter 11:
 best_len:  1
 best_code:     0
 best_sym:  6
-enc_data:                                                           010011
-enc_len: 6
 
-bitset<64>(enc_data) = 0000000000000000000000000000000000000000000000000000000000010011
-iter 13:
+iter 12:
 best_len:  3
 best_code:   000
 best_sym:  4
-enc_data:                                                              010
-enc_len: 3
 
-bitset<64>(enc_data) = 0000000000000000000000000000000000000000000000000000000000000010
-iter 14:
+iter 13:
 best_len:  1
 best_code:     0
 best_sym:  6
-enc_data:                                                               01
-enc_len: 2
 
-bitset<64>(enc_data) = 0000000000000000000000000000000000000000000000000000000000000001
-iter 15:
+iter 14:
 best_len:  2
 best_code:    00
 best_sym:  1
-enc_data:                                                                 
-enc_len: 0
+
+iter 15:
+best_len:  1
+best_code:     0
+best_sym:  6
 
 out_data:
- 6
  2
  6
  1
@@ -640,9 +718,14 @@ out_data:
  4
  6
  1
+ 6
+
+
+Converting data to text...
 
 
 Comparing input and output.
+Match!
 
 
 End.
