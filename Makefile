@@ -3,6 +3,7 @@
 
 clean:
 	-rm -rf work/*
+	-rm -rf iseconfig/
 	-mv docs/tex/*.pdf docs/
 	-$(foreach f, *.aux *.log *.out *.synctex.gz, rm -f docs/tex/${f};)
 
