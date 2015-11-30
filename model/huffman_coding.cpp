@@ -21,6 +21,8 @@ using namespace std;
 //////////////////////////////////////////////////////////////////////////////
 
 #define TEXT "babadeda"
+//#define TEXT "aaaaaaaa"
+//#define TEXT "ffffffff"
 //#define TEXT "deadbeef"
 //#define TEXT "babadedadeadbeef"
 
@@ -59,9 +61,7 @@ typedef uint16_t cnt_t; // 5-bits.
 typedef uint16_t dep_t; // 3-bit.
 typedef uint16_t len_t; // 3-bit.
 // Couldn't have more than 16 bit-lengths of same count.
-// Practically even less. 
-// TODO Calculate how much.
-typedef uint16_t len_cnt_t; // 4-bit. FIXME Maybe 5-bit.
+typedef uint16_t len_cnt_t; // 5-bit.
 typedef int16_t code_t; // 5-bits.
 
 
@@ -304,10 +304,8 @@ void huffman_encode(
 			if(parents_end < 0){
 				parents_end = 0;
 			}
-		
-			// There is always two childs.
-			assert(!child0.is_null() && !child1.is_null());
-		
+
+			
 			// Create parent.
 			node_and_cnt new_parent(new_parents_node, child0.cnt + child1.cnt);
 			// Ready for new parent.
@@ -345,7 +343,7 @@ void huffman_encode(
 					<< setw(2) << depth_tracker[i].dep << endl;
 			}
 			cout << endl;
-		
+	
 		}
 	
 		// No leafs and only one root parent node.
@@ -499,9 +497,9 @@ void huffman_encode(
 
 		// Store 4 bit-lengths count.
 		for(int len = 1; len < 5; len++){
-			pack(lens_cnt[len], 4); // len_cnt_t is 4-bit.
+			pack(lens_cnt[len], 5); // len_cnt_t is 5-bit.
 
-			store_len += 4;
+			store_len += 5;
 		}
 
 		// Store symbols.
@@ -587,7 +585,7 @@ void huffman_decode(
 		vector<len_cnt_t> lens_cnt(5);
 
 		for(int len = 1; len < 5; len++){
-			lens_cnt[len] = unpack(4); // len_cnt_t is 4-bit.
+			lens_cnt[len] = unpack(5); // len_cnt_t is 5-bit.
 		}
 
 		cout << "lens_cnt:" << endl;
@@ -728,13 +726,22 @@ int main() {
 	);
 
 
-
 	
 	cout << "compression ratio: " 
 		<< enc_data.size()/float(in_text.size()) << endl << endl;
 
+	
+	
+	cout << "enc_data:" << endl;
+	cout << hex << setfill('0');
+	for(auto iter = enc_data.begin(); iter != enc_data.end(); iter++){
+		cout << "0x" << setw(2) << uint16_t(*iter) << endl;
+	}
+	cout << dec << setfill(' ') << endl << endl;
 
 
+	
+	
 	string out_text;
 
 	huffman_decode(
