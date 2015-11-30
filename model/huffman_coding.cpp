@@ -94,6 +94,8 @@ void huffman_encode(
 
 		// 8 chars, 8 bytes, 16 nibbles, 16 symbols.
 	
+		cout << "in_text:" << endl;
+	
 		// Doing max 16 symbols per block.
 		vector<sym_t> in_data(16);
 		for(int d = 0; d < 16; d++){
@@ -107,6 +109,8 @@ void huffman_encode(
 			}
 
 			if(d%2 == 0){
+				cout << hex << setfill('0') << "0x" << setw(2) << uint16_t(c) 
+					<< dec << setfill(' ') << endl;
 				in_data[d] = c & 0x0f;
 			}else{
 				in_data[d] = c >> 4;
