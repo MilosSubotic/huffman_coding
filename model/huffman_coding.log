@@ -444,115 +444,77 @@ code_table:
 15:      
 
 
-Storing canonical table...
-acc_len: 0
+Packing canonical table...
 stored_len: 36
 
 
-Encoding data...
+Encoding and packing data...
 Encoding:
 iter 0:
 sym:  2
 code:  0111
-enc_block:                                                             0111
-enc_len: 4
 
 iter 1:
 sym:  6
 code:     0
-enc_block:                                                            00111
-enc_len: 5
 
 iter 2:
 sym:  1
 code:    01
-enc_block:                                                          0100111
-enc_len: 7
 
 iter 3:
 sym:  6
 code:     0
-enc_block:                                                         00100111
-enc_len: 8
 
 iter 4:
 sym:  2
 code:  0111
-enc_block:                                                     011100100111
-enc_len: 12
 
 iter 5:
 sym:  6
 code:     0
-enc_block:                                                    0011100100111
-enc_len: 13
 
 iter 6:
 sym:  1
 code:    01
-enc_block:                                                  010011100100111
-enc_len: 15
 
 iter 7:
 sym:  6
 code:     0
-enc_block:                                                 0010011100100111
-enc_len: 16
 
 iter 8:
 sym:  4
 code:   011
-enc_block:                                              0110010011100100111
-enc_len: 19
 
 iter 9:
 sym:  6
 code:     0
-enc_block:                                             00110010011100100111
-enc_len: 20
 
 iter 10:
 sym:  5
 code:  1111
-enc_block:                                         111100110010011100100111
-enc_len: 24
 
 iter 11:
 sym:  6
 code:     0
-enc_block:                                        0111100110010011100100111
-enc_len: 25
 
 iter 12:
 sym:  4
 code:   011
-enc_block:                                     0110111100110010011100100111
-enc_len: 28
 
 iter 13:
 sym:  6
 code:     0
-enc_block:                                    00110111100110010011100100111
-enc_len: 29
 
 iter 14:
 sym:  1
 code:    01
-enc_block:                                  0100110111100110010011100100111
-enc_len: 31
 
 iter 15:
 sym:  6
 code:     0
-enc_block:                                 00100110111100110010011100100111
-enc_len: 32
 
-enc_block:                                 00100110111100110010011100100111
-enc_len: 32
-
-
-Storing encoded data...
-stored_len: 64
+stored_len: 68
 
 
 Unpacking bit-lengths count...

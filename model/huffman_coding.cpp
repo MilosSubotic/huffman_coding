@@ -66,9 +66,18 @@ void huffman_encode(
 	vector<uint8_t>& enc_data
 ) {
 
-	uint8_t acc = 0;
+	uint16_t acc = 0;
 	int acc_len = 0;
-	bool last_block;
+	auto pack = [&](uint16_t bits, unsigned len) {
+		assert(len <= 8);
+		acc |= bits << acc_len;
+		acc_len += len;
+		if(acc_len >= 8){
+			enc_data.push_back(acc & 0xff);
+			acc >>= 8;
+			acc_len -= 8;
+		}
+	};
 
 	for(int block = 0; block < in_text.size()/8; block++){
 
@@ -84,10 +93,9 @@ void huffman_encode(
 		for(int d = 0; d < 16; d++){
 			int index = block*8 + d/2;
 			uint8_t c;
-			// If no more text encode '\0'.
+			// If no more text then encode '\0' up to block size.
 			if(index >= in_text.size()){
 				c = 0;
-				last_block = true;
 			}else{
 				c = in_text[index];
 			}
@@ -479,37 +487,24 @@ void huffman_encode(
 
 
 
-		cout << "Storing canonical table..." << endl;
+		cout << "Packing canonical table..." << endl;
 
 		uint32_t store_len = 0;
 
 		// Store 4 bit-lengths count.
 		for(int len = 1; len < 5; len++){
-			uint8_t b = lens_cnt[len];
-			acc |= b << acc_len;
-			acc_len += 4; // len_cnt_t is 4-bit.
-			if(acc_len >= 8){
-				enc_data.push_back(acc);
-				acc_len -= 8;
-				acc = b >> 4 - acc_len;
-			}
+			pack(lens_cnt[len], 4); // len_cnt_t is 4-bit.
+
 			store_len += 4;
 		}
-		cout << "acc_len: " << acc_len << endl;
 
 		// Store symbols.
 		for(int i = 0; i < 16; i++){
 			len_t len = sort_len[i].len;
 			// Don't save symbols with invalid length ie. symbols with count 0.
 			if(len != 7){
-				uint8_t b = sort_len[i].sym;
-				acc |= b << acc_len;
-				acc_len += 4; // sym_t is 4-bit.
-				if(acc_len >= 8){
-					enc_data.push_back(acc);
-					acc_len -= 8;
-					acc = b >> 4 - acc_len;
-				}
+				pack(sort_len[i].sym, 4); // sym_t is 4-bit.
+
 				store_len += 4;
 			}
 		}
@@ -519,16 +514,8 @@ void huffman_encode(
 
 
 
-		cout << "Encoding data..." << endl;
-	
-		// In worst case, if all data symbols are different, 
-		// all symbols will be coded with 4-bit codes,
-		// times 16 symbols, that is max 64-bit output.
-		typedef uint64_t enc_block_t;
-		// Max length is 64.
-		typedef uint16_t enc_len_t;// 7-bits.
-		enc_block_t enc_block = 0;
-		enc_len_t enc_len = 0;
+
+		cout << "Encoding and packing data..." << endl;
 	
 		cout << "Encoding:" << endl;
 		for(int d = 0; d < 16; d++){
@@ -537,66 +524,26 @@ void huffman_encode(
 			len_t code_len = codes_len[sym];
 
 			// Strap 1s above code length.
-			code &= (1 << code_len) - 1;
+			code &= (1 << code_len) - 1; // TODO Isn't this redudant a little.
 
-			// Add encoded symbol.
-			enc_block |= enc_block_t(code) << enc_len;
-			enc_len += code_len;
+			pack(code, code_len);
 
+			store_len += code_len;
 
 			cout << "iter " << d << ":" << endl;
 			cout << "sym: " << setw(2) << sym << endl;
 			cout << "code: " 
 				<< setw(5) << bits_to_string(code, code_len, 0) << endl;
-			cout << "enc_block: " 
-				<< setw(64) << bits_to_string(enc_block, enc_len, 0) << endl;
-			cout << "enc_len: " << enc_len << endl;
 			cout << endl;
 
 		}
-		cout << "enc_block: " << setw(64) 
-			<< bits_to_string(enc_block, enc_len) << endl;
-		cout << "enc_len: " << enc_len << endl;
-		cout << endl << endl;
-
-
-
-
-
-
-		cout << "Storing encoded data..." << endl;
-
-		while(enc_len > 0){
-			uint8_t b = enc_block;
-			acc |= b << acc_len;
-			int len = 8 - acc_len;
-			if(enc_len >= len){
-				enc_data.push_back(acc);
-				acc_len = 0;
-				acc = 0;
-
-				enc_block >>= len;
-				enc_len -= len;
-
-				store_len += len;
-			}else{
-				if(last_block){
-					enc_data.push_back(acc);
-				}
-				acc_len += enc_len;
-				assert(acc_len < 8);
-
-				enc_block >>= enc_len; // Redudant.
-				enc_len = 0; // Redudant.
-
-				store_len += enc_len;
-			}
-		}
-
 		cout << "stored_len: " << store_len << endl;
 		cout << endl << endl;
 
 	}
+
+	// Push unfinished byte.
+	enc_data.push_back(acc);
 
 }
 
@@ -608,7 +555,7 @@ void huffman_decode(
 	uint16_t acc = 0;
 	unsigned acc_len = 0;
 	auto ed = enc_data.begin();
-	auto unpack = [&](unsigned len) {
+	auto unpack = [&](unsigned len) -> uint8_t {
 		assert(len <= 8);
 		uint8_t ret;
 		if(acc_len < len){
@@ -699,7 +646,6 @@ void huffman_decode(
 
 		vector<sym_t> out_data(16);
 
-		// TODO
 		for(int d = 0; d < 16; d++){
 			if(acc_len < 5){
 				acc |= (*ed++) << acc_len;
@@ -765,12 +711,15 @@ int main() {
 		enc_data
 	);
 
+
+
 	string out_text;
 
 	huffman_decode(
 		enc_data,
 		out_text
 	);
+
 
 
 	// Comparing input and output.
