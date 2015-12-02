@@ -10,6 +10,7 @@ use work.global.all;
 
 use work.text2sym_conv_and_stage_cnt;
 use work.histogram;
+use work.sort_symbols_by_count;
 
 entity huffman_encoder is
 	port(
@@ -42,8 +43,12 @@ architecture arch_huffman_encoder of huffman_encoder is
 	signal sym       : t_sym;
 	
 	signal hist      : t_cnt_array(0 to 15);
-
+	
+	signal sort_sym  : t_sym_array(0 to 15);
+	signal sort_cnt  : t_cnt_array(0 to 15);
+		
 begin
+
 	clk <= aclk;
 	n_rst <= axi_resetn;
 
@@ -74,6 +79,17 @@ begin
 		o_hist      => hist
 	);
 	
+	sort_symbols_by_count_i : entity sort_symbols_by_count
+	port map (
+		i_clk       => clk,
+      in_rst      => n_rst,
+		i_stage     => stage,
+		i_pipe_en   => pipe_en,
+		
+		i_hist      => hist,
 
+		o_sort_sym  => sort_sym,
+		o_sort_cnt  => sort_cnt
+	);
 
 end architecture arch_huffman_encoder;

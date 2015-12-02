@@ -13,7 +13,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="10" />
+   <WVObjectSize size="12" />
    <wvobject fp_name="/huffman_encoder_tb/aclk" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">aclk</obj_property>
       <obj_property name="ObjectShortName">aclk</obj_property>
@@ -137,5 +137,15 @@
          <obj_property name="ObjectShortName">hist[15]</obj_property>
          <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
       </wvobject>
+   </wvobject>
+   <wvobject fp_name="/huffman_encoder_tb/uut/sort_sym" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">sort_sym[0:15]</obj_property>
+      <obj_property name="ObjectShortName">sort_sym[0:15]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/huffman_encoder_tb/uut/sort_cnt" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">sort_cnt[0:15]</obj_property>
+      <obj_property name="ObjectShortName">sort_cnt[0:15]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
 </wave_config>

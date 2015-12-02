@@ -36,8 +36,8 @@ architecture arch_sort_symbols_by_count_tb of sort_symbols_by_count_tb is
 	signal i_hist : t_cnt_array(0 to 15) := (others => (others => '0'));
 		
 	--Outputs
-	signal o_sorted_sym : t_sym_array(0 to 15) := (others => (others => '0'));
-	signal o_sorted_cnt : t_cnt_array(0 to 15) := (others => (others => '0'));
+	signal o_sort_sym : t_sym_array(0 to 15) := (others => (others => '0'));
+	signal o_sort_cnt : t_cnt_array(0 to 15) := (others => (others => '0'));
 
 	-- Clock period definitions
 	constant i_clk_period : time := 10 ns;
@@ -54,8 +54,8 @@ BEGIN
 		
 		i_hist => i_hist,
 		
-		o_sorted_sym => o_sorted_sym,
-		o_sorted_cnt => o_sorted_cnt
+		o_sort_sym => o_sort_sym,
+		o_sort_cnt => o_sort_cnt
 	);
 
    -- Clock process definitions
@@ -87,7 +87,7 @@ BEGIN
 		end loop;
 		i_pipe_en <= '0';
 		
-		assert o_sorted_sym = (
+		assert o_sort_sym = (
 				conv_std_logic_vector(15, t_sym'length),
 				conv_std_logic_vector(14, t_sym'length),
 				conv_std_logic_vector(13, t_sym'length),
@@ -105,9 +105,9 @@ BEGIN
 				conv_std_logic_vector(0, t_sym'length),
 				conv_std_logic_vector(4, t_sym'length)
 			)
-			report "o_sorted_sym wrong!"
+			report "o_sort_sym wrong!"
 			severity assert_severity;
-		assert o_sorted_cnt = (
+		assert o_sort_cnt = (
 				conv_std_logic_vector(5, t_cnt'length),
 				conv_std_logic_vector(6, t_cnt'length),
 				conv_std_logic_vector(7, t_cnt'length),
@@ -125,11 +125,8 @@ BEGIN
 				conv_std_logic_vector(20, t_cnt'length),
 				conv_std_logic_vector(31, t_cnt'length)
 			)
-			report "o_sorted_cnt wrong!"
+			report "o_sort_cnt wrong!"
 			severity assert_severity;
---		assert o_sorted_cnt = ()
---			report " wrong!"
---			severity assert_severity;
 
 
 		println("--------------------------------------");

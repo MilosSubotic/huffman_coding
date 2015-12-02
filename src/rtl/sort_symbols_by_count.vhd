@@ -22,8 +22,8 @@ entity sort_symbols_by_count is
 		i_hist      : in  t_cnt_array(0 to 15);
 
 		-- Output port.
-		o_sorted_sym  : out t_sym_array(0 to 15);
-		o_sorted_cnt  : out t_cnt_array(0 to 15)
+		o_sort_sym  : out t_sym_array(0 to 15);
+		o_sort_cnt  : out t_cnt_array(0 to 15)
 	);
 end entity sort_symbols_by_count;
 
@@ -290,7 +290,7 @@ begin
 		end if;
 	end process;
 
-	o_sorted_sym <= sym;
-	o_sorted_cnt <= cnt;
+	o_sort_sym <= sym;
+	o_sort_cnt <= cnt;
 
 end architecture arch_sort_symbols_by_count_v1;
