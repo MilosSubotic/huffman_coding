@@ -1,6 +1,6 @@
 Encoding...
 
-Setting up data for decoding...
+Setting up data for encoding...
 block: 0
 in_text:
 0x62
@@ -528,7 +528,7 @@ code:     0
 stored_len: 72
 
 
-Setting up data for decoding...
+Setting up data for encoding...
 block: 1
 in_text:
 0x64

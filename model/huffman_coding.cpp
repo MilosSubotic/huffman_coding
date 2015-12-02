@@ -88,7 +88,7 @@ void huffman_encode(
 	for(int block = 0; block < in_text.size()/8; block++){
 
 
-		cout << "Setting up data for decoding..." << endl;
+		cout << "Setting up data for encoding..." << endl;
 	
 		cout << "block: " << block << endl;
 
