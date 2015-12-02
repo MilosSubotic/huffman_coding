@@ -7,6 +7,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 use work.global.all;
+
 use work.text2sym_conv_and_stage_cnt;
 use work.histogram;
 

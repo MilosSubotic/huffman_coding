@@ -4,34 +4,13 @@
 
 library ieee;
 use ieee.std_logic_1164.all;
- 
+
+use work.huffman_encoder;
+
 entity huffman_encoder_tb is
 end entity huffman_encoder_tb;
  
 architecture arch_huffman_encoder_tb of huffman_encoder_tb is
- 
-    -- Component Declaration for the Unit Under Test (UUT)
-	component huffman_encoder is
-		port(
-			-- Clock.
-			aclk          : in  std_logic;
-			-- Reset.
-			axi_resetn    : in  std_logic;
-			
-			-- Input port.
-			s_axis_tdata  : in  std_logic_vector(7 downto 0);
-			s_axis_tvalid : in  std_logic;
-			s_axis_tready : out std_logic;
-			s_axis_tlast  : in  std_logic;
-
-			-- Output port.
-			m_axis_tdata  : out std_logic_vector(7 downto 0);
-			m_axis_tvalid : out std_logic;
-			m_axis_tready : in  std_logic;
-			m_axis_tlast  : out std_logic
-		);
-	end component huffman_encoder;
-    
 
 	--Inputs
 	signal aclk : std_logic := '0';
@@ -53,7 +32,7 @@ architecture arch_huffman_encoder_tb of huffman_encoder_tb is
 BEGIN
  
 	-- Instantiate the Unit Under Test (UUT)
-   uut: huffman_encoder
+   uut: entity huffman_encoder
 	port map (
 		aclk => aclk,
 		axi_resetn => axi_resetn,
