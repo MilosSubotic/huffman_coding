@@ -1,6 +1,7 @@
 ------------------------------------------------------------------------------
 -- @license MIT
 -- @brief Huffman encoder 8-bit symbols, max 16 symbols in group.
+-- WARNING: Don't change this module.
 ------------------------------------------------------------------------------
 
 library ieee;

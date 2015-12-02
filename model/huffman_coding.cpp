@@ -249,7 +249,7 @@ void huffman_encode(
 		class node_and_dep {
 		public:
 			node_t node;
-			dep_t dep;		
+			dep_t dep;
 		};
 		vector<node_and_dep> depth_tracker(16);
 		for(int sym = 0; sym < 16; sym++){
