@@ -1,7 +1,6 @@
 ------------------------------------------------------------------------------
 -- @license MIT
 -- @brief Huffman encoder 8-bit symbols, max 16 symbols in group.
--- WARNING: Don't change this module.
 ------------------------------------------------------------------------------
 
 library ieee;
@@ -18,7 +17,7 @@ entity huffman_encoder is
 		-- Clock.
 		aclk          : in  std_logic;
 		-- Reset.
-      axi_resetn    : in  std_logic;
+		axi_resetn    : in  std_logic;
 		
 		-- Input port.
 		s_axis_tdata  : in  std_logic_vector(7 downto 0);

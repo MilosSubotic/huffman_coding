@@ -12,16 +12,13 @@ use work.global.all;
 
 entity histogram is
 	port(
-		-- Common.
 		i_clk       : in  std_logic;
       in_rst      : in  std_logic;
 		i_stage     : in  t_stage;
 		i_pipe_en   : in  std_logic;
 		
-		-- Input port.
 		i_sym       : in  t_sym;
 
-		-- Output port.
 		o_hist      : out t_cnt_array(0 to 15)
 	);
 end entity histogram;

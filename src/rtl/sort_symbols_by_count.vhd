@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 -- @license MIT
--- @brief sort_symbols_by_count for Huffman encoding.
+-- @brief Sorting symbols by count.
 ------------------------------------------------------------------------------
 
 library ieee;
@@ -12,16 +12,13 @@ use work.global.all;
 
 entity sort_symbols_by_count is
 	port(
-		-- Common.
 		i_clk       : in  std_logic;
-      in_rst      : in  std_logic;
+		in_rst      : in  std_logic;
 		i_stage     : in  t_stage;
 		i_pipe_en   : in  std_logic;
 		
-		-- Input port.
 		i_hist      : in  t_cnt_array(0 to 15);
 
-		-- Output port.
 		o_sort_sym  : out t_sym_array(0 to 15);
 		o_sort_cnt  : out t_cnt_array(0 to 15)
 	);

@@ -243,7 +243,7 @@ void huffman_encode(
 		// TODO Solve problem when only one leaf exists.
 	
 		// Parent have nodes IDs larger than leaves IDs.
-		node_t new_parents_node = 16;
+		node_t new_parent_node = 16;
 	
 		// Used for making canonical Huffman tree.
 		class node_and_dep {
@@ -265,7 +265,7 @@ void huffman_encode(
 				break;
 			}
 		
-			assert(new_parents_node < 31);
+			assert(new_parent_node < 31);
 		
 			// Cannot both be empty at the same time.
 			assert(!(leaves[0].is_null() && parents[0].is_null()));
@@ -311,9 +311,9 @@ void huffman_encode(
 
 			
 			// Create parent.
-			node_and_cnt new_parent(new_parents_node, child0.cnt + child1.cnt);
+			node_and_cnt new_parent(new_parent_node, child0.cnt + child1.cnt);
 			// Ready for new parent.
-			new_parents_node++;
+			new_parent_node++;
 		
 			// Insert parent.
 			parents[parents_end++] = new_parent;

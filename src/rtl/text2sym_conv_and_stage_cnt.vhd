@@ -13,7 +13,7 @@ use work.reg;
 entity text2sym_conv_and_stage_cnt is
 	port(
 		i_clk         : in  std_logic;
-      in_rst        : in  std_logic;
+		in_rst        : in  std_logic;
 		
 		-- Input port.
 		s_axis_tdata  : in  std_logic_vector(7 downto 0);
