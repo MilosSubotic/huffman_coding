@@ -5,7 +5,9 @@
 
 library ieee;
 use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
+
+use work.global.all;
+use work.text2sym_conv_and_stage_cnt;
 
 entity huffman_encoder is
 	port(
@@ -28,37 +30,27 @@ entity huffman_encoder is
 	);
 end entity huffman_encoder;
 
-architecture arch_huffman_encoder_v1 of huffman_encoder is
-	constant NUM_SYMBOLS_LOG_2 : natural := 4;
-	
-	-------
-		
-	signal in_en : std_logic;
-	signal in_symbol : std_logic_vector(7 downto 0);
-	
-	constant NUM_SYMBOLS       : natural := 2**NUM_SYMBOLS_LOG_2;
-	-- One bit larger to fit range [0, 2**NUM_SYMBOLS_LOG_2].
-	subtype t_hyst_cnt is unsigned(NUM_SYMBOLS_LOG_2 downto 0);
-	type t_hysteresis is array(0 to 255) of t_hyst_cnt;
-	signal r_hysteresis : t_hysteresis;
+architecture arch_huffman_encoder of huffman_encoder is
+
+	signal stage     : t_stage;
+	signal sym       : t_sym;
+
 begin
 
-	s_axis_tready <= '1';
-	in_en <= s_axis_tvalid;
-	in_symbol <= s_axis_tdata;
-
-	-- Hysteresis.
-	hysteresis_p: process(aclk)
-	begin
-		if rising_edge(aclk) then
-			if axi_resetn = '0' then
-				r_hysteresis <= (others => (others => '0'));
-			elsif in_en = '1' then
-				r_hysteresis(to_integer(unsigned(in_symbol))) <=
-					r_hysteresis(to_integer(unsigned(in_symbol))) + 1;
-			end if;
-		end if;
-	end process;
+	text2sym_conv_and_stage_cnt_i: entity text2sym_conv_and_stage_cnt
+	port map(
+		i_clk         => aclk,
+      in_rst        => axi_resetn,
+		
+		s_axis_tdata  => s_axis_tdata,
+		s_axis_tvalid => s_axis_tvalid,
+		s_axis_tready => s_axis_tready,
+		s_axis_tlast  => s_axis_tlast,
+		
+		o_stage       => stage,
+		o_sym         => sym
+	);
+	
 
 
-end architecture arch_huffman_encoder_v1;
+end architecture arch_huffman_encoder;

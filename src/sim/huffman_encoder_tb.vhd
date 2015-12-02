@@ -4,7 +4,6 @@
 
 library ieee;
 use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
  
 entity huffman_encoder_tb is
 end entity huffman_encoder_tb;
@@ -71,9 +70,9 @@ BEGIN
    -- Clock process definitions
    aclk_process :process
    begin
-		aclk <= '1';
-		wait for aclk_period/2;
 		aclk <= '0';
+		wait for aclk_period/2;
+		aclk <= '1';
 		wait for aclk_period/2;
    end process;
  
@@ -82,40 +81,38 @@ BEGIN
 	stim_proc: process
 		variable symbol_idx : natural;
 		type t_symbol_batch is array(0 to 15) of std_logic_vector(7 downto 0);
-		-- 1 0x01
-		-- 2 0x02
-		-- 4 0x04
-		-- 9 0x09
 		constant symbol_batch : t_symbol_batch := (
-			x"09",
-			x"02",
-			x"09",
-			x"01",
-			x"09",
-			x"09",
-			x"04",
-			x"09",
-			x"09",
-			x"09",
-			x"04",
-			x"09",
-			x"02",
-			x"04",
-			x"04",
-			x"09"
+			x"62",
+			x"61",
+			x"62",
+			x"61",
+			x"64",
+			x"65",
+			x"64",
+			x"61",
+			x"64",
+			x"65",
+			x"61",
+			x"64",
+			x"62",
+			x"65",
+			x"65",
+			x"66"
 		);
-		
 	begin
 		wait for aclk_period*2;
 		axi_resetn <= '1';
+		wait for aclk_period;
 
 		symbol_idx := 0;
 		s_axis_tvalid <= '1';
 		s_axis_tlast <= '0';
-		while symbol_idx < 16 loop
+		while symbol_idx <= 15 loop
 			s_axis_tdata <= symbol_batch(symbol_idx);
 			if symbol_idx = 15 then
 				s_axis_tlast <= '1';
+			else
+				s_axis_tlast <= '0';
 			end if;
 		
 			-- If slave is ready then symbols is considered sent,
