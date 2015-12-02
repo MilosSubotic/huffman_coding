@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="C:/Users/subotic/home/ELEKTRONIKA/A_PROGRAM_CODE/Embedded/ort-lprs_siit/Vezbe/huffman_coding/huffman_coding/work/sort_symbols_by_count_tb_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="global" />
+            <top_module name="sort_symbols_by_count_tb" />
+            <top_module name="std_logic_1164" />
+            <top_module name="std_logic_arith" />
+            <top_module name="std_logic_unsigned" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="8" />
+   <wvobject fp_name="/sort_symbols_by_count_tb/i_clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">i_clk</obj_property>
+      <obj_property name="ObjectShortName">i_clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/sort_symbols_by_count_tb/in_rst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">in_rst</obj_property>
+      <obj_property name="ObjectShortName">in_rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/sort_symbols_by_count_tb/i_stage" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">i_stage[4:0]</obj_property>
+      <obj_property name="ObjectShortName">i_stage[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/sort_symbols_by_count_tb/i_pipe_en" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">i_pipe_en</obj_property>
+      <obj_property name="ObjectShortName">i_pipe_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/sort_symbols_by_count_tb/i_hist" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">i_hist[0:15]</obj_property>
+      <obj_property name="ObjectShortName">i_hist[0:15]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/sort_symbols_by_count_tb/o_sorted_sym" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">o_sorted_sym[0:15]</obj_property>
+      <obj_property name="ObjectShortName">o_sorted_sym[0:15]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/sort_symbols_by_count_tb/o_sorted_cnt" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">o_sorted_cnt[0:15]</obj_property>
+      <obj_property name="ObjectShortName">o_sorted_cnt[0:15]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/sort_symbols_by_count_tb/i_clk_period" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">i_clk_period</obj_property>
+      <obj_property name="ObjectShortName">i_clk_period</obj_property>
+   </wvobject>
+</wave_config>
