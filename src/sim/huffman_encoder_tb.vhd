@@ -68,7 +68,7 @@ BEGIN
 	);
 
    -- Clock process definitions
-   aclk_process :process
+   aclk_proc: process
    begin
 		aclk <= '0';
 		wait for aclk_period/2;
@@ -105,10 +105,9 @@ BEGIN
 		wait for aclk_period;
 
 		symbol_idx := 0;
-		s_axis_tvalid <= '1';
-		s_axis_tlast <= '0';
 		while symbol_idx <= 15 loop
 			s_axis_tdata <= symbol_batch(symbol_idx);
+			s_axis_tvalid <= '1';
 			if symbol_idx = 15 then
 				s_axis_tlast <= '1';
 			else
@@ -122,6 +121,12 @@ BEGIN
 			end if;
 			
 			wait for aclk_period;
+			
+			-- Make pause for 3 clock periods.
+			if symbol_idx mod 8 = 5 then
+				s_axis_tvalid <= '0';
+				wait for aclk_period*3;
+			end if;
 		end loop;
 		s_axis_tvalid <= '0';
 		s_axis_tlast <= '0';

@@ -15,12 +15,15 @@ entity text2sym_conv_and_stage_cnt is
 		i_clk         : in  std_logic;
       in_rst        : in  std_logic;
 		
+		-- Input port.
 		s_axis_tdata  : in  std_logic_vector(7 downto 0);
 		s_axis_tvalid : in  std_logic;
 		s_axis_tready : out std_logic;
 		s_axis_tlast  : in  std_logic;
 		
+		-- Output stuff.
 		o_stage       : out t_stage;
+		o_pipe_en     : out std_logic;
 		o_sym         : out t_sym
 	);
 end entity text2sym_conv_and_stage_cnt;
@@ -44,9 +47,13 @@ architecture arch_text2sym_conv_and_stage_cnt of
 	signal sym_en            : std_logic;
 	signal sym_fill_zeros_en : std_logic;
 	signal nibble_sel        : std_logic;
+	
 	signal up_nib            : t_sym;
 	signal next_up_nib       : t_sym;
 	signal up_nib_en         : std_logic;
+	
+	signal pipe_en           : std_logic;
+	signal next_pipe_en      : std_logic;
 
 	signal stage             : t_stage;
 	signal next_stage        : t_stage;
@@ -115,9 +122,21 @@ begin
 	with state select stage_en <= 
 		s_axis_tvalid when NEW_CHAR,
 		'1' when others;
-	
-	
-	
+		
+	with state select next_pipe_en <=
+		s_axis_tvalid when NEW_CHAR,
+		'1' when others;
+		
+	-- Delay enable signal for 1 clk.
+	process(i_clk, in_rst)
+	begin
+		if in_rst = '0' then
+			pipe_en <= '0';
+		elsif rising_edge(i_clk) then
+			pipe_en <= next_pipe_en;
+		end if;
+	end process;
+	o_pipe_en <= pipe_en;
 
 	-- Symbol handling.
 	

@@ -5,7 +5,8 @@
 
 library ieee;
 use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
+use ieee.std_logic_unsigned.all;
+use ieee.std_logic_arith.all;
 
 use work.global.all;
 
@@ -14,51 +15,37 @@ entity histogram is
 		-- Common.
 		i_clk       : in  std_logic;
       in_rst      : in  std_logic;
-		i_step      : in  t_step;
+		i_stage     : in  t_stage;
+		i_pipe_en   : in  std_logic;
 		
 		-- Input port.
-		i_char      : in  t_char;
-		i_en        : in  std_logic;
+		i_sym       : in  t_sym;
 
 		-- Output port.
-		o_histogram : out t_char_cnt_array
+		o_hist      : out t_cnt_array(0 to 15)
 	);
 end entity histogram;
 
 architecture arch_histogram_v1 of histogram is
 	
-	signal r_histogram : t_char_cnt_array;
+	signal r_hist : t_cnt_array(0 to 15);
 	
 begin
 
-
-	histogram_p: process(i_clk)
+	process(i_clk, in_rst)
 	begin
-		if rising_edge(i_clk) then
-			if in_rst = '0' or i_step = 256 then
-				r_histogram <= (others => (others => '0'));
-			elsif i_en = '1' then
-				r_histogram(to_integer(unsigned(i_char))) <=
-					r_histogram(to_integer(unsigned(i_char))) + 1;
+		if in_rst = '0' then
+			r_hist <= (others => (others => '0'));
+		elsif rising_edge(i_clk) then
+			if i_pipe_en = '1' then
+				if i_stage /= 16 then
+					r_hist(conv_integer(i_sym)) <= r_hist(conv_integer(i_sym)) + 1;
+				else
+					r_hist <= (others => (others => '0'));
+				end if;
 			end if;
 		end if;
 	end process;
---	histogram_g: for i in 0 to 255 generate
---		histogram_p: process(i_clk)
---		begin
---			if rising_edge(i_clk) then
---				if in_rst = '0' then
---					r_histogram(i) <= (others => '0');
---				elsif i_en = '1' then
---					if unsigned(i_char) = i then
---						r_histogram(i) <= r_histogram(i) + 1;
---					end if;
---				end if;
---			end if;
---		end process;
---	end generate;
-	
-	o_histogram <= r_histogram;
-
+	o_hist <= r_hist;
 
 end architecture arch_histogram_v1;
