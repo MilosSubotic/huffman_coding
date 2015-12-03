@@ -24,6 +24,7 @@ entity text2sym_conv_and_stage_cnt is
 		-- Output stuff.
 		o_stage       : out t_stage;
 		o_pipe_en     : out std_logic;
+		o_pipe_end    : out std_logic;
 		o_sym         : out t_sym
 	);
 end entity text2sym_conv_and_stage_cnt;

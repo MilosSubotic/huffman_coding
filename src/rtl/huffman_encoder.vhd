@@ -39,6 +39,7 @@ architecture arch_huffman_encoder of huffman_encoder is
 	signal n_rst     : std_logic;
 	signal stage     : t_stage;
 	signal pipe_en   : std_logic;
+	signal pipe_end  : std_logic;
 	
 	signal sym       : t_sym;
 	
@@ -64,6 +65,7 @@ begin
 		
 		o_stage       => stage,
 		o_pipe_en     => pipe_en,
+		o_pipe_end    => pipe_end,
 		o_sym         => sym
 	);
 	
