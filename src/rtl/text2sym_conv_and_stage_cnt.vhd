@@ -10,7 +10,7 @@ use ieee.std_logic_unsigned.all;
 use work.global.all;
 use work.reg;
 
-entity text2sym_conv_and_stage_cnt is
+entity text2sym_conv_and_stage_freq is
 	port(
 		i_clk         : in  std_logic;
 		in_rst        : in  std_logic;
@@ -24,43 +24,34 @@ entity text2sym_conv_and_stage_cnt is
 		-- Output stuff.
 		o_stage       : out t_stage;
 		o_pipe_en     : out std_logic;
-		o_pipe_end    : out std_logic;
+		o_pipe_flush  : out std_logic;
 		o_sym         : out t_sym
 	);
-end entity text2sym_conv_and_stage_cnt;
+end entity text2sym_conv_and_stage_freq;
 
-architecture arch_text2sym_conv_and_stage_cnt of 
-		text2sym_conv_and_stage_cnt is
+architecture arch_text2sym_conv_and_stage_freq of 
+		text2sym_conv_and_stage_freq is
 
 	type t_states is (
 		NEW_CHAR,
 		UPPER_NIBBLE,
 		LAST_STAGE,
 		UPPER_NIBBLE_LAST,
-		FILL_ZEROS
+		FLUSH
 	);
 	signal state             : t_states;
 
 	signal sym               : t_sym;
-	signal next_sym          : t_sym;
-	signal fill_sym          : t_sym;
-	signal nibble_sym        : t_sym;
-	signal sym_en            : std_logic;
-	signal sym_fill_zeros_en : std_logic;
-	signal nibble_sel        : std_logic;
+	signal en                : std_logic;
 	
 	signal up_nib            : t_sym;
 	signal next_up_nib       : t_sym;
 	signal up_nib_en         : std_logic;
-	
-	signal pipe_en           : std_logic;
-	signal next_pipe_en      : std_logic;
 
 	signal stage             : t_stage;
 	signal next_stage        : t_stage;
 	signal wrap_stage        : t_stage;
 	signal stage_en          : std_logic;
-	signal delayed_stage     : t_stage;
 	
 begin
 
@@ -88,83 +79,39 @@ begin
 				when LAST_STAGE =>
 					state <= NEW_CHAR;
 				when UPPER_NIBBLE_LAST =>
-					if stage = 15 then
-						state <= LAST_STAGE;
-					else
-						state <= FILL_ZEROS;
-					end if;
-				when FILL_ZEROS =>
-					if stage = 15 then
-						state <= LAST_STAGE;
-					end if;
+						state <= FLUSH;
+				when FLUSH =>
+					-- TODO Implement.
+					state <= NEW_CHAR;
 			end case;
 		end if;
 	end process;
 
-	-- Output functions.
+
+	with state select en <=
+		s_axis_tvalid when NEW_CHAR,
+		'1' when others;
+	o_pipe_en <= en;
+	
 	with state select s_axis_tready <=
 		'1' when NEW_CHAR,
 		'0' when others;
-	with state select sym_en <=
-		s_axis_tvalid when NEW_CHAR,
-		'1' when UPPER_NIBBLE,
-		'1' when UPPER_NIBBLE_LAST,
-		'1' when FILL_ZEROS,
-		'0' when others;
-	with state select sym_fill_zeros_en <=
-		'1' when FILL_ZEROS,
-		'0' when others;
-	with state select nibble_sel <=
-		'0' when NEW_CHAR, -- Select lower nibble.
-		'1' when others;
-	with state select up_nib_en <=
-		s_axis_tvalid when NEW_CHAR,
-		'0' when others;
-	with state select stage_en <= 
-		s_axis_tvalid when NEW_CHAR,
-		'1' when others;
-		
-	with state select next_pipe_en <=
-		s_axis_tvalid when NEW_CHAR,
-		'1' when others;
-		
-	-- Delay enable signal for 1 clk.
-	process(i_clk, in_rst)
-	begin
-		if in_rst = '0' then
-			pipe_en <= '0';
-		elsif rising_edge(i_clk) then
-			pipe_en <= next_pipe_en;
-		end if;
-	end process;
-	o_pipe_en <= pipe_en;
-
-	-- Symbol handling.
 	
-	nibble_sym <= 
-		s_axis_tdata(3 downto 0) when nibble_sel = '0' else up_nib;
-	fill_sym <= x"0" when sym_fill_zeros_en = '1' else nibble_sym;
-	next_sym <= fill_sym when sym_en = '1' else sym;
-
-	r_sym: entity reg
-	generic map(
-		WIDTH => 4
-	)
-	port map(
-		i_clk  => i_clk,
-		in_rst => in_rst,
-		i_d    => next_sym,
-		o_q    => sym
-	);
-
+	with state select o_pipe_flush <=
+		'1' when FLUSH,
+		'0' when others;
+		
+	with state select sym <=
+		s_axis_tdata(3 downto 0) when NEW_CHAR,
+		up_nib when others;
 	o_sym <= sym;
 
-
-
-	next_up_nib <= 
-		s_axis_tdata(7 downto 4) when up_nib_en = '1' else up_nib;
-		
-	r_up_nib: entity reg
+	-- Upper nibble.
+	with state select up_nib_en <=
+		s_axis_tvalid when NEW_CHAR,
+		'0' when others;		
+	next_up_nib <= s_axis_tdata(7 downto 4) when up_nib_en = '1' else up_nib;
+	up_nib_reg: entity reg
 	generic map(
 		WIDTH => 4
 	)
@@ -176,13 +123,11 @@ begin
 	);
 
 
-
 	-- Stage counter.
-
+	stage_en <= en;
 	wrap_stage <= "00000" when stage = 16 else stage + 1;
 	next_stage <=  wrap_stage when stage_en = '1' else stage;
-	
-	r_stage: entity reg
+	stage_reg: entity reg
 	generic map(
 		WIDTH    => 5
 	)
@@ -192,19 +137,7 @@ begin
 		i_d    => next_stage,
 		o_q    => stage
 	);
-
-	r_delayed_stage: entity reg
-	generic map(
-		WIDTH    => 5
-	)
-	port map(
-		i_clk  => i_clk,
-		in_rst => in_rst,
-		i_d    => stage,
-		o_q    => delayed_stage
-	);
-	
-	o_stage <= delayed_stage;
+	o_stage <= stage;
 	
 
-end architecture arch_text2sym_conv_and_stage_cnt;
+end architecture arch_text2sym_conv_and_stage_freq;

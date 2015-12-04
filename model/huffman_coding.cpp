@@ -54,14 +54,17 @@ string bits_to_string(uint64_t bits, unsigned start, unsigned end = 0) {
 
 typedef uint16_t sym_t; // 4-bits.
 // Because we decode max 16 symbols in block,
-// then count could be max 16.
-typedef uint16_t cnt_t; // 5-bits.
+// then frequency could be max 16.
+typedef uint16_t freq_t; // 5-bits.
+// System have max 16 leaves and max 15 parent nodes,
+// so node 31 will never exists and it is null-object.
+typedef uint16_t node_t; // 5-bit.
 // Max depth of leaf in Huffman tree is 5.
 // This is also max bit-length of code.
 typedef uint16_t dep_t; // 3-bit.
 typedef uint16_t len_t; // 3-bit.
 // Couldn't have more than 16 bit-lengths of same count.
-typedef uint16_t len_cnt_t; // 5-bit.
+typedef uint16_t len_freq_t; // 5-bit.
 typedef int16_t code_t; // 5-bits.
 
 
@@ -128,7 +131,7 @@ void huffman_encode(
 
 		cout << "Creating histogram..." << endl;
 	
-		vector<cnt_t> histogram(16);
+		vector<freq_t> histogram(16);
 	
 		for(int d = 0; d < 16; d++){
 			histogram[in_data[d]]++;
@@ -144,29 +147,29 @@ void huffman_encode(
 	
 		cout << "Preparing for sorting symbols by count..." << endl;
 
-		class sym_and_cnt {
+		class sym_and_freq {
 		public:
 			sym_t sym;
-			cnt_t cnt;
+			freq_t freq;
 		};
 	
-		vector<sym_and_cnt> sort_cnt(16);
+		vector<sym_and_freq> sort_freq(16);
 		for(int sym = 0; sym < 16; sym++){
-			sort_cnt[sym].sym = sym;
+			sort_freq[sym].sym = sym;
 			// If count is 0 put it to invalid value 31,
 			// which is also greater than 16,
 			// to be sorted at the end of array.
 			if(histogram[sym] == 0){
-				sort_cnt[sym].cnt = 31;
+				sort_freq[sym].freq = 31;
 			}else{
-				sort_cnt[sym].cnt = histogram[sym];
+				sort_freq[sym].freq = histogram[sym];
 			}
 		}
 
-		cout << "sort_cnt:" << endl;
+		cout << "sort_freq:" << endl;
 		for(int i = 0; i < 16; i++){
-			cout << setw(2) << sort_cnt[i].sym << ": " 
-				<< setw(2) << sort_cnt[i].cnt << endl;
+			cout << setw(2) << sort_freq[i].sym << ": " 
+				<< setw(2) << sort_freq[i].freq << endl;
 		}
 		cout << endl << endl;
 
@@ -175,17 +178,17 @@ void huffman_encode(
 		cout << "Sorting symbols by count..." << endl;
 
 		sort(
-			sort_cnt.begin(),
-			sort_cnt.end(),
-			[](const sym_and_cnt& x, const sym_and_cnt& y){ 
-				return x.cnt < y.cnt;
+			sort_freq.begin(),
+			sort_freq.end(),
+			[](const sym_and_freq& x, const sym_and_freq& y){ 
+				return x.freq < y.freq;
 			}
 		);
 	
-		cout << "sort_cnt:" << endl;
+		cout << "sort_freq:" << endl;
 		for(int i = 0; i < 16; i++){
-			cout << setw(2) << sort_cnt[i].sym << ": " 
-				<< setw(2) << sort_cnt[i].cnt << endl;
+			cout << setw(2) << sort_freq[i].sym << ": " 
+				<< setw(2) << sort_freq[i].freq << endl;
 		}
 		cout << endl << endl;
 	
@@ -193,42 +196,39 @@ void huffman_encode(
 
 
 		cout << "Creating leaves..." << endl;
+
 	
-		// System have max 16 leaves and max 15 parent nodes,
-		// so node 31 will never exists and it is null-object.
-		typedef uint16_t node_t; // 5-bit.
-	
-		class node_and_cnt {
+		class node_and_freq {
 		public:
 			node_t node;
-			cnt_t cnt;
+			freq_t freq;
 		
 			// Null object.
-			node_and_cnt()
-				: node(31), cnt(31) {}
+			node_and_freq()
+				: node(31), freq(31) {}
 			
-			node_and_cnt(node_t node, cnt_t cnt)
-				: node(node), cnt(cnt) {}
+			node_and_freq(node_t node, freq_t freq)
+				: node(node), freq(freq) {}
 			
-			node_and_cnt(const sym_and_cnt& s)
-				: node(s.sym), cnt(s.cnt) {}		
+			node_and_freq(const sym_and_freq& s)
+				: node(s.sym), freq(s.freq) {}		
 		
 			bool is_null() const {
-				return cnt == 31;
+				return freq == 31;
 			}
 		};
 	
-		deque<node_and_cnt> leaves(16);
+		deque<node_and_freq> leaves(16);
 		// Copy sorted symbols to leaf nodes.
 		// Symbols now becomes IDs leaves.
 		for(int i = 0; i < 16; i++){
-			leaves[i] = sort_cnt[i];
+			leaves[i] = sort_freq[i];
 		}
 
 		cout << "leaves:" << endl;
 		for(int i = 0; i < 16; i++){
 			cout << setw(2) << leaves[i].node << ": " 
-				<< setw(2) << leaves[i].cnt << endl;
+				<< setw(2) << leaves[i].freq << endl;
 		}
 		cout << endl << endl;
 
@@ -237,7 +237,7 @@ void huffman_encode(
 
 		cout << "Tracking depth of leaves on quasi-tree..." << endl;
 
-		deque<node_and_cnt> parents(16);
+		deque<node_and_freq> parents(16);
 		int parents_end = 0;
 
 		// TODO Solve problem when only one leaf exists.
@@ -270,14 +270,14 @@ void huffman_encode(
 			// Cannot both be empty at the same time.
 			assert(!(leaves[0].is_null() && parents[0].is_null()));
 
-			node_and_cnt child0;
-			node_and_cnt child1;
+			node_and_freq child0;
+			node_and_freq child1;
 		
-			if(leaves[0].cnt < parents[0].cnt){
+			if(leaves[0].freq < parents[0].freq){
 				// First leaf.
 				child0 = leaves[0];
 				
-				if(leaves[1].cnt < parents[0].cnt){
+				if(leaves[1].freq < parents[0].freq){
 					// First leaf and second leaf.
 					child1 = leaves[1];
 					shift(leaves);
@@ -292,7 +292,7 @@ void huffman_encode(
 				// First parent.
 				child0 = parents[0];
 			
-				if(parents[1].cnt < leaves[0].cnt){
+				if(parents[1].freq < leaves[0].freq){
 					// First parent and second parent.
 					child1 = parents[1];
 					shift(parents);
@@ -311,7 +311,7 @@ void huffman_encode(
 
 			
 			// Create parent.
-			node_and_cnt new_parent(new_parent_node, child0.cnt + child1.cnt);
+			node_and_freq new_parent(new_parent_node, child0.freq + child1.freq);
 			// Ready for new parent.
 			new_parent_node++;
 		
@@ -333,12 +333,12 @@ void huffman_encode(
 			cout << "leaves:" << endl;
 			for(int i = 0; i < 16; i++){
 				cout << setw(2) << leaves[i].node << ": " 
-					<< setw(2) << leaves[i].cnt << endl;
+					<< setw(2) << leaves[i].freq << endl;
 			}
 			cout << "parents:" << endl;
 			for(int i = 0; i < 16; i++){
 				cout << setw(2) << parents[i].node << ": " 
-					<< setw(2) << parents[i].cnt << endl;
+					<< setw(2) << parents[i].freq << endl;
 			}
 			cout << "parents_end: " << parents_end << endl;
 			cout << "depth_tracker:" << endl;
@@ -378,16 +378,16 @@ void huffman_encode(
 	
 		cout << "Counting same bit-lengths..." << endl;
 
-		vector<len_cnt_t> lens_cnt(5, 0); // Init to zeros.
+		vector<len_freq_t> lens_freq(5, 0); // Init to zeros.
 
 		for(int sym = 0; sym < 16; sym++){
-			lens_cnt[codes_len[sym]]++;
+			lens_freq[codes_len[sym]]++;
 		}
 	
-		cout << "lens_cnt:" << endl;
+		cout << "lens_freq:" << endl;
 		for(int len = 0; len < 5; len++){
 			cout << setw(2) << len << ": " 
-				<< setw(2) << lens_cnt[len] << endl;
+				<< setw(2) << lens_freq[len] << endl;
 		}
 		cout << endl << endl;
 
@@ -501,7 +501,7 @@ void huffman_encode(
 
 		// Store 4 bit-lengths count.
 		for(int len = 1; len < 5; len++){
-			pack(lens_cnt[len], 5); // len_cnt_t is 5-bit.
+			pack(lens_freq[len], 5); // len_freq_t is 5-bit.
 
 			store_len += 5;
 		}
@@ -586,16 +586,16 @@ void huffman_decode(
 
 		cout << "Unpacking bit-lengths count..." << endl;
 
-		vector<len_cnt_t> lens_cnt(5);
+		vector<len_freq_t> lens_freq(5);
 
 		for(int len = 1; len < 5; len++){
-			lens_cnt[len] = unpack(5); // len_cnt_t is 5-bit.
+			lens_freq[len] = unpack(5); // len_freq_t is 5-bit.
 		}
 
-		cout << "lens_cnt:" << endl;
+		cout << "lens_freq:" << endl;
 		for(int len = 0; len < 5; len++){
 			cout << setw(2) << len << ": " 
-				<< setw(2) << lens_cnt[len] << endl;
+				<< setw(2) << lens_freq[len] << endl;
 		}
 		cout << endl << endl;
 
@@ -610,7 +610,7 @@ void huffman_decode(
 
 		code_t code = 0;
 		for(len_t len = 1; len < 5; len++){
-			for(int cnt = lens_cnt[len]; cnt > 0; cnt--){
+			for(int freq = lens_freq[len]; freq > 0; freq--){
 				sym_t sym = unpack(4); // sym_t is 4-bit.
 				code_table[sym] = code;
 				codes_len[sym] = len;

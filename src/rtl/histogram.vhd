@@ -19,30 +19,30 @@ entity histogram is
 		
 		i_sym       : in  t_sym;
 
-		o_hist      : out t_cnt_array(0 to 15)
+		o_hist      : out t_freq_array(0 to 15)
 	);
 end entity histogram;
 
 architecture arch_histogram_v1 of histogram is
 	
-	signal r_hist : t_cnt_array(0 to 15);
+	signal hist : t_freq_array(0 to 15);
 	
 begin
 
 	process(i_clk, in_rst)
 	begin
 		if in_rst = '0' then
-			r_hist <= (others => (others => '0'));
+			hist <= (others => (others => '0'));
 		elsif rising_edge(i_clk) then
 			if i_pipe_en = '1' then
 				if i_stage /= 16 then
-					r_hist(conv_integer(i_sym)) <= r_hist(conv_integer(i_sym)) + 1;
+					hist(conv_integer(i_sym)) <= hist(conv_integer(i_sym)) + 1;
 				else
-					r_hist <= (others => (others => '0'));
+					hist <= (others => (others => '0'));
 				end if;
 			end if;
 		end if;
 	end process;
-	o_hist <= r_hist;
+	o_hist <= hist;
 
 end architecture arch_histogram_v1;

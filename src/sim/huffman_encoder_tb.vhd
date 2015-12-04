@@ -4,6 +4,9 @@
 
 library ieee;
 use ieee.std_logic_1164.all;
+use std.textio.all;
+
+use work.global.all;
 
 use work.huffman_encoder;
 
@@ -12,6 +15,17 @@ end entity huffman_encoder_tb;
  
 architecture arch_huffman_encoder_tb of huffman_encoder_tb is
 
+	-- Possible values: note, warning, error, failure;
+	constant assert_severity : severity_level := error; 
+		
+	file stdout: text open write_mode is "STD_OUTPUT";
+	procedure println(s: string) is
+		variable l: line;
+	begin
+		write(l, s);
+		writeline(stdout, l);
+	end procedure println;
+	
 	--Inputs
 	signal aclk : std_logic := '0';
 	signal axi_resetn : std_logic := '0';
@@ -28,7 +42,7 @@ architecture arch_huffman_encoder_tb of huffman_encoder_tb is
 
 	-- Clock period definitions
 	constant aclk_period : time := 10 ns;
- 
+	
 BEGIN
  
 	-- Instantiate the Unit Under Test (UUT)
@@ -47,7 +61,7 @@ BEGIN
 	);
 
    -- Clock process definitions
-   aclk_proc: process
+   clk_p: process
    begin
 		aclk <= '0';
 		wait for aclk_period/2;
@@ -57,7 +71,7 @@ BEGIN
  
 
 	-- Stimulus process
-	stim_proc: process
+	axi_master_p: process
 		variable symbol_idx : natural;
 		type t_symbol_batch is array(0 to 15) of std_logic_vector(7 downto 0);
 		constant symbol_batch : t_symbol_batch := (
@@ -109,8 +123,16 @@ BEGIN
 		end loop;
 		s_axis_tvalid <= '0';
 		s_axis_tlast <= '0';
+	
+		
+		wait for aclk_period*10;
+
+		println("--------------------------------------");
+		println("Testbench done!");
+		println("--------------------------------------");
 
 		wait;
 	end process;
+
 
 end architecture arch_huffman_encoder_tb;

@@ -8,9 +8,9 @@ use ieee.std_logic_1164.all;
 
 use work.global.all;
 
-use work.text2sym_conv_and_stage_cnt;
+use work.text2sym_conv_and_stage_freq;
 use work.histogram;
-use work.sort_symbols_by_count;
+use work.sort_syms_by_freq;
 
 entity huffman_encoder is
 	port(
@@ -35,25 +35,24 @@ end entity huffman_encoder;
 
 architecture arch_huffman_encoder of huffman_encoder is
 	
-	signal clk       : std_logic;
-	signal n_rst     : std_logic;
-	signal stage     : t_stage;
-	signal pipe_en   : std_logic;
-	signal pipe_end  : std_logic;
+	signal clk            : std_logic;
+	signal n_rst          : std_logic;
+	signal stage          : t_stage;
+	signal pipe_en        : std_logic;
+	signal pipe_flush     : std_logic;
 	
-	signal sym       : t_sym;
+	signal sym            : t_sym;
 	
-	signal hist      : t_cnt_array(0 to 15);
+	signal hist           : t_freq_array(0 to 15);
 	
-	signal sort_sym  : t_sym_array(0 to 15);
-	signal sort_cnt  : t_cnt_array(0 to 15);
+	signal sorted_by_freq : t_sym_and_freq_array(0 to 15);
 		
 begin
 
 	clk <= aclk;
 	n_rst <= axi_resetn;
 
-	text2sym_conv_and_stage_cnt_i: entity text2sym_conv_and_stage_cnt
+	text2sym_conv_and_stage_freq_i: entity text2sym_conv_and_stage_freq
 	port map(
 		i_clk         => clk,
       in_rst        => n_rst,
@@ -65,7 +64,7 @@ begin
 		
 		o_stage       => stage,
 		o_pipe_en     => pipe_en,
-		o_pipe_end    => pipe_end,
+		o_pipe_flush  => pipe_flush,
 		o_sym         => sym
 	);
 	
@@ -81,17 +80,16 @@ begin
 		o_hist      => hist
 	);
 	
-	sort_symbols_by_count_i : entity sort_symbols_by_count
+	sort_syms_by_freq_i : entity sort_syms_by_freq
 	port map (
-		i_clk       => clk,
-      in_rst      => n_rst,
-		i_stage     => stage,
-		i_pipe_en   => pipe_en,
+		i_clk            => clk,
+      in_rst           => n_rst,
+		i_stage          => stage,
+		i_pipe_en        => pipe_en,
 		
-		i_hist      => hist,
+		i_hist           => hist,
 
-		o_sort_sym  => sort_sym,
-		o_sort_cnt  => sort_cnt
+		o_sorted_by_freq => sorted_by_freq
 	);
 
 end architecture arch_huffman_encoder;

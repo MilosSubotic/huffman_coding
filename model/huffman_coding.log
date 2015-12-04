@@ -51,7 +51,7 @@ histogram:
 
 
 Preparing for sorting symbols by count...
-sort_cnt:
+sort_freq:
  0: 31
  1:  3
  2:  2
@@ -71,7 +71,7 @@ sort_cnt:
 
 
 Sorting symbols by count...
-sort_cnt:
+sort_freq:
  5:  1
  2:  2
  4:  2
@@ -350,7 +350,7 @@ codes_len:
 
 
 Counting same bit-lengths...
-lens_cnt:
+lens_freq:
  0: 11
  1:  1
  2:  1
@@ -579,7 +579,7 @@ histogram:
 
 
 Preparing for sorting symbols by count...
-sort_cnt:
+sort_freq:
  0: 31
  1:  1
  2:  1
@@ -599,7 +599,7 @@ sort_cnt:
 
 
 Sorting symbols by count...
-sort_cnt:
+sort_freq:
  1:  1
  2:  1
  4:  2
@@ -878,7 +878,7 @@ codes_len:
 
 
 Counting same bit-lengths...
-lens_cnt:
+lens_freq:
  0: 11
  1:  1
  2:  1
@@ -1083,7 +1083,7 @@ enc_data:
 Decoding...
 
 Unpacking bit-lengths count...
-lens_cnt:
+lens_freq:
  0:  0
  1:  1
  2:  1
@@ -1252,7 +1252,7 @@ Converting data to text...
 
 
 Unpacking bit-lengths count...
-lens_cnt:
+lens_freq:
  0:  0
  1:  1
  2:  1
