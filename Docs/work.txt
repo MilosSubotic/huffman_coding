@@ -23,7 +23,6 @@
 		- Localized reset
 			- Use small amount of logic on one synchronized reset.
 			- Small fan-out and small delay.
-			- Syncrhonize reset for every module.
 			
 
 - Verification:
