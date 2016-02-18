@@ -1,8 +1,28 @@
 
-- Use AXI-Stream convention for communicating between modules.
-	- data, valid, ready
-	- data could be any composite type (record or array)
-	- Maybe to pack these 3 signals to struct.
+- Convension:
+	- _ notation
+	- i_ and o_ in front of inputs and outputs
+	- rising_edge instead of 'event =
+	- Use AXI-Stream convention for communicating between modules.
+		- data, valid, ready
+		- data could be any composite type (record or array)
+		- Example:
+			i_sorted_symbols       : in  t_sorted_symbols
+			i_sorted_symbols_valid : in  std_logic
+			i_sorted_symbols_ready : out std_logic
+	- Reset
+		- negative
+			- in_ and n_ as prefixes.
+		- Use reset only when realy needed.
+			- That means reset stuff which impact on valid and ready signals, 
+				so we don't send garbage to the output.
+		- Asynchronous assertion, synchronous deassertion
+			- External async reset is applied to async reset of two 
+				syncrhonization flip-flops which propagate 1 which is further
+				appied to async reset of system flip-flops.
+			- Use small amount of logic on one synchronized reset.
+				- Small fan-out and small delay.
+			
 
 - Verification:
 	- Transaction level verification
