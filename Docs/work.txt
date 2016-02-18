@@ -16,13 +16,17 @@
 		- Use reset only when realy needed.
 			- That means reset stuff which impact on valid and ready signals, 
 				so we don't send garbage to the output.
-		- Asynchronous assertion, synchronous deassertion
-			- External async reset is applied to async reset of two 
-				syncrhonization flip-flops which propagate 1 which is further
-				appied to async reset of system flip-flops.
-		- Localized reset
-			- Use small amount of logic on one synchronized reset.
-			- Small fan-out and small delay.
+		- Use reset bridge
+			- External async reset is applied to async reset of two
+				syncrhonization flip-flops which propagate logic 1 
+				which is further appied to async reset of the 
+				system flip-flops.
+			- Async flip-flops are cheaper.
+			- Asynchronous assertion, synchronous deassertion
+			- Synchronize reset to clock domain.
+			- Localize reset
+				- Use small amount of logic on one synchronized reset.
+				- Small fan-out and small reset skew.
 			
 
 - Verification:
