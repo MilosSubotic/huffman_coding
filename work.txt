@@ -1,0 +1,17 @@
+
+- Use AXI-Stream convention for communicating between modules.
+	- data, valid, ready
+	- data could be any composite type (record or array)
+	- Maybe to pack these 3 signals to struct.
+
+- Verification:
+	- Transaction level verification
+	- Check bit-exact data between pipe modules.
+		- For AXIS that means when valid && ready
+	- Common file format.
+		- CSV
+		- char per bit
+		- : as separator between fields
+	- One file per bus between modules.
+
+
