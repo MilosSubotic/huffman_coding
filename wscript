@@ -19,7 +19,7 @@ import waflib
 
 ###############################################################################
 
-APPNAME = 'MWT_Numeric_Experiments'
+APPNAME = 'huffman_codding'
 
 top = '.'
 
