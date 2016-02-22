@@ -38,5 +38,8 @@
 		- char per bit
 		- : as separator between fields
 	- One file per bus between modules.
+	- In VHDL testbench make random de-assertions on valid and ready signals
+		to test robustness of AXIS handshaking protocol.
+
 
 
