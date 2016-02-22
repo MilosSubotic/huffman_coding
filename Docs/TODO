@@ -1,4 +1,6 @@
 
 - Rewrite stuff from work.txt to LaTeX
-- Should reset be syncrhonized per module.
+- Should reset be syncrhonized per module?
+- Find out how read from file to std_logic and std_logic_vector to know 
+	which separators to use in CSV files.
 
