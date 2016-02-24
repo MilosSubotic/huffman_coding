@@ -22,7 +22,7 @@ using namespace std;
 		cout << #var << " = " << var << endl; \
 	}while(0)
 
-#define DATA_LEN 16*1000
+#define DATA_LEN 1000
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -52,6 +52,8 @@ int main() {
 	huffman_decode(enc_data, out_data);
 
 	cout << "Comparing input and output..." << endl;
+	DEBUG(in_data.size());
+	DEBUG(out_data.size());
 	if(in_data != out_data){
 		cout << "Mismatch!" << endl;
 		for(int i = 0; i < in_data.size(); i++){

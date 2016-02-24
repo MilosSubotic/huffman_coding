@@ -68,7 +68,9 @@ namespace huffman_coding {
 			}
 		};
 
-		for(int block = 0; block < in_data.size()/block_len; block++){
+		const int block_num = ceil(float(in_data.size())/block_len);
+		cout << "block_num: " << block_num << endl << endl;
+		for(int block = 0; block < block_num; block++){
 			cout << "block: " << block << endl << endl;
 
 			vector<sym_t> in_data_block(block_len);
@@ -95,7 +97,7 @@ namespace huffman_coding {
 
 			vector<freq_t> histogram(sym_num, 0);
 
-			for(int d = 0; d < sym_num; d++){
+			for(int d = 0; d < block_len; d++){
 				histogram[in_data_block[d]]++;
 			}
 
@@ -497,7 +499,7 @@ namespace huffman_coding {
 			cout << "Encoding and packing data..." << endl;
 
 			cout << "Encoding:" << endl;
-			for(int d = 0; d < sym_num; d++){
+			for(int d = 0; d < block_len; d++){
 				sym_t sym = in_data_block[d];
 				code_t code = code_table[sym];
 				len_t code_len = codes_len[sym];
@@ -635,9 +637,8 @@ cout << "ed++" << endl;
 
 			cout << "Decoding data..." << endl;
 
-			for(int d = 0; d < sym_num; d++){
+			for(int d = 0; d < block_len; d++){
 				if(acc_len < max_code_len){
-cout << "ed++2" << endl;
 					acc |= uint64_t(*ed++) << acc_len;
 					acc_len += 32;
 				}
