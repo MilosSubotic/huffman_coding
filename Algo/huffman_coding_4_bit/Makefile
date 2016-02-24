@@ -49,8 +49,6 @@ huffman_coding${EXE}: ${OBJECTS}
 ###############################################################################
 
 clean:
-	make clean -C other/examples/
-	make clean -C other/huffman_codec/
-	rm -f *.exe *.elf *.o
+	rm -f *.exe *.elf *.o *.log
 
 ###############################################################################
