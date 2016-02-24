@@ -15,15 +15,26 @@ end
 if length(ARGS) ≠ 1
 	println("""
 Usage:
-	huffman_tree_depth.jl MAX_DEPTH
+	huffman_tree_depth.jl <block_len_log2>
+
 """)
 	exit(1)
 end
 
-max_depth = parse(Int, ARGS[1])
-f = fibonacci(max_depth+1)
-max_count = cumsum(f)[end]
+block_len_log2 = parse(Int, ARGS[1])
+@show block_len_log2
+
+block_len = 1 << block_len_log2
+
+max_depth = 0
+for d in 1:32
+	f = fibonacci(d+1)
+	max_freq = cumsum(f)[end]
+	if max_freq >= block_len
+		max_depth = d
+		break
+	end
+end
 
 @show max_depth
-@show max_count
 
