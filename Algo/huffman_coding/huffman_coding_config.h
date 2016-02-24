@@ -14,7 +14,7 @@
 
 namespace huffman_coding {
 	// User defined.
-	const int sym_width = 4;
+	const int sym_width = 8;
 	const int block_len_log2 = 8;
 
 	// Calculated by huffman_tree_depth.jl script.
