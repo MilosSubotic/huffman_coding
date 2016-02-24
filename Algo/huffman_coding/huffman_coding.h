@@ -21,7 +21,7 @@ namespace huffman_coding {
 		std::vector<uint8_t>& out_enc_data
 	);
 
-	void huffman_encode(
+	void huffman_decode(
 		const std::vector<uint8_t>& in_enc_data,
 		std::vector<sym_t>& out_data
 	);

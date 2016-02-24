@@ -8,7 +8,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 
-#include "ttmath/ttmath.h"
+#include <stdint.h>
 
 #include "huffman_coding_config.h"
 
@@ -16,24 +16,14 @@
 
 namespace huffman_coding {
 
-#ifdef TTMATH_PLATFORM32
-	constexpr int bits_to_nums(int bits) {
-		return ceil(float(bits)/32);
-	}
-#else
-	constexpr int bits_to_nums(int bits) {
-		return ceil(float(bits)/64);
-	}
-#endif
-
-	typedef ttmath::UInt<bits_to_nums(sym_width)> sym_t;
-	typedef ttmath::UInt<bits_to_nums(freq_width)> freq_t;
+	typedef uint32_t sym_t; // sym_width
+	typedef uint32_t freq_t; // freq_width
 	typedef freq_t node_t;
-	typedef ttmath::UInt<bits_to_nums(dep_width)> dep_t; // 3-bit.
-	typedef dep_t len_t; // 3-bit.
-/*	typedef bitset<> len_freq_t; // 5-bit.
-	typedef int16_t code_t; // 5-bits.
-*/
+	typedef uint32_t dep_t; // dep_width
+	typedef dep_t len_t; // dep_width
+	typedef uint32_t len_freq_t; // len_freq_width
+	typedef uint32_t code_t; // max_code_width
+
 }
 
 //////////////////////////////////////////////////////////////////////////////

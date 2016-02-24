@@ -13,16 +13,20 @@
 //////////////////////////////////////////////////////////////////////////////
 
 namespace huffman_coding {
+	// User defined.
 	const int sym_width = 4;
-	const int sym_block_len = 16;
-
-	// Calculated.
-	const int max_freq = sym_block_len;
-	const int freq_width = ceil(log2(max_freq + 1));
+	const int max_block_len = 16;
 
 	// Calculated by huffman_tree_depth.jl script.
 	const int max_dep = 5; // Max depth.
+
+	// Calculated.
+	const int freq_num = 1 << sym_width;
+	const int max_freq = max_block_len;
+	const int freq_width = ceil(log2(max_freq + 1));
 	const int dep_width = ceil(log2(max_dep + 1));
+	const int len_freq_width = freq_num;
+	const int max_code_width = max_dep;
 }
 
 //////////////////////////////////////////////////////////////////////////////
