@@ -583,7 +583,6 @@ namespace huffman_coding {
 			for(len_t len = 1; len < len_freq_num; len++){
 				for(int freq = lens_freq[len]; freq > 0; freq--){
 					sym_t sym = unpack(sym_width); // sym_t is 4-bit.
-DEBUG(sym);
 					code_table[sym] = code;
 					codes_len[sym] = len;
 					// Increment to next code.
