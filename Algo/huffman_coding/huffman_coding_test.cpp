@@ -1,0 +1,40 @@
+/*
+ * @license MIT
+ * @brief Test Huffman coding.
+ */
+
+//////////////////////////////////////////////////////////////////////////////
+
+#include <iostream>
+#include <stdint.h>
+
+using namespace std;
+
+#include "huffman_coding.h"
+
+//////////////////////////////////////////////////////////////////////////////
+
+#define DEBUG(var) \
+	do{ \
+		cout << #var << " = " << var << endl; \
+	}while(0)
+
+//////////////////////////////////////////////////////////////////////////////
+
+int main() {
+
+	using namespace huffman_coding;
+
+	DEBUG(sym_width);
+	DEBUG(sym_block_len);
+	DEBUG(freq_width);
+
+	DEBUG(sym_t(123));
+	DEBUG(ttmath::Int<1>(1).ToInt());
+
+	cout << "End." << endl;
+
+	return 0;
+}
+
+//////////////////////////////////////////////////////////////////////////////
