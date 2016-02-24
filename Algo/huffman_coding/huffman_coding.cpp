@@ -59,7 +59,7 @@ namespace huffman_coding {
 		int acc_len = 0;
 		auto pack = [&](uint32_t bits, unsigned len) {
 			assert(len <= 32);
-			acc |= bits << acc_len;
+			acc |= uint64_t(bits) << acc_len;
 			acc_len += len;
 			if(acc_len >= 32){
 				out_enc_data.push_back(acc & 0xffffffff);
@@ -543,6 +543,7 @@ namespace huffman_coding {
 			assert(len <= 32);
 			uint32_t ret;
 			if(acc_len < len){
+cout << "ed++" << endl;
 				acc |= uint64_t(*ed++) << acc_len;
 				acc_len += 32;
 			}
@@ -636,6 +637,7 @@ namespace huffman_coding {
 
 			for(int d = 0; d < sym_num; d++){
 				if(acc_len < max_code_len){
+cout << "ed++2" << endl;
 					acc |= uint64_t(*ed++) << acc_len;
 					acc_len += 32;
 				}
@@ -668,7 +670,7 @@ namespace huffman_coding {
 				cout << "iter " << d << ":" << endl;
 				cout << "best_len: " << setw(3) << best_len << endl;
 				cout << "best_code: " << setw(max_code_len)
-						<< bits_to_string(code, best_len, 0) << endl;
+						<< bits_to_string(best_code, best_len, 0) << endl;
 				cout << "best_sym: " << setw(3) << best_sym << endl;
 				cout << endl;
 			}

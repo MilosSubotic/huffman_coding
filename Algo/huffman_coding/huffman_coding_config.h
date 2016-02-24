@@ -28,7 +28,7 @@ namespace huffman_coding {
 	const int dep_width = ceil(log2(max_dep + 1));
 	const int len_width = dep_width;
 	const int len_freq_width = freq_width;
-	const int len_freq_num = max_dep;
+	const int len_freq_num = max_dep + 1;
 	const int code_width = max_dep;
 	const int max_code_len = code_width;
 }

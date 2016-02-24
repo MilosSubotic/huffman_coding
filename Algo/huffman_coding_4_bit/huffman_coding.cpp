@@ -694,7 +694,7 @@ void huffman_decode(
 			cout << "iter " << d << ":" << endl;
 			cout << "best_len: " << setw(2) << best_len << endl;
 			cout << "best_code: "
-				<< setw(5) << bits_to_string(code, best_len, 0) << endl;
+				<< setw(5) << bits_to_string(best_code, best_len, 0) << endl;
 			cout << "best_sym: " << setw(2) << best_sym << endl;
 			cout << endl;
 		}
