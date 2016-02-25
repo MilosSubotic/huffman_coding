@@ -15,10 +15,10 @@
 namespace huffman_coding {
 	// User defined.
 	const int sym_width = 8;
-	const int block_len_log2 = 8;
+	const int block_len_log2 = 15;
 
 	// Calculated by huffman_tree_depth.jl script.
-	const int max_dep = 11; // Max depth.
+	const int max_dep = 21; // Max depth.
 
 	// Calculated.
 	const int block_len = 1 << block_len_log2;

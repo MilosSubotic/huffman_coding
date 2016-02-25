@@ -22,7 +22,7 @@ using namespace std;
 		cout << #var << " = " << var << endl; \
 	}while(0)
 
-#define DATA_LEN 1000
+#define DATA_LEN block_len*10
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -30,8 +30,9 @@ int main() {
 
 	using namespace huffman_coding;
 
-	//srand(time(NULL));
-	srand(0);
+	unsigned seed = time(NULL);
+	cout << "seed: " << seed << endl;
+	srand(seed);
 
 	vector<sym_t> in_data(DATA_LEN);
 	for(int i = 0; i < DATA_LEN; i++){
