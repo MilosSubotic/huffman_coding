@@ -2,7 +2,7 @@
 - Convension:
 	- _ notation
 	- i_ and o_ in front of inputs and outputs
-	- rising_edge instead of 'event =
+	- rising_edge instead of 'event and =
 	- Use AXI-Stream convention for communicating between modules.
 		- data, valid, ready
 		- data could be any composite type (record or array)
@@ -36,7 +36,7 @@
 	- Common file format.
 		- CSV
 		- char per bit
-		- : as separator between fields
+		- space as separator between fields and elements of array
 	- One file per bus between modules.
 	- In VHDL testbench make random de-assertions on valid and ready signals
 		to test robustness of AXIS handshaking protocol.
