@@ -118,8 +118,8 @@ namespace huffman_coding {
 				freq_t freq;
 			};
 
-			// freq_width ones.
-			const node_t null_node = (1 << (freq_width))-1;
+			// node_width ones.
+			const node_t null_node = (1 << (node_width))-1;
 
 			vector<sym_and_freq> sort_freq(sym_num);
 			for(int sym = 0; sym < sym_num; sym++){
@@ -222,7 +222,8 @@ namespace huffman_coding {
 				depth_tracker[sym].dep = 0;
 			}
 
-			// Could be done in 15 iterations, because there is max 15 parents.
+			// Could be done in sym_num-1 iterations, 
+			// because there is max sym_num-1 parents.
 			for(int iter = 0; iter < sym_num-1; iter++){
 				// When only one node and no more leaves then tree is built.
 				if(leaves[0].is_null() && parents[1].is_null()){
@@ -375,9 +376,6 @@ namespace huffman_coding {
 			vector<sym_and_len> sort_len(sym_num);
 			for(int sym = 0; sym < sym_num; sym++){
 				sort_len[sym].sym = sym;
-				// If length is 0 put it to invalid value 7,
-				// which is also greater than 5,
-				// to be sorted at the end of array.
 				if(histogram[sym] == 0){
 					sort_len[sym].len = null_len;
 				}else{
@@ -472,9 +470,8 @@ namespace huffman_coding {
 
 			uint32_t store_len = 0;
 
-			// Store 4 bit-lengths count.
 			for(int len = 1; len < len_freq_num; len++){
-				pack(lens_freq[len], len_freq_width); // len_freq_t is 5-bit.
+				pack(lens_freq[len], len_freq_width);
 
 				store_len += len_freq_width;
 			}
@@ -482,9 +479,10 @@ namespace huffman_coding {
 			// Store symbols.
 			for(int i = 0; i < sym_num; i++){
 				len_t len = sort_len[i].len;
-				// Don't save symbols with invalid length ie. symbols with count 0.
+				// Don't save symbols with invalid length 
+				// ie. symbols with count 0.
 				if(len != null_len){
-					pack(sort_len[i].sym, sym_width); // sym_t is 4-bit.
+					pack(sort_len[i].sym, sym_width);
 
 					store_len += sym_width;
 				}
@@ -505,7 +503,8 @@ namespace huffman_coding {
 				len_t code_len = codes_len[sym];
 
 				// Strap 1s above code length.
-				code &= (1 << code_len) - 1; // TODO Isn't this redudant a little.
+				// TODO Isn't this redudant a little.
+				code &= (1 << code_len) - 1;
 
 				pack(code, code_len);
 
@@ -545,7 +544,6 @@ namespace huffman_coding {
 			assert(len <= 32);
 			uint32_t ret;
 			if(acc_len < len){
-cout << "ed++" << endl;
 				acc |= uint64_t(*ed++) << acc_len;
 				acc_len += 32;
 			}
@@ -563,7 +561,7 @@ cout << "ed++" << endl;
 			vector<len_freq_t> lens_freq(len_freq_num);
 
 			for(int len = 1; len < len_freq_num; len++){
-				lens_freq[len] = unpack(len_freq_width); // len_freq_t is 5-bit.
+				lens_freq[len] = unpack(len_freq_width);
 			}
 
 			cout << "lens_freq:" << endl;
@@ -585,7 +583,7 @@ cout << "ed++" << endl;
 			code_t code = 0;
 			for(len_t len = 1; len < len_freq_num; len++){
 				for(int freq = lens_freq[len]; freq > 0; freq--){
-					sym_t sym = unpack(sym_width); // sym_t is 4-bit.
+					sym_t sym = unpack(sym_width);
 					code_table[sym] = code;
 					codes_len[sym] = len;
 					// Increment to next code.

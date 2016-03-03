@@ -24,6 +24,7 @@ namespace huffman_coding {
 	const int block_len = 1 << block_len_log2;
 	const int sym_num = 1 << sym_width; // Max number of frequencies.
 	const int freq_width = block_len_log2 + 1;
+	const int node_width = freq_width;
 	const int num_freq = block_len;
 	const int dep_width = ceil(log2(max_dep + 1));
 	const int len_width = dep_width;
