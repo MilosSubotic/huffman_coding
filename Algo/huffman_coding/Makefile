@@ -46,6 +46,8 @@ all: huffman_coding_test${EXE}
 huffman_coding_test${EXE}: ${OBJECTS}
 	${CXX} -o $@ $^ ${LDFLAGS} ${LIBS}
 
+*.o: Makefile *.h
+
 ###############################################################################
 
 clean:

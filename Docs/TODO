@@ -5,3 +5,5 @@
 	which separators to use in CSV files.
 - Make convention how to read test vectors from CSV files.
 
+- sym_width = 8, block_len_log2 = 7	and max_dep = 9 not working.
+
