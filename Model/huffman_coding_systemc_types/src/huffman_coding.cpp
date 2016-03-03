@@ -17,19 +17,20 @@ using namespace std;
 
 
 #include "huffman_coding.h"
-#include "huffman_coding_structs.h"
+#include "huffman_coding_print.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
 #define DEBUG(var) \
 	do{ \
-		cout << #var << " = " << var << endl; \
+		bcout << #var << " = " << var << endl; \
 	}while(0)
 
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace huffman_coding {
 
+	binary_ostream bcout(cout);
 
 	template<typename T>
 	static void shift(deque<T>& d) {
@@ -37,21 +38,11 @@ namespace huffman_coding {
 		d.push_back(T());
 	}
 
-	static string bits_to_string(
-			uint64_t bits, unsigned start, unsigned end = 0) {
-		ostringstream oss;
-		bitset<64> bf(bits);
-		for(int i = start-1; i >= int(end); i--){
-			oss << bf[i];
-		}
-		return oss.str();
-	}
-
 	void huffman_encode(
 		const std::vector<sym_t>& in_data,
 		std::vector<uint32_t>& out_enc_data
 	) {
-		cout << "Encoding..." << endl << endl;
+		bcout << "Encoding..." << endl << endl;
 
 		uint64_t acc = 0;
 		int acc_len = 0;
@@ -67,9 +58,9 @@ namespace huffman_coding {
 		};
 
 		const int block_num = ceil(float(in_data.size())/block_len);
-		cout << "block_num: " << block_num << endl << endl;
+		bcout << "block_num: " << block_num << endl << endl;
 		for(int block = 0; block < block_num; block++){
-			cout << "block: " << block << endl << endl;
+			bcout << "block: " << block << endl << endl;
 
 			vector<sym_t> in_data_block(block_len);
 
@@ -83,15 +74,13 @@ namespace huffman_coding {
 				}
 			}
 
-			cout << "in_data_block:" << endl;
+			bcout << "in_data_block:" << endl;
 			for(int d = 0; d < block_len; d++){
-				cout << setw(3)
-					<< in_data_block[d] << endl;
+				bcout << in_data_block[d] << endl;
 			}
-			cout << endl << endl;
+			bcout << endl << endl;
 
-
-			cout << "Creating histogram..." << endl;
+			bcout << "Creating histogram..." << endl;
 
 			vector<freq_t> histogram(sym_num, 0);
 
@@ -99,16 +88,15 @@ namespace huffman_coding {
 				histogram[in_data_block[d]]++;
 			}
 
-			cout << "histogram:" << endl;
+			bcout << "histogram:" << endl;
 			for(int sym = 0; sym < sym_num; sym++){
-				cout << setw(3) << sym << ": " << setw(3)
-						<< histogram[sym] << endl;
+				bcout << sym << ": "	<< histogram[sym] << endl;
 			}
-			cout << endl << endl;
+			bcout << endl << endl;
 
 
 
-			cout << "Preparing for sorting symbols by count..." << endl;
+			bcout << "Preparing for sorting symbols by count..." << endl;
 
 			class sym_and_freq {
 			public:
@@ -126,16 +114,16 @@ namespace huffman_coding {
 				}
 			}
 
-			cout << "sort_freq:" << endl;
+			bcout << "sort_freq:" << endl;
 			for(int i = 0; i < sym_num; i++){
-				cout << setw(3) << sort_freq[i].sym << ": "
-					<< setw(3) << sort_freq[i].freq << endl;
+				bcout << sort_freq[i].sym << ": "
+					<< sort_freq[i].freq << endl;
 			}
-			cout << endl << endl;
+			bcout << endl << endl;
 
 
 
-			cout << "Sorting symbols by count..." << endl;
+			bcout << "Sorting symbols by count..." << endl;
 
 			sort(
 				sort_freq.begin(),
@@ -145,17 +133,17 @@ namespace huffman_coding {
 				}
 			);
 
-			cout << "sort_freq:" << endl;
+			bcout << "sort_freq:" << endl;
 			for(int i = 0; i < sym_num; i++){
-				cout << setw(3) << sort_freq[i].sym << ": "
-					<< setw(3) << sort_freq[i].freq << endl;
+				bcout  << sort_freq[i].sym << ": "
+					<< sort_freq[i].freq << endl;
 			}
-			cout << endl << endl;
+			bcout << endl << endl;
 
 
 
 
-			cout << "Creating leaves..." << endl;
+			bcout << "Creating leaves..." << endl;
 
 
 			class node_and_freq {
@@ -185,17 +173,17 @@ namespace huffman_coding {
 				leaves[i] = sort_freq[i];
 			}
 
-			cout << "leaves:" << endl;
+			bcout << "leaves:" << endl;
 			for(int i = 0; i < sym_num; i++){
-				cout << setw(3) << leaves[i].node << ": "
-					<< setw(3) << leaves[i].freq << endl;
+				bcout << leaves[i].node << ": "
+					<< leaves[i].freq << endl;
 			}
-			cout << endl << endl;
+			bcout << endl << endl;
 
 
 
 
-			cout << "Tracking depth of leaves on quasi-tree..." << endl;
+			bcout << "Tracking depth of leaves on quasi-tree..." << endl;
 
 			deque<node_and_freq> parents(sym_num);
 			int parents_end = 0;
@@ -293,24 +281,24 @@ namespace huffman_coding {
 					}
 				}
 
-				cout << "iter " << iter << ":" << endl;
-				cout << "leaves:" << endl;
+				bcout << "iter " << iter << ":" << endl;
+				bcout << "leaves:" << endl;
 				for(int i = 0; i < sym_num; i++){
-					cout << setw(3) << leaves[i].node << ": "
-						<< setw(3) << leaves[i].freq << endl;
+					bcout << leaves[i].node << ": "
+						<< leaves[i].freq << endl;
 				}
-				cout << "parents:" << endl;
+				bcout << "parents:" << endl;
 				for(int i = 0; i < sym_num; i++){
-					cout << setw(3) << parents[i].node << ": "
-						<< setw(3) << parents[i].freq << endl;
+					bcout << parents[i].node << ": "
+						<< parents[i].freq << endl;
 				}
-				cout << "parents_end: " << parents_end << endl;
-				cout << "depth_tracker:" << endl;
+				bcout << "parents_end: " << parents_end << endl;
+				bcout << "depth_tracker:" << endl;
 				for(int i = 0; i < sym_num; i++){
-					cout << setw(3) << depth_tracker[i].node << ": "
-						<< setw(3) << depth_tracker[i].dep << endl;
+					bcout << depth_tracker[i].node << ": "
+						<< depth_tracker[i].dep << endl;
 				}
-				cout << endl;
+				bcout << endl;
 
 			}
 
@@ -318,12 +306,12 @@ namespace huffman_coding {
 			assert(leaves[0].is_null());
 			assert(!parents[0].is_null());
 			assert(parents[1].is_null());
-			cout << endl << endl;
+			bcout << endl << endl;
 
 
 
 
-			cout << "Extracting bit-lengths of codes for symbols..." << endl;
+			bcout << "Extracting bit-lengths of codes for symbols..." << endl;
 
 			vector<len_t> codes_len(sym_num);
 			for(int sym = 0; sym < sym_num; sym++){
@@ -331,16 +319,16 @@ namespace huffman_coding {
 				assert(codes_len[sym] <= max_code_len);
 			}
 
-			cout << "codes_len:" << endl;
+			bcout << "codes_len:" << endl;
 			for(int sym = 0; sym < sym_num; sym++){
-				cout << setw(3) << sym << ": "
-					<< setw(3) << codes_len[sym] << endl;
+				bcout << sym << ": "
+					<< codes_len[sym] << endl;
 			}
-			cout << endl << endl;
+			bcout << endl << endl;
 
 
 
-			cout << "Counting same bit-lengths..." << endl;
+			bcout << "Counting same bit-lengths..." << endl;
 
 			vector<len_freq_t> lens_freq(len_freq_num, 0); // Init to zeros.
 
@@ -348,17 +336,17 @@ namespace huffman_coding {
 				lens_freq[codes_len[sym]]++;
 			}
 
-			cout << "lens_freq:" << endl;
+			bcout << "lens_freq:" << endl;
 			for(int len = 0; len < len_freq_num; len++){
-				cout << setw(3) << len << ": "
-					<< setw(3) << lens_freq[len] << endl;
+				bcout << len << ": "
+					<< lens_freq[len] << endl;
 			}
-			cout << endl << endl;
+			bcout << endl << endl;
 
 
 
 
-			cout << "Preparing for sorting symbols by bit-lengths..." << endl;
+			bcout << "Preparing for sorting symbols by bit-lengths..." << endl;
 
 			class sym_and_len{
 			public:
@@ -378,16 +366,16 @@ namespace huffman_coding {
 				}
 			}
 
-			cout << "sort_len:" << endl;
+			bcout << "sort_len:" << endl;
 			for(int i = 0; i < sym_num; i++){
-				cout << setw(3) << sort_len[i].sym << ": "
-					<< setw(3) << sort_len[i].len << endl;
+				bcout << sort_len[i].sym << ": "
+					<< sort_len[i].len << endl;
 			}
-			cout << endl << endl;
+			bcout << endl << endl;
 
 
 
-			cout << "Sorting symbols by lengths..." << endl;
+			bcout << "Sorting symbols by lengths..." << endl;
 
 			sort(
 				sort_len.begin(),
@@ -397,17 +385,17 @@ namespace huffman_coding {
 				}
 			);
 
-			cout << "sort_len:" << endl;
+			bcout << "sort_len:" << endl;
 			for(int i = 0; i < sym_num; i++){
-				cout << setw(3) << sort_len[i].sym << ": "
-					<< setw(3) << sort_len[i].len << endl;
+				bcout << sort_len[i].sym << ": "
+					<< sort_len[i].len << endl;
 			}
-			cout << endl << endl;
+			bcout << endl << endl;
 
 
 
 
-			cout << "Creating canonical code table..." << endl;
+			bcout << "Creating canonical code table..." << endl;
 
 			vector<code_t> code_table(sym_num);
 			code_t code = 0;
@@ -420,27 +408,21 @@ namespace huffman_coding {
 				code += 1 << (code_width - len);
 			}
 
-			cout << "codes_len:" << endl;
+			bcout << "codes_len:" << endl;
 			for(int sym = 0; sym < sym_num; sym++){
-				cout << setw(3) << sym << ": "
+				bcout << sym << ": "
 					<< setw(1) << codes_len[sym] << endl;
 			}
-			cout << "code_table:" << endl;
+			bcout << "code_table:" << endl;
 			for(int sym = 0; sym < sym_num; sym++){
-				cout << setw(3) << sym << ": "
-					<< bits_to_string(
-							code_table[sym],
-							max_dep,
-							max_dep-codes_len[sym]
-						)
-					<< endl;
+				bcout << sym << ": " << code_table[sym] << endl;
 			}
-			cout << endl << endl;
+			bcout << endl << endl;
 
 
 
 			// Mirror codes for little endian encoding.
-			cout << "Mirror codes for little endian encoding." << endl;
+			bcout << "Mirror codes for little endian encoding." << endl;
 
 			for(int sym = 0; sym < sym_num; sym++){
 				bitset<64> src(code_table[sym]);
@@ -451,17 +433,20 @@ namespace huffman_coding {
 				code_table[sym] = dst.to_ulong();
 			}
 
-			cout << "code_table:" << endl;
+			bcout << "codes_len:" << endl;
 			for(int sym = 0; sym < sym_num; sym++){
-				cout << setw(3) << sym << ": " << setw(code_width)
-					<< bits_to_string(code_table[sym], codes_len[sym], 0)
-					<< endl;
+				bcout << sym << ": "
+					<< codes_len[sym] << endl;
 			}
-			cout << endl << endl;
+			bcout << "code_table:" << endl;
+			for(int sym = 0; sym < sym_num; sym++){
+				bcout << sym << ": " << code_table[sym] << endl;
+			}
+			bcout << endl << endl;
 
 
 
-			cout << "Packing canonical table..." << endl;
+			bcout << "Packing canonical table..." << endl;
 
 			uint32_t store_len = 0;
 
@@ -483,15 +468,15 @@ namespace huffman_coding {
 				}
 			}
 
-			cout << "stored_len: " << store_len << endl;
-			cout << endl << endl;
+			bcout << "stored_len: " << store_len << endl;
+			bcout << endl << endl;
 
 
 
 
-			cout << "Encoding and packing data..." << endl;
+			bcout << "Encoding and packing data..." << endl;
 
-			cout << "Encoding:" << endl;
+			bcout << "Encoding:" << endl;
 			for(int d = 0; d < block_len; d++){
 				sym_t sym = in_data_block[d];
 				code_t code = code_table[sym];
@@ -505,19 +490,19 @@ namespace huffman_coding {
 
 				store_len += code_len;
 
-				cout << "iter " << d << ":" << endl;
-				cout << "sym: " << setw(3) << sym << endl;
-				cout << "code: "
-					<< setw(5) << bits_to_string(code, code_len, 0) << endl;
-				cout << endl;
+				bcout << "iter " << d << ":" << endl;
+				bcout << "sym: " << sym << endl;
+				bcout << "code_len: " << code_len << endl;
+				bcout << "code: " << code << endl;
+				bcout << endl;
 
 			}
-			cout << "stored_len: " << store_len << endl;
-			cout << endl << endl;
+			bcout << "stored_len: " << store_len << endl;
+			bcout << endl << endl;
 
 		}
 
-		cout << "last byte acc_len: " << acc_len << endl;
+		bcout << "last byte acc_len: " << acc_len << endl;
 		// Push unfinished byte, if one exists.
 		if(acc_len != 0){
 			out_enc_data.push_back(acc);
@@ -530,7 +515,7 @@ namespace huffman_coding {
 		std::vector<sym_t>& out_data
 	) {
 
-		cout << "Decoding..." << endl << endl;
+		bcout << "Decoding..." << endl << endl;
 
 		uint64_t acc = 0;
 		unsigned acc_len = 0;
@@ -551,7 +536,7 @@ namespace huffman_coding {
 
 		while(ed < in_enc_data.end()) {
 
-			cout << "Unpacking bit-lengths count..." << endl;
+			bcout << "Unpacking bit-lengths count..." << endl;
 
 			vector<len_freq_t> lens_freq(len_freq_num);
 
@@ -559,17 +544,17 @@ namespace huffman_coding {
 				lens_freq[len] = unpack(len_freq_width);
 			}
 
-			cout << "lens_freq:" << endl;
+			bcout << "lens_freq:" << endl;
 			for(int len = 0; len < len_freq_num; len++){
-				cout << setw(3) << len << ": "
-					<< setw(3) << lens_freq[len] << endl;
+				bcout << len << ": "
+					<< lens_freq[len] << endl;
 			}
-			cout << endl << endl;
+			bcout << endl << endl;
 
 
 
 
-			cout << "Unpacking symbols and creating canonical code table..."
+			bcout << "Unpacking symbols and creating canonical code table..."
 				<< endl;
 
 			vector<len_t> codes_len(sym_num, 0);
@@ -586,27 +571,21 @@ namespace huffman_coding {
 				}
 			}
 
-			cout << "codes_len:" << endl;
+
+			bcout << "codes_len:" << endl;
 			for(int sym = 0; sym < sym_num; sym++){
-				cout << setw(3) << sym << ": "
-					<< setw(3) << codes_len[sym] << endl;
+				bcout << sym << ": "
+					<< codes_len[sym] << endl;
 			}
-			cout << "code_table:" << endl;
+			bcout << "code_table:" << endl;
 			for(int sym = 0; sym < sym_num; sym++){
-				cout << setw(3) << sym << ": "
-					<< bits_to_string(
-							code_table[sym],
-							code_width,
-							code_width-codes_len[sym]
-						)
-					<< endl;
+				bcout << sym << ": " << code_table[sym] << endl;
 			}
-			cout << endl << endl;
+			bcout << endl << endl;
 
 
 
-
-			cout << "Mirroring codes for little endian decoding..." << endl;
+			bcout << "Mirroring codes for little endian decoding..." << endl;
 
 			for(int sym = 0; sym < sym_num; sym++){
 				bitset<64> src(code_table[sym]);
@@ -617,18 +596,21 @@ namespace huffman_coding {
 				code_table[sym] = dst.to_ulong();
 			}
 
-			cout << "code_table:" << endl;
+			bcout << "codes_len:" << endl;
 			for(int sym = 0; sym < sym_num; sym++){
-				cout << setw(3) << sym << ": " << setw(max_code_len)
-					<< bits_to_string(code_table[sym], codes_len[sym], 0)
-					<< endl;
+				bcout << sym << ": "
+					<< codes_len[sym] << endl;
 			}
-			cout << endl << endl;
+			bcout << "code_table:" << endl;
+			for(int sym = 0; sym < sym_num; sym++){
+				bcout << sym << ": " << code_table[sym] << endl;
+			}
+			bcout << endl << endl;
 
 
 
 
-			cout << "Decoding data..." << endl;
+			bcout << "Decoding data..." << endl;
 
 			for(int d = 0; d < block_len; d++){
 				if(acc_len < max_code_len){
@@ -661,21 +643,20 @@ namespace huffman_coding {
 
 				out_data.push_back(best_sym);
 
-				cout << "iter " << d << ":" << endl;
-				cout << "best_len: " << setw(3) << best_len << endl;
-				cout << "best_code: " << setw(max_code_len)
-						<< bits_to_string(best_code, best_len, 0) << endl;
-				cout << "best_sym: " << setw(3) << best_sym << endl;
-				cout << endl;
+				bcout << "iter " << d << ":" << endl;
+				bcout << "best_len: " << best_len << endl;
+				bcout << "best_code: " << best_code << endl;
+				bcout << "best_sym: " << best_sym << endl;
+				bcout << endl;
 			}
 
 		}
 
-		cout << "out_data:" << endl;
+		bcout << "out_data:" << endl;
 		for(int d = 0; d < out_data.size(); d++){
-			cout << setw(3) << d << ": " << setw(3) << out_data[d] << endl;
+			bcout << d << ": " << out_data[d] << endl;
 		}
-		cout << endl << endl;
+		bcout << endl << endl;
 
 	}
 

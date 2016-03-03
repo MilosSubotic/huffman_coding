@@ -7,3 +7,6 @@
 
 - sym_width = 8, block_len_log2 = 7	and max_dep = 9 not working.
 
+- Should we in code_t compare just by length? Maybe hardware could be cheaper
+	not to force 0 on unused bits ie. bits above code length.
+

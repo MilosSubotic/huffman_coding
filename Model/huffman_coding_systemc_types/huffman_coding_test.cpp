@@ -43,6 +43,7 @@ int sc_main(int, char**){
 
 	vector<uint32_t> enc_data;
 	huffman_encode(in_data, enc_data);
+return 0;
 
 	cout << "enc_data size: " << enc_data.size() << endl;
 	cout << "enc_data:" << endl;

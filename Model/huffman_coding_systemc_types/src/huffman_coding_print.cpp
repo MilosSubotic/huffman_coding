@@ -1,17 +1,21 @@
 /*
  * @license MIT
- * @brief Huffman coding structs.
+ * @brief Print stuff for types and structs.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "huffman_coding_structs.h"
+#include "huffman_coding_print.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace huffman_coding {
 
-
+	void binary_ostream::print(const sc_uint_base& x) {
+		for(int i = x.length()-1; i >= 0; i--) {
+			_os << (x[i] ? '1' : '0');
+		}
+	}
 
 }
 
