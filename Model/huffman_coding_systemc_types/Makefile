@@ -7,6 +7,7 @@
 SOURCES= \
 	src/huffman_coding.cpp \
 	src/huffman_coding_print.cpp \
+	src/huffman_coding_structs.cpp \
 	huffman_coding_test.cpp
 
 CPPFLAGS+=-Iinclude

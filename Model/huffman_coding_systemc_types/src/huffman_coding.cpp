@@ -17,7 +17,7 @@ using namespace std;
 
 
 #include "huffman_coding.h"
-#include "huffman_coding_print.h"
+#include "huffman_coding_structs.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -90,19 +90,13 @@ namespace huffman_coding {
 
 			bcout << "histogram:" << endl;
 			for(int sym = 0; sym < sym_num; sym++){
-				bcout << sym << ": "	<< histogram[sym] << endl;
+				bcout << sym << ": " << histogram[sym] << endl;
 			}
 			bcout << endl << endl;
 
 
 
 			bcout << "Preparing for sorting symbols by count..." << endl;
-
-			class sym_and_freq {
-			public:
-				sym_t sym;
-				freq_t freq;
-			};
 
 			vector<sym_and_freq> sort_freq(sym_num);
 			for(int sym = 0; sym < sym_num; sym++){
@@ -116,8 +110,7 @@ namespace huffman_coding {
 
 			bcout << "sort_freq:" << endl;
 			for(int i = 0; i < sym_num; i++){
-				bcout << sort_freq[i].sym << ": "
-					<< sort_freq[i].freq << endl;
+				bcout << sort_freq[i] << endl;
 			}
 			bcout << endl << endl;
 
@@ -135,8 +128,7 @@ namespace huffman_coding {
 
 			bcout << "sort_freq:" << endl;
 			for(int i = 0; i < sym_num; i++){
-				bcout  << sort_freq[i].sym << ": "
-					<< sort_freq[i].freq << endl;
+				bcout  << sort_freq[i] << endl;
 			}
 			bcout << endl << endl;
 
@@ -145,26 +137,6 @@ namespace huffman_coding {
 
 			bcout << "Creating leaves..." << endl;
 
-
-			class node_and_freq {
-			public:
-				node_t node;
-				freq_t freq;
-
-				// Null object.
-				node_and_freq()
-					: node(null_node), freq(null_node) {}
-
-				node_and_freq(node_t node, freq_t freq)
-					: node(node), freq(freq) {}
-
-				node_and_freq(const sym_and_freq& s)
-					: node(s.sym), freq(s.freq) {}
-
-				bool is_null() const {
-					return freq == null_node;
-				}
-			};
 
 			deque<node_and_freq> leaves(sym_num);
 			// Copy sorted symbols to leaf nodes.
@@ -175,8 +147,7 @@ namespace huffman_coding {
 
 			bcout << "leaves:" << endl;
 			for(int i = 0; i < sym_num; i++){
-				bcout << leaves[i].node << ": "
-					<< leaves[i].freq << endl;
+				bcout << leaves[i] << endl;
 			}
 			bcout << endl << endl;
 
@@ -194,11 +165,6 @@ namespace huffman_coding {
 			node_t new_parent_node = sym_num;
 
 			// Used for making canonical Huffman tree.
-			class node_and_dep {
-			public:
-				node_t node;
-				dep_t dep;
-			};
 			vector<node_and_dep> depth_tracker(sym_num);
 			for(int sym = 0; sym < sym_num; sym++){
 				depth_tracker[sym].node = sym;
@@ -284,19 +250,16 @@ namespace huffman_coding {
 				bcout << "iter " << iter << ":" << endl;
 				bcout << "leaves:" << endl;
 				for(int i = 0; i < sym_num; i++){
-					bcout << leaves[i].node << ": "
-						<< leaves[i].freq << endl;
+					bcout << leaves[i] << endl;
 				}
 				bcout << "parents:" << endl;
 				for(int i = 0; i < sym_num; i++){
-					bcout << parents[i].node << ": "
-						<< parents[i].freq << endl;
+					bcout << parents[i] << endl;
 				}
 				bcout << "parents_end: " << parents_end << endl;
 				bcout << "depth_tracker:" << endl;
 				for(int i = 0; i < sym_num; i++){
-					bcout << depth_tracker[i].node << ": "
-						<< depth_tracker[i].dep << endl;
+					bcout << depth_tracker[i] << endl;
 				}
 				bcout << endl;
 
@@ -348,12 +311,6 @@ namespace huffman_coding {
 
 			bcout << "Preparing for sorting symbols by bit-lengths..." << endl;
 
-			class sym_and_len{
-			public:
-				sym_t sym;
-				len_t len;
-			};
-
 			const int null_len = (1 << len_width) - 1;
 
 			vector<sym_and_len> sort_len(sym_num);
@@ -368,8 +325,7 @@ namespace huffman_coding {
 
 			bcout << "sort_len:" << endl;
 			for(int i = 0; i < sym_num; i++){
-				bcout << sort_len[i].sym << ": "
-					<< sort_len[i].len << endl;
+				bcout << sort_len[i] << endl;
 			}
 			bcout << endl << endl;
 
@@ -387,8 +343,7 @@ namespace huffman_coding {
 
 			bcout << "sort_len:" << endl;
 			for(int i = 0; i < sym_num; i++){
-				bcout << sort_len[i].sym << ": "
-					<< sort_len[i].len << endl;
+				bcout << sort_len[i] << endl;
 			}
 			bcout << endl << endl;
 
@@ -410,8 +365,7 @@ namespace huffman_coding {
 
 			bcout << "codes_len:" << endl;
 			for(int sym = 0; sym < sym_num; sym++){
-				bcout << sym << ": "
-					<< setw(1) << codes_len[sym] << endl;
+				bcout << sym << ": " << codes_len[sym] << endl;
 			}
 			bcout << "code_table:" << endl;
 			for(int sym = 0; sym < sym_num; sym++){
@@ -421,16 +375,15 @@ namespace huffman_coding {
 
 
 
-			// Mirror codes for little endian encoding.
-			bcout << "Mirror codes for little endian encoding." << endl;
+			bcout << "Mirroring codes for little endian decoding..." << endl;
 
 			for(int sym = 0; sym < sym_num; sym++){
-				bitset<64> src(code_table[sym]);
-				bitset<64> dst(src);
+				code_t src = code_table[sym];
+				code_t dst;
 				for(int i = 0; i < code_width; i++){
 					dst[code_width-1-i] = src[i];
 				}
-				code_table[sym] = dst.to_ulong();
+				code_table[sym] = dst;
 			}
 
 			bcout << "codes_len:" << endl;
@@ -588,12 +541,12 @@ namespace huffman_coding {
 			bcout << "Mirroring codes for little endian decoding..." << endl;
 
 			for(int sym = 0; sym < sym_num; sym++){
-				bitset<64> src(code_table[sym]);
-				bitset<64> dst(src);
+				code_t src = code_table[sym];
+				code_t dst;
 				for(int i = 0; i < code_width; i++){
 					dst[code_width-1-i] = src[i];
 				}
-				code_table[sym] = dst.to_ulong();
+				code_table[sym] = dst;
 			}
 
 			bcout << "codes_len:" << endl;

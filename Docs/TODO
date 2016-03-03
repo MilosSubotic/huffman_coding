@@ -10,3 +10,7 @@
 - Should we in code_t compare just by length? Maybe hardware could be cheaper
 	not to force 0 on unused bits ie. bits above code length.
 
+- Should make two binary_operator child with print virtual:
+	binary_binary_operator and text_binary_operator.
+
+
