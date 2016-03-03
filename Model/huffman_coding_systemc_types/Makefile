@@ -6,7 +6,7 @@
 
 SOURCES= \
 	src/huffman_coding.cpp \
-	src/huffman_coding_structs.cpp \
+	src/huffman_coding_print.cpp \
 	huffman_coding_test.cpp
 
 CPPFLAGS+=-Iinclude
@@ -68,6 +68,6 @@ src/*.o: Makefile include/*.h src/*.h
 ###############################################################################
 
 clean:
-	rm -f *.exe *.elf *.o *.log
+	rm -f *.exe *.elf *.o src/*.o *.log
 
 ###############################################################################
