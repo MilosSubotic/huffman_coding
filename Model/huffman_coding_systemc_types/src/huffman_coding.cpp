@@ -5,13 +5,9 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#include <deque>
 #include <iostream>
-#include <iomanip>
 #include <algorithm>
 #include <cassert>
-#include <bitset>
-#include <sstream>
 
 using namespace std;
 
@@ -75,9 +71,7 @@ namespace huffman_coding {
 			}
 
 			bcout << "in_data_block:" << endl;
-			for(int d = 0; d < block_len; d++){
-				bcout << in_data_block[d] << endl;
-			}
+			bcout << in_data_block << endl;
 			bcout << endl << endl;
 
 			bcout << "Creating histogram..." << endl;
@@ -109,9 +103,7 @@ namespace huffman_coding {
 			}
 
 			bcout << "sort_freq:" << endl;
-			for(int i = 0; i < sym_num; i++){
-				bcout << sort_freq[i] << endl;
-			}
+			bcout << sort_freq << endl;
 			bcout << endl << endl;
 
 
@@ -127,9 +119,7 @@ namespace huffman_coding {
 			);
 
 			bcout << "sort_freq:" << endl;
-			for(int i = 0; i < sym_num; i++){
-				bcout  << sort_freq[i] << endl;
-			}
+			bcout  << sort_freq << endl;
 			bcout << endl << endl;
 
 
@@ -146,9 +136,7 @@ namespace huffman_coding {
 			}
 
 			bcout << "leaves:" << endl;
-			for(int i = 0; i < sym_num; i++){
-				bcout << leaves[i] << endl;
-			}
+			bcout << leaves << endl;
 			bcout << endl << endl;
 
 
@@ -249,18 +237,12 @@ namespace huffman_coding {
 
 				bcout << "iter " << iter << ":" << endl;
 				bcout << "leaves:" << endl;
-				for(int i = 0; i < sym_num; i++){
-					bcout << leaves[i] << endl;
-				}
+				bcout << leaves << endl;
 				bcout << "parents:" << endl;
-				for(int i = 0; i < sym_num; i++){
-					bcout << parents[i] << endl;
-				}
+				bcout << parents << endl;
 				bcout << "parents_end: " << parents_end << endl;
 				bcout << "depth_tracker:" << endl;
-				for(int i = 0; i < sym_num; i++){
-					bcout << depth_tracker[i] << endl;
-				}
+				bcout << depth_tracker << endl;
 				bcout << endl;
 
 			}
@@ -324,9 +306,7 @@ namespace huffman_coding {
 			}
 
 			bcout << "sort_len:" << endl;
-			for(int i = 0; i < sym_num; i++){
-				bcout << sort_len[i] << endl;
-			}
+			bcout << sort_len << endl;
 			bcout << endl << endl;
 
 
@@ -342,9 +322,7 @@ namespace huffman_coding {
 			);
 
 			bcout << "sort_len:" << endl;
-			for(int i = 0; i < sym_num; i++){
-				bcout << sort_len[i] << endl;
-			}
+			bcout << sort_len << endl;
 			bcout << endl << endl;
 
 

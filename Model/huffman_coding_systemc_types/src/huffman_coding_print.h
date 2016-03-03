@@ -9,6 +9,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include <ostream>
+#include <vector>
+#include <deque>
 
 #include <systemc.h>
 
@@ -22,7 +24,7 @@ namespace huffman_coding {
 			: _os(os) {}
 
 		template<typename T>
-		binary_ostream& operator<<(T x) {
+		binary_ostream& operator<<(const T& x) {
 			_os << x;
 			return *this;
 		}
@@ -44,6 +46,31 @@ namespace huffman_coding {
 		void print(const sc_uint_base&);
 
 	};
+
+
+	template<typename T>
+	binary_ostream& operator<<(binary_ostream& bos, std::vector<T> v) {
+		auto iter = v.begin();
+		auto last = v.end() - 1;
+		for(; iter != last; iter++){
+			bos << *iter << endl;
+		}
+		bos << *last;
+
+		return bos;
+	}
+
+	template<typename T>
+	binary_ostream& operator<<(binary_ostream& bos, std::deque<T> v) {
+		auto iter = v.begin();
+		auto last = v.end() - 1;
+		for(; iter != last; iter++){
+			bos << *iter << endl;
+		}
+		bos << *last;
+
+		return bos;
+	}
 
 }
 
