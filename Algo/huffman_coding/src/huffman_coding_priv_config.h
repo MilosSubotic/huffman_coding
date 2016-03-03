@@ -1,27 +1,25 @@
 /*
  * @license MIT
- * @brief Configuration file for Huffman coding.
+ * @brief Private calculated configurations for Huffman coding.
  */
 
-#ifndef HUFFMAN_CODING_CONFIG_H
-#define HUFFMAN_CODING_CONFIG_H
+#ifndef HUFFMAN_CODING_PRIV_CONFIG_H
+#define HUFFMAN_CODING_PRIV_CONFIG_H
 
 ///////////////////////////////////////////////////////////////////////////////
 
 #include <cmath>
 
+#include "huffman_coding_config.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace huffman_coding {
-	// User defined.
-	const int sym_width = 8;
-	const int block_len_log2 = 8;
 
 	// Calculated by huffman_tree_depth.jl script.
 	const int max_dep = 11; // Max depth.
 
 	// Calculated.
-	const int block_len = 1 << block_len_log2;
 	const int sym_num = 1 << sym_width; // Max number of frequencies.
 	const int freq_width = block_len_log2 + 1;
 	const int node_width = freq_width;
@@ -36,5 +34,5 @@ namespace huffman_coding {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // HUFFMAN_CODING_CONFIG_H
+#endif // HUFFMAN_CODING_PRIV_CONFIG_H
 

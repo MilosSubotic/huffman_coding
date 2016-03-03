@@ -17,6 +17,7 @@ using namespace std;
 
 
 #include "huffman_coding.h"
+#include "huffman_coding_priv_types.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -219,7 +220,7 @@ namespace huffman_coding {
 				depth_tracker[sym].dep = 0;
 			}
 
-			// Could be done in sym_num-1 iterations, 
+			// Could be done in sym_num-1 iterations,
 			// because there is max sym_num-1 parents.
 			for(int iter = 0; iter < sym_num-1; iter++){
 				// When only one node and no more leaves then tree is built.
@@ -476,7 +477,7 @@ namespace huffman_coding {
 			// Store symbols.
 			for(int i = 0; i < sym_num; i++){
 				len_t len = sort_len[i].len;
-				// Don't save symbols with invalid length 
+				// Don't save symbols with invalid length
 				// ie. symbols with count 0.
 				if(len != null_len){
 					pack(sort_len[i].sym, sym_width);

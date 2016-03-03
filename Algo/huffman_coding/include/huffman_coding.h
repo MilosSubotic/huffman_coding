@@ -1,6 +1,6 @@
 /*
  * @license MIT
- * @brief Test Huffman coding.
+ * @brief Huffman coding function interfaces.
  */
 
 #ifndef HUFFMAN_CODING_H

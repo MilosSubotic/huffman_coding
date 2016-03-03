@@ -1,22 +1,22 @@
 /*
  * @license MIT
- * @brief Type definitions for Huffman coding.
+ * @brief Private type definitions for Huffman coding.
  */
 
-#ifndef HUFFMAN_CODING_TYPES_H
-#define HUFFMAN_CODING_TYPES_H
+#ifndef HUFFMAN_CODING_PRIV_TYPES_H
+#define HUFFMAN_CODING_PRIV_TYPES_H
 
 ///////////////////////////////////////////////////////////////////////////////
 
 #include <stdint.h>
 
-#include "huffman_coding_config.h"
+#include "huffman_coding_types.h"
+#include "huffman_coding_priv_config.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace huffman_coding {
 
-	typedef uint32_t sym_t; // sym_width
 	typedef uint32_t freq_t; // freq_width
 	typedef uint32_t node_t; // node_width
 	typedef uint32_t dep_t; // dep_width
@@ -28,5 +28,5 @@ namespace huffman_coding {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // HUFFMAN_CODING_TYPES_H
+#endif // HUFFMAN_CODING_PRIV_TYPES_H
 

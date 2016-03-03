@@ -1,6 +1,6 @@
 /*
  * @license MIT
- * @brief Test Huffman coding.
+ * @brief Huffman coding structs.
  */
 
 #ifndef HUFFMAN_CODING_STRUCTS_H

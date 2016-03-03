@@ -1,18 +1,26 @@
 /*
  * @license MIT
- * @brief Huffman coding structs.
+ * @brief Type definitions for Huffman coding.
  */
+
+#ifndef HUFFMAN_CODING_TYPES_H
+#define HUFFMAN_CODING_TYPES_H
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "huffman_coding_structs.h"
+#include <stdint.h>
+
+#include "huffman_coding_config.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace huffman_coding {
 
-
+	typedef uint32_t sym_t; // sym_width
 
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+#endif // HUFFMAN_CODING_TYPES_H
+
