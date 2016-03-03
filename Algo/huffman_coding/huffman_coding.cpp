@@ -18,9 +18,6 @@ using namespace std;
 
 #include "huffman_coding.h"
 
-using namespace huffman_coding;
-
-
 ///////////////////////////////////////////////////////////////////////////////
 
 #define DEBUG(var) \
