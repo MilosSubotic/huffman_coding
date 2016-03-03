@@ -4,7 +4,12 @@
 # @brief Build huffman_coding
 ###############################################################################
 
-SOURCES=huffman_coding.cpp huffman_coding_test.cpp
+SOURCES= \
+	src/huffman_coding.cpp \
+	src/huffman_coding_structs.cpp \
+	huffman_coding_test.cpp
+
+CPPFLAGS+=-Iinclude
 
 ###############################################################################
 
@@ -57,7 +62,8 @@ all: huffman_coding_test${EXE}
 huffman_coding_test${EXE}: ${OBJECTS}
 	${CXX} -o $@ $^ ${LDFLAGS} ${LIBS}
 
-*.o: Makefile *.h
+*.o: Makefile include/*.h
+src/*.o: Makefile include/*.h src/*.h
 
 ###############################################################################
 
