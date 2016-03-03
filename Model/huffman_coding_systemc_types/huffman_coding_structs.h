@@ -1,0 +1,27 @@
+/*
+ * @license MIT
+ * @brief Test Huffman coding.
+ */
+
+#ifndef HUFFMAN_CODING_STRUCTS_H
+#define HUFFMAN_CODING_STRUCTS_H
+
+///////////////////////////////////////////////////////////////////////////////
+
+#include <vector>
+
+#include "huffman_coding_types.h"
+
+///////////////////////////////////////////////////////////////////////////////
+
+namespace huffman_coding {
+
+	// node_width ones.
+	const node_t null_node = (1 << (node_width))-1;
+
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+#endif // HUFFMAN_CODING_STRUCTS_H
+

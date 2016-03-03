@@ -41,5 +41,8 @@
 	- In VHDL testbench make random de-assertions on valid and ready signals
 		to test robustness of AXIS handshaking protocol.
 
-
+- Refactoring algorithm to SystemC model:
+	- First change integer types with SystemC exact bit sized types.
+		- It is good to keep same file names, so changes on algorithm
+			could be easily merged to model.
 
