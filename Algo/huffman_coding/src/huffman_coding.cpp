@@ -636,6 +636,9 @@ namespace huffman_coding {
 			cout << "Decoding data..." << endl;
 
 			for(int d = 0; d < block_len; d++){
+				// FIXME What if there is one last code long acc_len
+				// which is smaller then max_code_len. It will try to read
+				// unexisting data.
 				if(acc_len < max_code_len){
 					acc |= uint64_t(*ed++) << acc_len;
 					acc_len += 32;
