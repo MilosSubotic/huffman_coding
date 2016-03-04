@@ -19,14 +19,16 @@ using namespace huffman_coding;
 
 ///////////////////////////////////////////////////////////////////////////////
 
+#define DATA_LEN block_len*2
+#define PROB_LAST_NUM 2
+
+///////////////////////////////////////////////////////////////////////////////
+
 #define DEBUG(var) \
 	do{ \
 		cout << #var << " = " << var << endl; \
 	}while(0)
 
-//#define DATA_LEN block_len*2
-#define DATA_LEN 3
-#define PROB_LAST_NUM 1
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -51,10 +53,10 @@ private:
     		sym_t s = rand() % (1 << sym_width);
     		in_data[i] = s;
 
-    		DEBUG(s);
-
-    		bool last = !(rand() % (DATA_LEN/PROB_LAST_NUM))
-    				|| i == DATA_LEN-1;
+    		bool last = i == DATA_LEN-1;
+#if PROB_LAST_NUM != 0
+    		last |= !(rand() % (DATA_LEN/PROB_LAST_NUM));
+#endif
     		if(last){
     			in_last++;
     		}

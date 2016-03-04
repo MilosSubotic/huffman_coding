@@ -13,6 +13,13 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////////
 
+#define DEBUG(var) \
+	do{ \
+		cout << #var << " = " << var << endl; \
+	}while(0)
+
+///////////////////////////////////////////////////////////////////////////////
+
 namespace huffman_coding {
 
 
@@ -23,53 +30,47 @@ namespace huffman_coding {
 	}
 
 	void huffman_encoder::encode() {
-		while(true){
-			bool last;
-			sym_t data;
-
-			in_data->read(data, last);
-
-
-			out_enc_data->write(data, last);
-		}
-
-/*
 		assert(enc_chunk_width == 32);
+
 		bcout << "Encoding..." << endl << endl;
 
 		uint64_t acc = 0;
 		int acc_len = 0;
+		vector<enc_chunk_t> enc_data;
 		auto pack = [&](uint32_t bits, unsigned len) {
 			assert(len <= 32);
 			acc |= uint64_t(bits) << acc_len;
 			acc_len += len;
 			if(acc_len >= 32){
-//				out_enc_data.push_back(acc & 0xffffffff); TODO
+				enc_data.push_back(acc & 0xffffffff);
 				acc >>= 32;
 				acc_len -= 32;
 			}
 		};
 
-		const int block_num = ceil(float(in_data.size())/block_len);
-		bcout << "block_num: " << block_num << endl << endl;
-		for(int block = 0; block < block_num; block++){
+		for(int block = 0; ; block++){
+			bool last = false;
+
 			bcout << "block: " << block << endl << endl;
 
 			vector<sym_t> in_data_block(block_len);
 
-			for(int d = 0; d < block_len; d++){
-				int index = block*block_len + d;
-				if(index < in_data.size()){
-					//in_data_block[d] = in_data[index]; TODO
-				}else{
-					// Pading with zeros.
-					in_data_block[d] = 0;
-				}
+			int d;
+			for(d = 0; d < block_len && !last; d++){
+				sym_t data;
+				in_data->read(data, last);
+				in_data_block[d] = data;
+			}
+			for(; d < block_len; d++){
+				// Pading with zeros.
+				in_data_block[d] = 0;
 			}
 
+			DEBUG(last);
 			bcout << "in_data_block:" << endl;
-			bcout << in_data_block << endl;
+			//bcout << in_data_block << endl;
 			bcout << endl << endl;
+
 
 			bcout << "Creating histogram..." << endl;
 
@@ -428,14 +429,27 @@ namespace huffman_coding {
 			bcout << "stored_len: " << store_len << endl;
 			bcout << endl << endl;
 
-		}
 
-		bcout << "last byte acc_len: " << acc_len << endl;
-		// Push unfinished byte, if one exists.
-		if(acc_len != 0){
-			//out_enc_data.push_back(acc); TODO
+			auto iter = enc_data.begin();
+			auto end = enc_data.end()-1;
+			for(; iter != end; iter++){
+				out_enc_data->write(*iter);
+			}
+
+			if(!last){
+				out_enc_data->write(*iter, false);
+			}{
+				bcout << "last byte acc_len: " << acc_len << endl;
+				if(acc_len == 0){
+					out_enc_data->write(*iter, true);
+				}else{
+					// Push unfinished byte, if one exists.
+					out_enc_data->write(*iter, false);
+					out_enc_data->write(acc, true);
+				}
+			}
+
 		}
-*/
 	}
 
 }

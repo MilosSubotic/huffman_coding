@@ -13,18 +13,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// TODO Debug.
-#include <iostream>
-using namespace std;
-#define DD(var) \
-	do{ \
-		cout << #var << " = " << var << endl; \
-	}while(0)
-#define TT(s) \
-	do{ \
-		cout << s << endl; \
-	}while(0)
-
 // DI is short for Data Interface
 
 template<typename DI>
