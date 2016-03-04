@@ -1,4 +1,4 @@
-/*
+/**
  * @license MIT
  * @brief Public type definitions for Huffman coding.
  */

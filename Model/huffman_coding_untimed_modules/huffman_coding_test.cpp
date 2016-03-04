@@ -1,4 +1,4 @@
-/*
+/**
  * @license MIT
  * @brief Test Huffman coding.
  */

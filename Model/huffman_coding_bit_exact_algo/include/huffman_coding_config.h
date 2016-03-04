@@ -1,4 +1,4 @@
-/*
+/**
  * @license MIT
  * @brief Configuration file for Huffman coding.
  */

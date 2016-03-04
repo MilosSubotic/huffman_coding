@@ -1,4 +1,4 @@
-/*
+/**
  * @license MIT
  * @brief Private calculated configurations for Huffman coding.
  */

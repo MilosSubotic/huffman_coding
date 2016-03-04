@@ -1,4 +1,4 @@
-/*
+/**
  * @license MIT
  * @brief Huffman coding function interfaces.
  */

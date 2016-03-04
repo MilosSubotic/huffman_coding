@@ -1,4 +1,4 @@
-/*
+/**
  * @license MIT
  * @brief Print stuff for types and structs.
  */
