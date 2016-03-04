@@ -9,8 +9,9 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "huffman_coding_public_types.h"
 #include "axis_channel.h"
+
+#include "huffman_coding_public_types.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -27,6 +28,7 @@ namespace huffman_coding {
 
 	private:
 	    void encode();
+
 	};
 
 }

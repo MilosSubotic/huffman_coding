@@ -9,6 +9,7 @@ SOURCES= \
 	src/huffman_coding_structs.cpp \
 	src/huffman_coding_interfaces.cpp \
 	src/huffman_encoder.cpp \
+	src/huffman_decoder.cpp \
 	huffman_coding_test.cpp
 
 CPPFLAGS+=-Iinclude
