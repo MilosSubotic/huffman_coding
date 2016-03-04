@@ -8,7 +8,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#include <ostream>
+#include <iostream>
 #include <vector>
 #include <deque>
 
@@ -71,6 +71,9 @@ namespace huffman_coding {
 
 		return bos;
 	}
+
+
+	extern binary_ostream bcout;
 
 }
 

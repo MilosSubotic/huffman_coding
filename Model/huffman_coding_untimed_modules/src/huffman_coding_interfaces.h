@@ -1,23 +1,24 @@
 /**
  * @license MIT
- * @brief Print stuff for types and structs.
+ * @brief Huffman coding interfaces between modules.
  */
+
+#ifndef HUFFMAN_CODING_INTERFACES_H
+#define HUFFMAN_CODING_INTERFACES_H
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "huffman_coding_print.h"
+#include "huffman_coding_structs.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace huffman_coding {
 
-	void binary_ostream::print(const sc_uint_base& x) {
-		for(int i = x.length()-1; i >= 0; i--) {
-			_os << (x[i] ? '1' : '0');
-		}
-	}
 
-	binary_ostream bcout(cout);
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+#endif // HUFFMAN_CODING_INTERFACES_H
+

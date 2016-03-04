@@ -1,23 +1,25 @@
 /**
  * @license MIT
- * @brief Print stuff for types and structs.
+ * @brief
  */
+
+
+#ifndef HUFFMAN_DECODER_H_
+#define HUFFMAN_DECODER_H_
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "huffman_coding_print.h"
+#include "huffman_coding_public_types.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace huffman_coding {
 
-	void binary_ostream::print(const sc_uint_base& x) {
-		for(int i = x.length()-1; i >= 0; i--) {
-			_os << (x[i] ? '1' : '0');
-		}
-	}
+	class huffman_decoder {
 
-	binary_ostream bcout(cout);
+	};
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+#endif // HUFFMAN_DECODER_H_
