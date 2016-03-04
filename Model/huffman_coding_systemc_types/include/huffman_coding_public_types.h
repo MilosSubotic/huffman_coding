@@ -19,6 +19,7 @@
 namespace huffman_coding {
 
 	typedef sc_uint<sym_width> sym_t;
+	typedef sc_uint<enc_chunk_width> enc_chunk_t;
 
 }
 

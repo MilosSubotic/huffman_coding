@@ -17,6 +17,7 @@
 namespace huffman_coding {
 
 	typedef uint32_t sym_t; // sym_width
+	typedef uint32_t enc_chunk_t; // enc_chunk_width
 
 }
 

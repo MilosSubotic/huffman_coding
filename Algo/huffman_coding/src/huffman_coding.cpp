@@ -49,8 +49,10 @@ namespace huffman_coding {
 
 	void huffman_encode(
 		const std::vector<sym_t>& in_data,
-		std::vector<uint32_t>& out_enc_data
+		std::vector<enc_chunk_t>& out_enc_data
 	) {
+		assert(enc_chunk_width == 32);
+
 		cout << "Encoding..." << endl << endl;
 
 		uint64_t acc = 0;
@@ -528,9 +530,10 @@ namespace huffman_coding {
 	}
 
 	void huffman_decode(
-		const std::vector<uint32_t>& in_enc_data,
+		const std::vector<enc_chunk_t>& in_enc_data,
 		std::vector<sym_t>& out_data
 	) {
+		assert(enc_chunk_width == 32);
 
 		cout << "Decoding..." << endl << endl;
 

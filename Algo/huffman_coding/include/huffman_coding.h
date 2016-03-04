@@ -18,11 +18,11 @@ namespace huffman_coding {
 
 	void huffman_encode(
 		const std::vector<sym_t>& in_data,
-		std::vector<uint32_t>& out_enc_data
+		std::vector<enc_chunk_t>& out_enc_data
 	);
 
 	void huffman_decode(
-		const std::vector<uint32_t>& in_enc_data,
+		const std::vector<enc_chunk_t>& in_enc_data,
 		std::vector<sym_t>& out_data
 	);
 }

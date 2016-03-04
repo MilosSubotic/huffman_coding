@@ -41,7 +41,7 @@ int sc_main(int, char**){
 		in_data[i] = rand() % (1 << sym_width);
 	}
 
-	vector<uint32_t> enc_data;
+	vector<enc_chunk_t> enc_data;
 	huffman_encode(in_data, enc_data);
 
 	cout << "enc_data size: " << enc_data.size() << endl;
