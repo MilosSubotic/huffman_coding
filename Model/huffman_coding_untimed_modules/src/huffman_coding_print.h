@@ -29,7 +29,7 @@ namespace huffman_coding {
 			return *this;
 		}
 
-		binary_ostream& operator<<(ostream& (*pf)(ostream&)) {
+		binary_ostream& operator<<(std::ostream& (*pf)(std::ostream&)) {
 			pf(_os);
 			return *this;
 		}
@@ -53,7 +53,7 @@ namespace huffman_coding {
 		auto iter = v.begin();
 		auto last = v.end() - 1;
 		for(; iter != last; iter++){
-			bos << *iter << endl;
+			bos << *iter << std::endl;
 		}
 		bos << *last;
 
@@ -65,7 +65,7 @@ namespace huffman_coding {
 		auto iter = v.begin();
 		auto last = v.end() - 1;
 		for(; iter != last; iter++){
-			bos << *iter << endl;
+			bos << *iter << std::endl;
 		}
 		bos << *last;
 
