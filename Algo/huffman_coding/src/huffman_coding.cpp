@@ -442,7 +442,7 @@ namespace huffman_coding {
 
 
 
-			bcout << "Mirroring codes for little endian decoding..." << endl;
+			cout << "Mirroring codes for little endian decoding..." << endl;
 
 			for(int sym = 0; sym < sym_num; sym++){
 				bitset<64> src(code_table[sym]);

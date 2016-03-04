@@ -1,10 +1,10 @@
 /*
  * @license MIT
- * @brief Type definitions for Huffman coding.
+ * @brief Public type definitions for Huffman coding.
  */
 
-#ifndef HUFFMAN_CODING_TYPES_H
-#define HUFFMAN_CODING_TYPES_H
+#ifndef HUFFMAN_CODING_PUBLIC_TYPES_H
+#define HUFFMAN_CODING_PUBLIC_TYPES_H
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -24,5 +24,5 @@ namespace huffman_coding {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // HUFFMAN_CODING_TYPES_H
+#endif // HUFFMAN_CODING_PUBLIC_TYPES_H
 

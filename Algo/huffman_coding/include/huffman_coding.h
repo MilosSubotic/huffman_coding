@@ -10,7 +10,7 @@
 
 #include <vector>
 
-#include "huffman_coding_types.h"
+#include "huffman_coding_public_types.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
