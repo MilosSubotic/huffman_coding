@@ -111,7 +111,7 @@ namespace huffman_coding {
 
 			bcout << "Sorting symbols by count..." << endl;
 
-			sort(
+			stable_sort(
 				sort_freq.begin(),
 				sort_freq.end(),
 				[](const sym_and_freq& x, const sym_and_freq& y){
@@ -314,7 +314,7 @@ namespace huffman_coding {
 
 			bcout << "Sorting symbols by lengths..." << endl;
 
-			sort(
+			stable_sort(
 				sort_len.begin(),
 				sort_len.end(),
 				[](const sym_and_len& x, const sym_and_len& y){
@@ -545,20 +545,19 @@ namespace huffman_coding {
 
 			bcout << "Decoding data..." << endl;
 
-			for(int d = 0; d < block_len; d++){
-				if(acc_len < max_code_len){
-					acc |= uint64_t(*ed++) << acc_len;
-					acc_len += 32;
-				}
+			const int null_code_len = (1 << len_width) - 1;
 
-				const int null_code_len = (1 << len_width) - 1;
+			for(int d = 0; d < block_len; d++){
 
 				len_t best_len = null_code_len;
 				code_t best_code;
 				sym_t best_sym;
+
+				// Try with bits what we have.
 				for(int sym = 0; sym < sym_num; sym++){
 					len_t code_len = codes_len[sym];
-					if(code_len != 0 && code_len < best_len){
+					if(code_len != 0 && code_len < best_len
+							&& code_len <= acc_len){
 						code_t mask = (1 << code_len) - 1;
 						code_t enc_code = acc & mask;
 						if(enc_code == code_table[sym]){
@@ -568,6 +567,27 @@ namespace huffman_coding {
 						}
 					}
 				}
+
+				// If didn't found symbol read one more chunk and try again.
+				if(best_len == null_code_len){
+					assert(ed < in_enc_data.end());
+					acc |= uint64_t(*ed++) << acc_len;
+					acc_len += 32;
+
+					for(int sym = 0; sym < sym_num; sym++){
+						len_t code_len = codes_len[sym];
+						if(code_len != 0 && code_len < best_len){
+							code_t mask = (1 << code_len) - 1;
+							code_t enc_code = acc & mask;
+							if(enc_code == code_table[sym]){
+								best_len = code_len;
+								best_code = code_table[sym];
+								best_sym = sym;
+							}
+						}
+					}
+				}
+
 				assert(0 < best_len && best_len <= max_code_len);
 
 				// Remove decoded symbol.
