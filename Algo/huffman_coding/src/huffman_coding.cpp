@@ -639,12 +639,31 @@ namespace huffman_coding {
 
 			for(int d = 0; d < block_len; d++){
 
-				for(int t = 0; t < 2; t++){
+				len_t best_len = null_code_len;
+				code_t best_code;
+				sym_t best_sym;
 
+				// Try with bits what we have.
+				for(int sym = 0; sym < sym_num; sym++){
+					len_t code_len = codes_len[sym];
+					if(code_len != 0 && code_len < best_len
+							&& code_len <= acc_len){
+						code_t mask = (1 << code_len) - 1;
+						code_t enc_code = acc & mask;
+						if(enc_code == code_table[sym]){
+							best_len = code_len;
+							best_code = code_table[sym];
+							best_sym = sym;
+						}
+					}
+				}
 
-					len_t best_len = null_code_len;
-					code_t best_code;
-					sym_t best_sym;
+				// If didn't found symbol read one more chunk and try again.
+				if(best_len == null_code_len){
+					assert(ed < in_enc_data.end());
+					acc |= uint64_t(*ed++) << acc_len;
+					acc_len += 32;
+
 					for(int sym = 0; sym < sym_num; sym++){
 						len_t code_len = codes_len[sym];
 						if(code_len != 0 && code_len < best_len){
@@ -657,30 +676,22 @@ namespace huffman_coding {
 							}
 						}
 					}
-
-
-					if(acc_len < max_code_len){
-						assert(ed < in_enc_data.end());
-						acc |= uint64_t(*ed++) << acc_len;
-						acc_len += 32;
-					}
-
-					assert(0 < best_len && best_len <= max_code_len);
-
-					// Remove decoded symbol.
-					acc >>=  best_len;
-					acc_len -=  best_len;
-
-					out_data.push_back(best_sym);
-
-					cout << "iter " << d << ":" << endl;
-					cout << "best_len: " << setw(3) << best_len << endl;
-					cout << "best_code: " << setw(max_code_len)
-							<< bits_to_string(best_code, best_len, 0) << endl;
-					cout << "best_sym: " << setw(3) << best_sym << endl;
-					cout << endl;
-
 				}
+
+				assert(0 < best_len && best_len <= max_code_len);
+
+				// Remove decoded symbol.
+				acc >>=  best_len;
+				acc_len -=  best_len;
+
+				out_data.push_back(best_sym);
+
+				cout << "iter " << d << ":" << endl;
+				cout << "best_len: " << setw(3) << best_len << endl;
+				cout << "best_code: " << setw(max_code_len)
+						<< bits_to_string(best_code, best_len, 0) << endl;
+				cout << "best_sym: " << setw(3) << best_sym << endl;
+				cout << endl;
 			}
 
 		}
