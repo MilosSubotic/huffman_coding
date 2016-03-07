@@ -14,3 +14,4 @@
 	binary_binary_operator and text_binary_operator.
 	- binary_binary_operator should ignore endl().
 
+- Correct bug in d7e34a840926b6f4014db1ef6c2a4a8769e32276 commit.
