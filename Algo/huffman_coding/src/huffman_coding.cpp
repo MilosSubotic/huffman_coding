@@ -142,7 +142,7 @@ namespace huffman_coding {
 
 			cout << "Sorting symbols by count..." << endl;
 
-			sort(
+			stable_sort(
 				sort_freq.begin(),
 				sort_freq.end(),
 				[](const sym_and_freq& x, const sym_and_freq& y){
@@ -394,7 +394,7 @@ namespace huffman_coding {
 
 			cout << "Sorting symbols by lengths..." << endl;
 
-			sort(
+			stable_sort(
 				sort_len.begin(),
 				sort_len.end(),
 				[](const sym_and_len& x, const sym_and_len& y){
