@@ -635,9 +635,8 @@ namespace huffman_coding {
 
 			cout << "Decoding data..." << endl;
 
-			const int null_code_len = (1 << len_width) - 1;
-
 			for(int d = 0; d < block_len; d++){
+				const int null_code_len = (1 << len_width) - 1;
 
 				len_t best_len = null_code_len;
 				code_t best_code;
