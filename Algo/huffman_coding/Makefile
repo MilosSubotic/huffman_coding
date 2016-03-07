@@ -24,7 +24,8 @@ else
 	EXE=.elf
 endif
 
-CXXFLAGS=-O3 -std=c++0x
+#CXXFLAGS=-std=c++0x -O3
+CXXFLAGS=-std=c++0x -O0 -g3
 ifeq (${BUILD_OS},WINNT)
 	CC=gcc
 	CPPFLAGS+=-mno-ms-bitfields

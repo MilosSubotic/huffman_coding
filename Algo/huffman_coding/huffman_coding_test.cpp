@@ -36,7 +36,7 @@ int main() {
 
 	vector<sym_t> in_data(DATA_LEN);
 	for(int i = 0; i < DATA_LEN; i++){
-		in_data[i] = rand() % (1 << sym_width);
+		in_data[i] = i;//rand() % (1 << sym_width);
 	}
 
 	vector<enc_chunk_t> enc_data;

@@ -640,6 +640,7 @@ namespace huffman_coding {
 				// which is smaller then max_code_len. It will try to read
 				// unexisting data.
 				if(acc_len < max_code_len){
+					assert(ed < in_enc_data.end());
 					acc |= uint64_t(*ed++) << acc_len;
 					acc_len += 32;
 				}
