@@ -56,7 +56,7 @@ default: run
 ###############################################################################
 
 run: all
-	./huffman_coding_test${EXE} 2>&1 | tee huffman_coding_test.log
+	./huffman_coding_test${EXE} > huffman_coding_test.log
 
 ###############################################################################
 
