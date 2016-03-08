@@ -5,6 +5,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
+#include <iomanip>
+
 #include "huffman_encoder.h"
 
 #include "huffman_coding_interfaces.h"
@@ -65,10 +67,10 @@ namespace huffman_coding {
 				// Pading with zeros.
 				in_data_block[d] = 0;
 			}
+			bcout << "last: " << last << endl;
 
-			DEBUG(last);
 			bcout << "in_data_block:" << endl;
-			//bcout << in_data_block << endl;
+			bcout << in_data_block << endl;
 			bcout << endl << endl;
 
 
@@ -108,7 +110,7 @@ namespace huffman_coding {
 
 			bcout << "Sorting symbols by count..." << endl;
 
-			sort(
+			stable_sort(
 				sort_freq.begin(),
 				sort_freq.end(),
 				[](const sym_and_freq& x, const sym_and_freq& y){
@@ -311,7 +313,7 @@ namespace huffman_coding {
 
 			bcout << "Sorting symbols by lengths..." << endl;
 
-			sort(
+			stable_sort(
 				sort_len.begin(),
 				sort_len.end(),
 				[](const sym_and_len& x, const sym_and_len& y){

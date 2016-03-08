@@ -24,7 +24,8 @@ using namespace std;
 		cout << #var << " = " << var << endl; \
 	}while(0)
 
-#define DATA_LEN block_len*2
+//#define DATA_LEN block_len*2
+#define DATA_LEN 10
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -33,6 +34,7 @@ int sc_main(int, char**){
 	using namespace huffman_coding;
 
 	unsigned seed = time(NULL);
+	seed = 0;
 	cout << "seed: " << seed << endl;
 	srand(seed);
 

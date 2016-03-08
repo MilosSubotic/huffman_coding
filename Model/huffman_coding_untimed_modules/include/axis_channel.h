@@ -36,36 +36,38 @@ class axis_channel :
 
 public:
 	axis_channel(sc_module_name name)
-			: sc_channel(name), valid(false), ready(false) {
+			: sc_channel(name), have_data(false) {
 	}
 
 	virtual void write(const DI& data, bool last = false) {
-		this->data = &data;
-		this->last = last;
-		valid = true;
-		valid_event.notify();
-		if(!ready){
-			wait(ready_event);
+		if(have_data){
+			wait(read_event);
 		}
-		ready = false;
+
+		this->data = data;
+		this->last = last;
+
+		have_data = true;
+		write_event.notify();
 	}
 
 	virtual void read(DI& data, bool& last) {
-		ready = true;
-		ready_event.notify();
-		if(!valid){
-			wait(valid_event);
+		if(!have_data){
+			wait(write_event);
 		}
-		valid = false;
-		data = *this->data;
+
+		data = this->data;
 		last = this->last;
+
+		have_data = false;
+		read_event.notify();
 	}
 
 protected:
-	const DI* data;
+	DI data;
 	bool last;
-	bool valid, ready;
-	sc_event valid_event, ready_event;
+	bool have_data;
+	sc_event write_event, read_event;
 };
 
 

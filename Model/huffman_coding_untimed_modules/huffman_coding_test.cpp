@@ -22,7 +22,7 @@ using namespace huffman_coding;
 //#define DATA_LEN block_len*2
 //#define PROB_LAST_NUM 2
 
-#define DATA_LEN 3
+#define DATA_LEN 10
 #define PROB_LAST_NUM 0
 
 
@@ -50,6 +50,7 @@ public:
 private:
     void generate() {
     	unsigned seed = time(NULL);
+    	seed = 0;
     	cout << "seed: " << seed << endl;
     	srand(seed);
 
