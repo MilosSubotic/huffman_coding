@@ -5,10 +5,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#include <iomanip>
-
 #include "huffman_encoder.h"
-
 #include "huffman_coding_interfaces.h"
 
 using namespace std;
@@ -440,17 +437,18 @@ namespace huffman_coding {
 
 			if(!last){
 				out_enc_data->write(*iter, false);
-			}{
+			}else{
 				bcout << "last byte acc_len: " << acc_len << endl;
 				if(acc_len == 0){
 					out_enc_data->write(*iter, true);
 				}else{
-					// Push unfinished byte, if one exists.
 					out_enc_data->write(*iter, false);
+					// Push unfinished byte, if one exists.
 					out_enc_data->write(acc, true);
 				}
 			}
 
+			enc_data.clear();
 		}
 	}
 

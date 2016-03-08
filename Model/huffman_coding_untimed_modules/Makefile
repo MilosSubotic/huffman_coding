@@ -41,8 +41,8 @@ else
 	EXE=.elf
 endif
 
-CXXFLAGS=-std=c++0x -O3
-#CXXFLAGS=-std=c++0x -O0 -g3
+#CXXFLAGS=-std=c++0x -O3
+CXXFLAGS=-std=c++0x -O0 -g3
 ifeq (${BUILD_OS},WINNT)
 	CC=gcc
 	CPPFLAGS+=-mno-ms-bitfields
@@ -58,7 +58,7 @@ default: run
 ###############################################################################
 
 run: all
-	./huffman_coding_test${EXE} 2>&1 | tee huffman_coding_test.log
+	./huffman_coding_test${EXE} > huffman_coding_test.log
 
 ###############################################################################
 
