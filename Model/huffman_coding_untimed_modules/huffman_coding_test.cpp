@@ -161,6 +161,7 @@ int sc_main(int, char**) {
 	cout << "Comparing input and output..." << endl;
 	if(in_data != out_data){
 		cout << endl << "Mismatch!!!" << endl;
+		cerr << endl << "Mismatch!!!" << endl;
 		for(int i = 0; i < in_data.size(); i++){
 			if(in_data[i] != out_data[i]){
 				cout << "Mismatch at pos " << i << endl;
@@ -176,6 +177,7 @@ int sc_main(int, char**) {
 	cout << "Comparing input and output last..." << endl;
 	if(in_data != out_data){
 		cout << endl << "Mismatch!!!" << endl;
+		cerr << endl << "Mismatch!!!" << endl;
 		return 1;
 	}else{
 		cout << "Match." << endl;

@@ -59,13 +59,15 @@ int sc_main(int, char**){
 	cout << "in_data size: " << in_data.size() << endl;
 	cout << "out_data size: " << out_data.size() << endl;
 	if(in_data != out_data){
-		cout << "Mismatch!" << endl;
+		cout << endl << "Mismatch!!!" << endl;
+		cerr << endl << "Mismatch!!!" << endl;
 		for(int i = 0; i < in_data.size(); i++){
 			if(in_data[i] != out_data[i]){
 				cout << "Mismatch at pos " << i << endl;
 				break;
 			}
 		}
+		return 1;
 	}else{
 		cout << "Match!" << endl;
 	}
