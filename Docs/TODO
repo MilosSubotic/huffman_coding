@@ -1,4 +1,40 @@
 
+
+- Make AXIS FIFO if needed, not priority
+
+- Buffering instead of data transfer:
+	- This maybe in some other paper
+	- What if we won't to transfer whole data structure via AXIS channel,
+		for example a large code table? Then we could double buffering and
+		send address of buffer through channel. That could be 1-bit data in HW.
+		If we have FIFO then we need FIFO size plus 1 buffers. Even could work
+		without address if both modules have counters on both side.
+	- Should make some component for this. It could have some array of 
+		data type and return current data type and to have some new methods
+		for handshaking. Inside this component AXIS channel could be used.
+
+
+- Logging:
+	- All to log dir
+	- Algorithm logging to one file, not stdout, everywhere.
+	- AXIS channel logging to files which file names are derivered from their 
+		names
+		- Later also TID
+	- Bool to constructor does to print the channel
+	- Maybe need factory that check uniqueness of name of channel,
+		if SystemC allow that have components of the same name.1
+
+- Multichannel:
+	- This maybe in some other paper
+	- Make one componente of generator and monitor. That will easy making 
+		multichannel experiments.
+	- Need to find good random generator for huffman coding test.
+		- Check in those KGB papers.
+	- Make AXIS style switch for channels
+		- TID designate channels
+		- Not sure does that exist in AXIS and how is called
+			- Exist for AXI so why shouldn't exist for AXIS
+
 - Rewrite stuff from work.txt to LaTeX
 - Should reset be syncrhonized per module?
 - Find out how read from file to std_logic and std_logic_vector to know 
@@ -15,6 +51,8 @@
 	- binary_binary_operator should ignore endl().
 
 - Correct bug in d7e34a840926b6f4014db1ef6c2a4a8769e32276 commit.
+	- Need to try all same symbols. That for some reasons break simulation.
+		Maybe is still some bug in algorithm.
 
 - Need to test with some other distribution, like normal or whatever, 
 	not just uniform.

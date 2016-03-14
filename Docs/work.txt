@@ -37,6 +37,8 @@
 		- CSV
 		- char per bit
 		- space as separator between fields and elements of array
+		- First field is always one bit last, others are real data
+		- Every line is new transaction.
 	- One file per bus between modules.
 	- In VHDL testbench make random de-assertions on valid and ready signals
 		to test robustness of AXIS handshaking protocol.
@@ -49,5 +51,13 @@
 	- Refactoring SystemC-typed algorithm SystemC modulated system.
 	- Usual text prints stay in code, but interface between modules is printed
 		binary as test vectors for HDL.
+
+
+- Observations & Conclusions:
+	- AXIS channel is point of transaction. If master don't want to be blocked
+		by waiting slave to be ready in could save data and proceeed to 
+		process. But if it come next time and it is still waited for slave
+		then it will stop. This is practicaly FIFO of depth 1 and user 
+		shouldn't bother to implement that in SystemC, but to use AXIS FIFO.
 
 
