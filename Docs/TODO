@@ -1,5 +1,7 @@
 
-- axis_channel looks like 1 element FIFO.
+- Could used static arrays on many places instead of vector<>.
+
+- axis_channel looks like 1 element FIFO. Think about it.
 
 - Make AXIS FIFO if needed, not priority
 
