@@ -4,8 +4,8 @@
  */
 
 
-#ifndef HUFFMAN_ENCODER_H_
-#define HUFFMAN_ENCODER_H_
+#ifndef HUFFMAN_ENCODER_H
+#define HUFFMAN_ENCODER_H
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -35,4 +35,5 @@ namespace huffman_coding {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // HUFFMAN_ENCODER_H_
+#endif // HUFFMAN_ENCODER_H
+
