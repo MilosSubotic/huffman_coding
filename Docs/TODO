@@ -1,4 +1,5 @@
 
+- axis_channel looks like 1 element FIFO.
 
 - Make AXIS FIFO if needed, not priority
 
