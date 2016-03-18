@@ -25,16 +25,15 @@ namespace huffman_coding {
 		sc_out<bool> need_more_bits;
 		sc_out<bool> done;
 
-/*
 		axis_out<lens_freq_t> lens_freq;
-*/
-	    SC_CTOR(hd_lens_freq_unpacker) {
-	        //SC_THREAD(unpack);
+
+		SC_CTOR(hd_lens_freq_unpacker) {
+			SC_THREAD(unpack);
 	    }
-/*
+
 	private:
 	    void unpack();
-*/
+
 	};
 }
 
