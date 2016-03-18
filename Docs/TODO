@@ -1,4 +1,6 @@
 
+- waf distclean doesn't work right.
+
 - Give up from Makefile. Let Eclipse generate Makefiles.
 
 - Need some static assert about code cannot be bigger than 
