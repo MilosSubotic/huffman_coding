@@ -1,4 +1,7 @@
 
+- Need some static assert about code cannot be bigger than 
+	enc_chunk_shift_width ie. width of enc_chunk_t.
+
 - Could used static arrays on many places instead of vector<>.
 
 - axis_channel looks like 1 element FIFO. Think about it.
