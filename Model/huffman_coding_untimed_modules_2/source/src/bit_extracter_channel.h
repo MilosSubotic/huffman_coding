@@ -14,18 +14,29 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // CT is short for Chunk Type.
-// CST is short for Chunk Shift Type.
+// CST is short for Chunk Size Type.
 
 template<typename CT, typename CST>
 class bit_extracter_server_if : virtual public sc_interface {
 public:
-	virtual void write(const CT& data, bool last = false) = 0;
+	/**
+	 * Blocking operation of setting chunk.
+	 * @param chunk
+	 * @return True if client done.
+	 */
+	virtual bool set_chunk(CT chunk) = 0;
+	virtual void get_chunk_size(CST size) const = 0;
+	virtual CST get_chunk_size() const = 0;
 };
 
 template<typename CT, typename CST>
 class bit_extracter_client_if : virtual public sc_interface {
 public:
-	virtual void read(CT& data, bool& last) = 0;
+	virtual CT get_chunk() const = 0;
+	virtual CST get_chunk_size() const = 0;
+	virtual void remove_bits(CST bits_to_remove) = 0;
+	virtual void need_more_bits() = 0;
+	virtual void done() = 0;
 };
 
 
@@ -37,10 +48,10 @@ class bit_extracter_channel :
 
 public:
 	bit_extracter_channel(sc_module_name name)
-		: sc_channel(name) {
+		: sc_channel(name), chunk(0), size {
 	}
 
-	virtual void write(const CT& data, bool last = false) {
+	virtual bool set_chunk(CT chunk) {
 		/*
 		if(have_data){
 			wait(read_event);
@@ -52,6 +63,8 @@ public:
 		have_data = true;
 		write_event.notify();
 		*/
+
+		wait(client_event);
 	}
 
 	virtual void read(CT& data, bool& last) {
@@ -71,10 +84,10 @@ public:
 protected:
 
 	CT chunk;
-	CST shift;
+	CST size;
 	bool done;
 
-	sc_event write_event, read_event;
+	sc_event client_event;
 };
 
 
