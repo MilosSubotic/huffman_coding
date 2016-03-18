@@ -19,21 +19,20 @@
 template<typename CT, typename CST>
 class bit_extracter_server_if : virtual public sc_interface {
 public:
+	virtual void set_chunk_ref(const CT& chunk) = 0;
+	virtual void set_chunk_size_ref(const CST& size) const = 0;
 	/**
-	 * Blocking operation of setting chunk.
-	 * @param chunk
-	 * @return True if client done.
+	 * @return If return true need more bits, else client is done.
 	 */
-	virtual bool set_chunk(CT chunk) = 0;
-	virtual void get_chunk_size(CST size) const = 0;
-	virtual CST get_chunk_size() const = 0;
+	virtual bool does_need_more_bits() = 0;
+	virtual void new_chunk_added() = 0;
 };
 
 template<typename CT, typename CST>
 class bit_extracter_client_if : virtual public sc_interface {
 public:
-	virtual CT get_chunk() const = 0;
-	virtual CST get_chunk_size() const = 0;
+	virtual const CT& get_chunk_ref() const = 0;
+	virtual const CST& get_chunk_size_ref() const = 0;
 	virtual void remove_bits(CST bits_to_remove) = 0;
 	virtual void need_more_bits() = 0;
 	virtual void done() = 0;

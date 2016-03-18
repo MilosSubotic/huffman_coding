@@ -20,7 +20,7 @@ namespace huffman_coding {
 
 	class hd_lens_freq_unpacker : sc_module {
 	public:
-		bit_extracter_client_port<enc_chunk_t, enc_chunk_shift_t>
+		bit_extracter_client_port<enc_chunk_t, enc_chunk_size_t>
 			input_bitstream;
 
 /*
