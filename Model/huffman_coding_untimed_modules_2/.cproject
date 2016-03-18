@@ -32,7 +32,7 @@
 								<option id="gnu.cpp.compiler.option.other.other.974909619" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=c++11" valueType="string"/>
 								<option id="gnu.cpp.compiler.option.include.paths.971974237" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${SYSTEMC}/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/include}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.33543123" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
@@ -44,7 +44,7 @@
 								<option id="gnu.cpp.link.option.paths.175368616" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${SYSTEMC}/lib&quot;"/>
 								</option>
-								<option id="gnu.cpp.link.option.flags.157590422" superClass="gnu.cpp.link.option.flags" value="-Wl,-rpath,${SYSTEMC}/lib" valueType="string"/>
+								<option id="gnu.cpp.link.option.flags.157590422" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="-Wl,-rpath,${SYSTEMC}/lib" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.292657281" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -89,7 +89,7 @@
 								<option id="gnu.cpp.compiler.option.other.other.1124972999" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=c++11" valueType="string"/>
 								<option id="gnu.cpp.compiler.option.include.paths.1630733160" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${SYSTEMC}/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source/include}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.107070885" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
@@ -101,7 +101,7 @@
 								<option id="gnu.cpp.link.option.paths.1045691690" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${SYSTEMC}/lib&quot;"/>
 								</option>
-								<option id="gnu.cpp.link.option.flags.1729871877" superClass="gnu.cpp.link.option.flags" value="-Wl,-rpath,${SYSTEMC}/lib" valueType="string"/>
+								<option id="gnu.cpp.link.option.flags.1729871877" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="-Wl,-rpath,${SYSTEMC}/lib" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.846884418" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
