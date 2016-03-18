@@ -31,7 +31,8 @@ namespace huffman_coding {
 	const int code_width = max_dep;
 	const int max_code_len = code_width;
 
-	const int enc_chunk_size_width = ceil(log2(enc_chunk_width + 1));
+	const int enc_bit_acc_width = 2*enc_chunk_width-1;
+	const int enc_bit_acc_size_width = ceil(log2(enc_bit_acc_width + 1));
 
 }
 
