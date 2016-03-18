@@ -163,7 +163,7 @@ int sc_main(int, char**) {
 	if(in_data != out_data){
 		algo_log << endl << "Mismatch!!!" << endl;
 		cerr << endl << "Mismatch!!!" << endl;
-		for(int i = 0; i < in_data.size(); i++){
+		for(unsigned i = 0; i < in_data.size(); i++){
 			if(in_data[i] != out_data[i]){
 				algo_log << "Mismatch at pos " << i << endl;
 				break;
