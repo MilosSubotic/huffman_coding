@@ -1,0 +1,26 @@
+/**
+ * @license MIT
+ * @brief Huffman coding interfaces between modules.
+ */
+
+#ifndef HUFFMAN_CODING_INTERFACES_H
+#define HUFFMAN_CODING_INTERFACES_H
+
+///////////////////////////////////////////////////////////////////////////////
+
+#include "huffman_coding_structs.h"
+
+///////////////////////////////////////////////////////////////////////////////
+
+namespace huffman_coding {
+
+	struct lens_freq_t {
+		len_freq_t lens_freq[len_freq_num];
+	};
+
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+#endif // HUFFMAN_CODING_INTERFACES_H
+
