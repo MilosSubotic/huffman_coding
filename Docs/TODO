@@ -1,4 +1,6 @@
 
+- Give up from Makefile. Let Eclipse generate Makefiles.
+
 - Need some static assert about code cannot be bigger than 
 	enc_chunk_shift_width ie. width of enc_chunk_t.
 
