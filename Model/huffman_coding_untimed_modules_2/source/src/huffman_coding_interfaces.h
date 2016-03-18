@@ -10,14 +10,13 @@
 
 #include "huffman_coding_structs.h"
 
+#include <array>
+
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace huffman_coding {
 
-	struct lens_freq_t {
-		len_freq_t lens_freq[len_freq_num];
-	};
-
+	typedef std::array<len_freq_t, len_freq_num> lens_freq_t;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

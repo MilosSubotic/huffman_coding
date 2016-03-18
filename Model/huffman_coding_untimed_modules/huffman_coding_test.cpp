@@ -25,6 +25,8 @@ using namespace huffman_coding;
 //#define DATA_LEN 10
 #define PROB_LAST_NUM 0
 
+//#define SEED (time(NULL))
+#define SEED 0
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -49,9 +51,8 @@ public:
 
 private:
     void generate() {
-    	unsigned seed = time(NULL);
-    	cout << "seed: " << seed << endl;
-    	srand(seed);
+    	cout << "seed: " << SEED << endl;
+    	srand(SEED);
 
     	for(int i = 0; i < DATA_LEN; i++){
     		sym_t s = rand() % (1 << sym_width);

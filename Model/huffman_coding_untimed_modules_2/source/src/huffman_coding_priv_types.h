@@ -28,7 +28,7 @@ namespace huffman_coding {
 
 	typedef sc_uint<enc_bit_acc_width> enc_bit_acc_t;
 	typedef sc_uint<enc_bit_acc_size_width> enc_bit_acc_size_t;
-	typedef sc_uint<enc_bit_acc_shift_width> enc_bit_acc_shift_t;
+	typedef sc_uint<enc_bit_acc_extract_width> enc_bit_acc_extract_t;
 
 
 }

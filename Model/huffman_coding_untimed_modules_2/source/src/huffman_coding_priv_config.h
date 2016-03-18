@@ -33,7 +33,7 @@ namespace huffman_coding {
 
 	const int enc_bit_acc_width = 2*enc_chunk_width-1;
 	const int enc_bit_acc_size_width = ceil(log2(enc_bit_acc_width + 1));
-	const int enc_bit_acc_shift_width = ceil(log2(enc_chunk_width + 1));
+	const int enc_bit_acc_extract_width = ceil(log2(enc_chunk_width + 1));
 
 }
 
