@@ -1,4 +1,2 @@
-*.o
-*.elf
-*.exe
-*.log
+Debug/
+Release/
