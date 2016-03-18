@@ -10,7 +10,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "axis_channel.h"
-#include "bit_extracter_channel.h"
 
 #include "huffman_coding_interfaces.h"
 
@@ -20,8 +19,11 @@ namespace huffman_coding {
 
 	class hd_lens_freq_unpacker : sc_module {
 	public:
-		bit_extracter_client_port<enc_bit_acc_t, enc_bit_acc_size_t>
-			input_bitstream;
+		sc_in<enc_bit_acc_t> enc_bit_acc;
+		sc_in<enc_bit_acc_size_t> acc_size;
+		sc_out<enc_bit_acc_shift_t> remove_bits;
+		sc_out<bool> need_more_bits;
+		sc_out<bool> done;
 
 /*
 		axis_out<lens_freq_t> lens_freq;
