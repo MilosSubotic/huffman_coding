@@ -40,7 +40,7 @@ def collect_git_ignored_files():
 			base = os.path.dirname(gitignore)
 			
 			for pattern in f.readlines():
-				pattern = pattern[:-1]
+				pattern = pattern.rstrip() # Remove new line sign on line end.
 				for f in recursive_glob(pattern, base):
 					yield f
 
