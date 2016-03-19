@@ -11,8 +11,6 @@
 #include <systemc.h>
 #include <cassert>
 
-#include "huffman_coding_print.h" // TODO Debug.
-
 ///////////////////////////////////////////////////////////////////////////////
 
 // BA is short for Bit Accumulator type.
@@ -64,11 +62,8 @@ public:
 		connection_event.notify();
 	}
 	virtual bit_extract_operation_t wait_operation() {
-		TRACE();
 		server_done_op.notify();
-		TRACE();
 		wait(client_set_op);
-		TRACE();
 		return op;
 	}
 	virtual BAE get_extract() const {

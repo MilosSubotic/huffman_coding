@@ -26,6 +26,10 @@
 
 namespace huffman_coding {
 
+	START_OPERATOR(codes_len_and_code_table_t);
+	PRINT_FIELD(codes_len);
+	PRINT_LAST_FIELD(code_table);
+	END_OPERATOR();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

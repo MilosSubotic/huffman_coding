@@ -29,22 +29,22 @@ namespace huffman_coding {
 
 	START_OPERATOR(sym_and_freq);
 	PRINT_FIELD(sym);
-	PRINT_FIELD(freq);
+	PRINT_LAST_FIELD(freq);
 	END_OPERATOR();
 
 	START_OPERATOR(node_and_freq);
 	PRINT_FIELD(node);
-	PRINT_FIELD(freq);
+	PRINT_LAST_FIELD(freq);
 	END_OPERATOR();
 
 	START_OPERATOR(node_and_dep);
 	PRINT_FIELD(node);
-	PRINT_FIELD(dep);
+	PRINT_LAST_FIELD(dep);
 	END_OPERATOR();
 
 	START_OPERATOR(sym_and_len);
 	PRINT_FIELD(sym);
-	PRINT_FIELD(len);
+	PRINT_LAST_FIELD(len);
 	END_OPERATOR();
 
 }

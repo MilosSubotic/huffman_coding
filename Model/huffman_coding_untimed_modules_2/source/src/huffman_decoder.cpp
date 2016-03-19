@@ -11,6 +11,7 @@
 #include "axis_bit_extract_server.h"
 
 #include "hd_lens_freq_unpacker.h"
+#include "hd_sym_unpacker.h"
 
 using namespace std;
 
@@ -18,7 +19,7 @@ using namespace std;
 
 namespace huffman_coding {
 
-	axis_channel<lens_freq_t>* debug_axis_ch;
+	axis_channel<codes_len_and_code_table_t>* debug_axis_ch;
 
 	void huffman_decoder::init() {
 		const std::string mn = name();
@@ -35,12 +36,19 @@ namespace huffman_coding {
 
 		auto lfu_n = mn + "__lens_freq_unpacker";
 		auto lens_freq_unpacker = new hd_lens_freq_unpacker(lfu_n.c_str());
+		lens_freq_unpacker->bit_stream(*bit_ext_srv->get_new_client_if());
 
-		auto ci = bit_ext_srv->get_new_client_if();
-		lens_freq_unpacker->bit_stream(*ci);
+		auto su_n = mn + "__sym_unpacker";
+		auto sym_unpacker = new hd_sym_unpacker(su_n.c_str());
+		sym_unpacker->bit_stream(*bit_ext_srv->get_new_client_if());
 
-		debug_axis_ch = new axis_channel<lens_freq_t>("debug");
-		lens_freq_unpacker->out_lens_freq(*debug_axis_ch);
+		auto lfc_n = mn + "__lens_freq_ch";
+		auto lens_freq_ch = new axis_channel<lens_freq_t>(lfc_n.c_str());
+		lens_freq_unpacker->out_lens_freq(*lens_freq_ch);
+		sym_unpacker->in_lens_freq(*lens_freq_ch);
+
+		debug_axis_ch = new axis_channel<codes_len_and_code_table_t>("debug");
+		sym_unpacker->out_codes_len_and_code_table(*debug_axis_ch);
 	}
 
 	void huffman_decoder::decode() {
@@ -50,10 +58,10 @@ namespace huffman_coding {
 
 
 		while(true){
-			lens_freq_t lens_freq;
+			codes_len_and_code_table_t tables;
 			bool last = false;
-			debug_axis_ch->read(lens_freq, last);
-			DEBUG(lens_freq);
+			debug_axis_ch->read(tables, last);
+			DEBUG(tables);
 		}
 
 

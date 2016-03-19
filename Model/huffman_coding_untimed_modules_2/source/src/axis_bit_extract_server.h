@@ -67,37 +67,30 @@ private:
 			for(server_port_t* server : servers_port){
 				BA acc;
 	    		BAS acc_size;
-	    		TRACE();
 				(*server)->open_connection(acc, acc_size);
-				TRACE();
 
 	    		C chunk;
 				bool last_chunk = false;
 				assert(!last_chunk);
 				(*chunk_stream)->read(chunk, last_chunk);
-				TRACE();
 				acc = chunk;
 	    		acc_size = chunk.length();
 	    		BAE extract;
-	    		DEBUG(acc_size);
 				while(true){
 					switch((*server)->wait_operation()){
 					case EXTRACT_BITS:
-						DEBUG(EXTRACT_BITS);
 						extract = (*server)->get_extract();
-						assert(extract < acc_size);
+						assert(extract <= acc_size);
 						acc_size -= extract;
 						acc >>= extract;
 						break;
 					case NEED_MORE_BITS:
-						DEBUG(NEED_MORE_BITS);
 						assert(!last_chunk);
 						(*chunk_stream)->read(chunk, last_chunk);
 						acc |= BA(chunk) << acc_size;
 						acc_size += chunk.length();
 						break;
 					case DONE:
-						DEBUG(DONE);
 						goto client_done;
 					}
 				}
