@@ -21,6 +21,7 @@ namespace huffman_coding {
 	ofstream algo_log_f("logs/alog.log");
 	// TODO Maybe algo log should be binary.
 	binary_ostream algo_log(algo_log_f);
+	binary_ostream debug_log(cout);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -8,17 +8,56 @@
 #include "huffman_decoder.h"
 #include "huffman_coding_interfaces.h"
 
+#include "axis_bit_extract_server.h"
+
+#include "hd_lens_freq_unpacker.h"
+
 using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace huffman_coding {
 
+	axis_channel<lens_freq_t>* debug_axis_ch;
+
+	void huffman_decoder::init() {
+		const std::string mn = name();
+
+		using bes_t = axis_bit_extract_server<
+			enc_chunk_t,
+			enc_bit_acc_t,
+			enc_bit_acc_size_t,
+			enc_bit_acc_extract_t>;
+		auto bes_n = mn + "__bit_ext_srv";
+		auto bit_ext_srv = new bes_t(bes_n.c_str());
+
+		bit_ext_srv->set_axis_chunk_in_if(in_enc_data);
+
+		auto lfu_n = mn + "__lens_freq_unpacker";
+		auto lens_freq_unpacker = new hd_lens_freq_unpacker(lfu_n.c_str());
+
+		auto ci = bit_ext_srv->get_new_client_if();
+		lens_freq_unpacker->bit_stream(*ci);
+
+		debug_axis_ch = new axis_channel<lens_freq_t>("debug");
+		lens_freq_unpacker->out_lens_freq(*debug_axis_ch);
+	}
+
 	void huffman_decoder::decode() {
 		assert(enc_chunk_width == 32);
 
 		algo_log << "Decoding..." << endl << endl;
 
+
+		while(true){
+			lens_freq_t lens_freq;
+			bool last = false;
+			debug_axis_ch->read(lens_freq, last);
+			DEBUG(lens_freq);
+		}
+
+
+/*
 		bool last = false;
 
 		uint64_t acc = 0;
@@ -198,7 +237,7 @@ namespace huffman_coding {
 			}
 
 		}
-
+*/
 
 	}
 

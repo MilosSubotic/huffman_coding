@@ -17,7 +17,7 @@
 
 namespace huffman_coding {
 
-	class huffman_encoder : sc_module {
+	SC_MODULE(huffman_encoder) {
 	public:
 		axis_in<sym_t> in_data;
 		axis_out<enc_chunk_t> out_enc_data;

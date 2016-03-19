@@ -17,13 +17,16 @@ namespace huffman_coding {
 		enc_bit_acc_t mask = ((enc_bit_acc_t(1) << len_freq_width) - 1);
 
 		for(int block = 0; ; block++){
+			TRACE();
 			bit_stream->connect();
+			TRACE();
 
 			algo_log << "block: " << block << endl << endl;
 
 			algo_log << "Unpacking bit-lengths count..." << endl;
 
 			lens_freq_t lens_freq;
+			lens_freq[0] = 0;
 
 			for(int len = 1; len < len_freq_num; len++){
 

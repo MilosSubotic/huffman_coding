@@ -11,6 +11,8 @@
 #include <systemc.h>
 #include <cassert>
 
+#include "huffman_coding_print.h" // TODO Debug.
+
 ///////////////////////////////////////////////////////////////////////////////
 
 // BA is short for Bit Accumulator type.
@@ -51,17 +53,22 @@ class bit_extract_channel :
 
 public:
 	bit_extract_channel(sc_module_name name)
-		: sc_channel(name), acc(NULL), size(NULL) {
+		: sc_channel(name), connection_opened(false),
+		  acc(nullptr), size(nullptr), op(DONE) {
 	}
 
 	virtual void open_connection(const BA& acc, const BAS& size) {
 		this->acc = &acc;
 		this->size = &size;
-		connection_opened.notify();
+		connection_opened = true;
+		connection_event.notify();
 	}
 	virtual bit_extract_operation_t wait_operation() {
+		TRACE();
 		server_done_op.notify();
+		TRACE();
 		wait(client_set_op);
+		TRACE();
 		return op;
 	}
 	virtual BAE get_extract() const {
@@ -69,7 +76,9 @@ public:
 	}
 
 	virtual void connect() {
-		wait(connection_opened);
+		if(!connection_opened){
+			wait(connection_event);
+		}
 	}
 	virtual const BA& get_acc() const {
 		return *acc;
@@ -89,18 +98,22 @@ public:
 		wait(server_done_op);
 	}
 	virtual void done() {
+		connection_opened = false;
 		op = bit_extract_operation_t::DONE;
 		client_set_op.notify();
 	}
 
 protected:
 
+	bool connection_opened;
+	sc_event connection_event;
+
 	const BA* acc;
 	const BAS* size;
 	BAE extract;
 	bit_extract_operation_t op;
 
-	sc_event connection_opened, client_set_op, server_done_op;
+	sc_event client_set_op, server_done_op;
 };
 
 

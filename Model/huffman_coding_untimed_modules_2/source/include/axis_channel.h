@@ -36,7 +36,7 @@ class axis_channel :
 
 public:
 	axis_channel(sc_module_name name)
-			: sc_channel(name), have_data(false) {
+			: sc_channel(name), have_data(false), last(false) {
 	}
 
 	virtual void write(const DI& data, bool last = false) {
@@ -64,9 +64,9 @@ public:
 	}
 
 protected:
+	bool have_data;
 	DI data;
 	bool last;
-	bool have_data;
 	sc_event write_event, read_event;
 };
 

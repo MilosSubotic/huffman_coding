@@ -19,13 +19,13 @@
 
 namespace huffman_coding {
 
-	class hd_lens_freq_unpacker : sc_module {
+	SC_MODULE(hd_lens_freq_unpacker) {
 	public:
 		bit_extract_client_port<enc_bit_acc_t, enc_bit_acc_size_t,
 				enc_bit_acc_extract_t> bit_stream;
 
-
 		axis_out<lens_freq_t> out_lens_freq;
+
 
 		SC_CTOR(hd_lens_freq_unpacker) {
 			SC_THREAD(unpack);

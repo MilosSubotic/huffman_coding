@@ -54,6 +54,7 @@ namespace huffman_coding {
 			bcout << "Unpacking bit-lengths count..." << endl;
 
 			vector<len_freq_t> lens_freq(len_freq_num);
+			lens_freq[0] = 0;
 
 			for(int len = 1; len < len_freq_num; len++){
 				lens_freq[len] = unpack(len_freq_width);

@@ -12,6 +12,7 @@
 #include <iomanip>
 #include <vector>
 #include <deque>
+#include <array>
 
 #include <systemc.h>
 
@@ -19,7 +20,13 @@
 
 #define DEBUG(var) \
 	do{ \
-		std::cout << #var << " = " << var << std::endl; \
+		huffman_coding::debug_log << #var << " = " << var << std::endl; \
+	}while(0)
+
+#define TRACE() \
+	do{ \
+		huffman_coding::debug_log << __FUNCTION__ << ":" \
+			<< __LINE__ << std::endl; \
 	}while(0)
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -69,9 +76,9 @@ namespace huffman_coding {
 	}
 
 	template<typename T>
-	binary_ostream& operator<<(binary_ostream& bos, std::deque<T> v) {
-		auto iter = v.begin();
-		auto last = v.end() - 1;
+	binary_ostream& operator<<(binary_ostream& bos, std::deque<T> d) {
+		auto iter = d.begin();
+		auto last = d.end() - 1;
 		for(; iter != last; iter++){
 			bos << *iter << std::endl;
 		}
@@ -80,8 +87,20 @@ namespace huffman_coding {
 		return bos;
 	}
 
+	template<typename T, std::size_t N>
+	binary_ostream& operator<<(binary_ostream& bos, std::array<T, N> a) {
+		auto iter = a.begin();
+		auto last = a.end() - 1;
+		for(; iter != last; iter++){
+			bos << *iter << std::endl;
+		}
+		bos << *last;
+
+		return bos;
+	}
 
 	extern binary_ostream algo_log;
+	extern binary_ostream debug_log;
 
 }
 
