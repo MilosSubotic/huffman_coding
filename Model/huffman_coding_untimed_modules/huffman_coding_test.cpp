@@ -14,6 +14,7 @@
 using namespace std;
 
 #include "huffman_coding.h"
+#include "huffman_coding_print.h"
 
 using namespace huffman_coding;
 
@@ -78,8 +79,19 @@ public:
 	axis_in<enc_chunk_t> encoder_out_enc_data;
 	axis_out<enc_chunk_t> decoder_int_enc_data;
 
+	ofstream ofs;
+	binary_ostream* bofs;
+
     SC_CTOR(enc_data_channel) {
         SC_THREAD(channel_enc_data);
+
+        ofs.open("huffman_dec_in.txt");
+        bofs = new binary_ostream(ofs);
+    }
+
+    ~enc_data_channel(){
+    	ofs.close();
+    	delete bofs;
     }
 
 private:
@@ -94,6 +106,8 @@ private:
     		cout << "e = 0x" << hex << setw(8) << e << dec
     				<< (last ? " last" : "")<< endl;
 
+    		(*bofs) << sc_uint<1>(last) << ' ' << e << endl;
+
     		decoder_int_enc_data->write(e, last);
     	}
     }
@@ -106,8 +120,19 @@ class monitor : sc_module {
 public:
 	axis_in<sym_t> decoder_out_data;
 
+	ofstream ofs;
+	binary_ostream* bofs;
+
     SC_CTOR(monitor) {
         SC_THREAD(collect);
+
+        ofs.open("huffman_dec_out.txt");
+        bofs = new binary_ostream(ofs);
+    }
+
+    ~monitor() {
+    	ofs.close();
+    	delete bofs;
     }
 
 private:
@@ -119,6 +144,9 @@ private:
     		decoder_out_data->read(s, last);
 
     		out_data.push_back(s);
+
+
+			(*bofs) << sc_uint<1>(last) << ' ' << s << endl;
 
     		if(last){
     			out_last++;
