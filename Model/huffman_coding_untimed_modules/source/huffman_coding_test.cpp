@@ -85,7 +85,7 @@ public:
     SC_CTOR(enc_data_channel) {
         SC_THREAD(channel_enc_data);
 
-        ofs.open("huffman_dec_in.txt");
+        ofs.open("logs/huffman_dec_in.log");
         bofs = new binary_ostream(ofs);
     }
 
@@ -126,7 +126,7 @@ public:
     SC_CTOR(monitor) {
         SC_THREAD(collect);
 
-        ofs.open("huffman_dec_out.txt");
+        ofs.open("logs/huffman_dec_out.log");
         bofs = new binary_ostream(ofs);
     }
 
